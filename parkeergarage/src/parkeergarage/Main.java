@@ -7,5 +7,5 @@ public class Main {
 		Simulator test = new Simulator();
 		test.run();
 	}
-
+ 
 }
