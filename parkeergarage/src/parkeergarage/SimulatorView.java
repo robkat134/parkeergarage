@@ -12,6 +12,7 @@ public class SimulatorView extends JFrame implements ActionListener{
     private int numberOfOpenSpots;
     private Car[][][] cars;
     private JButton mineen =new JButton("-1");
+    private JButton pluseen =new JButton("+1");
 	//private JButton pluseen;
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
@@ -28,10 +29,15 @@ public class SimulatorView extends JFrame implements ActionListener{
 		//pluseen.addActionListener(this);
 
         Container contentPane = getContentPane();
-        contentPane.setLayout(new FlowLayout());
+        contentPane.setLayout(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new BorderLayout());
 		mineen.setBounds(0, 0, 50, 30);
-        contentPane.add(mineen);
-        contentPane.add(carParkView);
+		pluseen.setBounds(0,0,50,30);
+		buttonPanel.add(mineen,BorderLayout.WEST);
+		buttonPanel.add(pluseen,BorderLayout.EAST);
+		
+		contentPane.add(buttonPanel,BorderLayout.SOUTH);
+        contentPane.add(carParkView,BorderLayout.NORTH);
         //mineen.setLayout(null);
 		//add(pluseen);
 		//pluseen.setBounds(229, 10, 50, 30);
