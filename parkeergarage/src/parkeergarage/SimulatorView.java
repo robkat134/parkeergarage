@@ -2,14 +2,17 @@ package parkeergarage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class SimulatorView extends JFrame {
+public class SimulatorView extends JFrame implements ActionListener{
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
+    private JButton mineen =new JButton("-1");
+	//private JButton pluseen;
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         this.numberOfFloors = numberOfFloors;
@@ -19,9 +22,19 @@ public class SimulatorView extends JFrame {
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         
         carParkView = new CarParkView();
+        
+		//mineen.addActionListener(this);
+		//pluseen=new JButton("+1");
+		//pluseen.addActionListener(this);
 
         Container contentPane = getContentPane();
-        contentPane.add(carParkView, BorderLayout.CENTER);
+        contentPane.setLayout(new FlowLayout());
+		mineen.setBounds(0, 0, 50, 30);
+        contentPane.add(mineen);
+        contentPane.add(carParkView);
+        //mineen.setLayout(null);
+		//add(pluseen);
+		//pluseen.setBounds(229, 10, 50, 30);
         pack();
         setVisible(true);
 
@@ -206,5 +219,11 @@ public class SimulatorView extends JFrame {
                     10 - 1); // TODO use dynamic size or constants
         }
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
