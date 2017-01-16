@@ -124,8 +124,14 @@ public class Simulator {
     			simulatorView.getNumberOfOpenSpots()>0 && 
     			i<enterSpeed) {
             Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
+            if(queue == entrancePassQueue){
+            Location freeLocation = simulatorView.getFirstFreeLocationPass();
             simulatorView.setCarAt(freeLocation, car);
+            }
+            else{
+                Location freeLocation = simulatorView.getFirstFreeLocation();
+                simulatorView.setCarAt(freeLocation, car);
+            }
             i++;
         }
     }

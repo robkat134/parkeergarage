@@ -110,6 +110,20 @@ public class SimulatorView extends JFrame implements ActionListener{
 
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+            for (int row = 1; row < getNumberOfRows(); row++) {
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                    Location location = new Location(floor, row, place);
+                    if (getCarAt(location) == null) {
+                        return location;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Location getFirstFreeLocationPass() {
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
