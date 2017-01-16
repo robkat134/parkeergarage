@@ -34,7 +34,10 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        simulatorView = new SimulatorView(3, 6, 30, this);
+    }
+    public void init(){
+    	updateViews();
     }
 
     public void run() {
@@ -42,13 +45,29 @@ public class Simulator {
             tick();
         }
     }
-
-    private void tick() {
+    
+    public void tickFor(int amount)
+    {
+    	for (int i = 0; i < amount; i++) 
+    	{
+    		manualStep();
+    	}
+    }
+    void manualStep() 
+    {
+    	advanceTime();
+    	handleExit();
+    	updateViews();
+    	handleEntrance();
+    }
+    void tick() 
+    {
     	advanceTime();
     	handleExit();
     	updateViews();
     	// Pause.
         try {
+        	
             Thread.sleep(tickPause);
         } catch (InterruptedException e) {
             e.printStackTrace();
