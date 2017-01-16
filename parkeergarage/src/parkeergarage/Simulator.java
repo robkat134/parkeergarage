@@ -1,6 +1,7 @@
 package parkeergarage;
 
 import java.util.Random;
+import javax.swing.*;
 
 public class Simulator {
 
@@ -28,6 +29,14 @@ public class Simulator {
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
+    
+    /**
+     * Onderstaande toegevoegd 4 regels door Rob Kat
+     *
+	JButton button1 = new JButton("+1");
+	JButton button2 = new JButton("+100");
+	JButton button3 = new JButton("Auto");
+	JPanel pnlButton = new JPanel();*/
 
     public Simulator() {
         entranceCarQueue = new CarQueue();
@@ -37,15 +46,32 @@ public class Simulator {
         simulatorView = new SimulatorView(3, 6, 30);
     }
 
+    /**
+     * MakeButten toegevoegd door Rob
+     *
+    public void MakeButton() {
+    	button1.setBounds(60,400,220,30);
+    	//button2.setBounds(800,800,200,100);
+    	//button3.setBounds(1000,1000,180,180);
+    	
+    	pnlButton.setBounds(800, 800, 200, 100);
+    	
+    	pnlButton.setLayout(null);
+    	pnlButton.add(button1);
+    	add(pnlButton);
+    	
+    }*/
     public void run() {
+
+    	
         for (int i = 0; i < 10000; i++) {
-            tick();
+            tick(); //Ga 1 minuut verder en doe de handelingen die in die minuut allemaal gebeurt(auto's weg, terug etc)
         }
     }
 
     private void tick() {
-    	advanceTime();
-    	handleExit();
+    	advanceTime(); //Tel 1 minuut bij het totaal op en verdeel dit in minuten, uren, dagen en weken
+    	handleExit(); //Tja, handel het uitrijden van de auto's. Welke gaan weg en hoeveel moet er betaald worden.
     	updateViews();
     	// Pause.
         try {
@@ -80,8 +106,8 @@ public class Simulator {
     }
     
     private void handleExit(){
-        carsReadyToLeave();
-        carsPaying();
+        carsReadyToLeave();//Kijk welke auto weg mogen en queue deze
+        carsPaying();//Laat de auto's betalen die kunnen betalen
         carsLeaving();
     }
     
@@ -111,14 +137,24 @@ public class Simulator {
         }
     }
     
+    /**
+     * blijf door de parkeerplekken loopen totdat hij er doorheen is.
+     */
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
+    	
+    	// slaat de eerste auto op in Car die vetrekt
         Car car = simulatorView.getFirstLeavingCar();
+        
+        //Blijf loopen totdat alle parkeerplekken zijn gecontroleerd
         while (car!=null) {
+        	//Als auto nog moet betalen dan verder gaan in deze if-statement
         	if (car.getHasToPay()){
+        		//betalen op true zetten
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
         	}
+        	//Als auto betaald heeft dan mag hij vertrekken
         	else {
         		carLeavesSpot(car);
         	}

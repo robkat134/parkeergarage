@@ -97,6 +97,10 @@ public class SimulatorView extends JFrame {
         return null;
     }
 
+    /**
+     *  Loopt door hele garage(eerste loop door y-as, tweede door x-as en derde door z-as) en kijkt bij welke auto's er geen minuten meer zijn en als er betaald is
+     * @return de auto die de parkeergarage gaat verlaten
+     */
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
