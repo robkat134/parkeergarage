@@ -7,6 +7,9 @@ public class Simulator {
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
+    private int abonnementhouders = 45;
+    private int geparkeerdeAbonnementhouders = 0;
+    private int geparkeerdeZonderAbonnement = 0;
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -106,14 +109,19 @@ public class Simulator {
     			i<enterSpeed) {
             Car car = queue.removeCar();
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
-            if(queue == entrancePassQueue){
+            if(queue == entrancePassQueue && geparkeerdeAbonnementhouders < abonnementhouders ){
             Location freeLocation = simulatorView.getFirstFreeLocationPass();
             simulatorView.setCarAt(freeLocation, car);
+            geparkeerdeAbonnementhouders++;
             }
             // De andere auto's kunnen op de eerst volgende plekken parkeren.
-            else{
-                Location freeLocation = simulatorView.getFirstFreeLocation();
+           else if (queue == entranceCarQueue){
+                Location freeLocation = simulatorView.getFirstFreeLocation(abonnementhouders);
                 simulatorView.setCarAt(freeLocation, car);
+                geparkeerdeZonderAbonnement++;
+                //if (queue == entrancePassQueue){
+                	//geparkeerdeZonderAbonnement++;
+                //}
             }
             i++;
         }
@@ -126,9 +134,13 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
+	            geparkeerdeZonderAbonnement--;
+	            System.out.println("Zonder abo" + geparkeerdeZonderAbonnement);
         	}
         	else {
         		carLeavesSpot(car);
+        		geparkeerdeAbonnementhouders--;
+        		System.out.println("Met abo" + geparkeerdeAbonnementhouders);
         	}
             car = simulatorView.getFirstLeavingCar();
         }
