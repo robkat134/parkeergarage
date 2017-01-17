@@ -101,7 +101,9 @@ public class SimulatorView extends JFrame implements ActionListener{
         numberOfOpenSpots++;
         return car;
     }
-
+/**
+ * Eerste locatie waar auto's zonder abonnement parkeren.
+ */
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 1; row < getNumberOfRows(); row++) {
@@ -115,7 +117,9 @@ public class SimulatorView extends JFrame implements ActionListener{
         }
         return null;
     }
-    
+    /**
+     * Locatie waar auto's met abonnement kunnen staan.
+     */
     public Location getFirstFreeLocationPass() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {

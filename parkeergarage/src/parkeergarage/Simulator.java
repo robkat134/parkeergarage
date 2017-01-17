@@ -13,6 +13,11 @@ public class Simulator {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+    
+    private int passCarsNow = 0; // auto's met abonnement die er geweest zijn vanaf starten programma.
+    private int passCarsToday = 0; // auto's met abonnement die geteld worden tot het einde van de dag (1440 minuten).
+    private int nonPassCarsNow = 0; // auto's zonder abonnement die er geweest zijn vanaf starten programma.
+    private int nonPassCarsToday = 0; // auto's zonder abonnement die geteld worden tot het einde van de dag (1440 minuten).
 
     private int day = 0;
     private int hour = 0;
@@ -34,11 +39,11 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30);
+        simulatorView = new SimulatorView(5, 6, 30);
     }
 
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 1440; i++) {
             tick();
         }
     }
@@ -99,7 +104,7 @@ public class Simulator {
     }
 
     private void carsEntering(CarQueue queue){
-        int i=0;
+        int i=0, keepLoop = 0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 && 
     			simulatorView.getNumberOfOpenSpots()>0 && 
@@ -109,13 +114,30 @@ public class Simulator {
             if(queue == entrancePassQueue){
             Location freeLocation = simulatorView.getFirstFreeLocationPass();
             simulatorView.setCarAt(freeLocation, car);
+            passCarsNow++;
+	            if(hour == 0 && minute == 0 && keepLoop == 0){
+	            	passCarsToday = 0;
+	            	keepLoop = 1;
+	            }
+	            passCarsToday++;
+            
             }
             // De andere auto's kunnen op de eerst volgende plekken parkeren.
             else{
                 Location freeLocation = simulatorView.getFirstFreeLocation();
                 simulatorView.setCarAt(freeLocation, car);
+                nonPassCarsNow++;
+	            if(hour == 0 && minute == 0 && keepLoop == 0){
+	            	nonPassCarsToday = 0;
+	            	keepLoop = 1;
+	            }
+	            nonPassCarsToday++;
             }
             i++;
+            int allPassCarsToday = nonPassCarsToday + passCarsToday;
+            int allPassCarsNow = nonPassCarsNow + passCarsNow;
+            //test voor aantal auto's
+            System.out.println(allPassCarsToday);
         }
     }
     
