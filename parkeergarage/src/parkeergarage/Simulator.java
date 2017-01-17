@@ -18,7 +18,7 @@ public class Simulator {
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 100;
+    private int tickPause = 1;
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -105,10 +105,12 @@ public class Simulator {
     			simulatorView.getNumberOfOpenSpots()>0 && 
     			i<enterSpeed) {
             Car car = queue.removeCar();
+            // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
             if(queue == entrancePassQueue){
             Location freeLocation = simulatorView.getFirstFreeLocationPass();
             simulatorView.setCarAt(freeLocation, car);
             }
+            // De andere auto's kunnen op de eerst volgende plekken parkeren.
             else{
                 Location freeLocation = simulatorView.getFirstFreeLocation();
                 simulatorView.setCarAt(freeLocation, car);
