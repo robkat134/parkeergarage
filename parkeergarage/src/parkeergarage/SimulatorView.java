@@ -103,16 +103,20 @@ public class SimulatorView extends JFrame implements ActionListener{
     }
 
     
-    public Location getFirstFreeLocation(int abonnement) {
+/**
+ * Eerste locatie waar auto's zonder abonnement parkeren.
+ */
+    public Location getFirstFreeLocation(int abonnementhouders) {
     	int startAt = 0;
+      //}
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
             	if (floor == 0 && row == 0){
-            		startAt = abonnement;
-            	} else if(floor == 1 && row == 0 && abonnement > 30){
-            		startAt = abonnement -30;
-	            } else if(floor == 2 && row == 0 && abonnement > 60){
-	        		startAt = abonnement -60;
+            		startAt = abonnementhouders;
+            	} else if(floor == 1 && row == 0 && abonnementhouders > 30){
+            		startAt = abonnementhouders -30;
+	            } else if(floor == 2 && row == 0 && abonnementhouders > 60){
+	        		startAt = abonnementhouders -60;
 	        	}
                 else {
             		startAt = 0;
@@ -127,7 +131,9 @@ public class SimulatorView extends JFrame implements ActionListener{
         }
         return null;
     }
-    
+    /**
+     * Locatie waar auto's met abonnement kunnen staan.
+     */
     public Location getFirstFreeLocationPass() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows() -5; row++) {
