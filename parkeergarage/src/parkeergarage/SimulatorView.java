@@ -259,7 +259,7 @@ public class SimulatorView extends JFrame implements ActionListener{
 		}
 		if(e.getSource() == run)
 		{
-			owner.run();
+			owner.toggleRunning();
 		}
 	}
 

@@ -7,6 +7,8 @@ public class Simulator {
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
+	private boolean isRunning = false;
+	
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -17,6 +19,8 @@ public class Simulator {
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
+    
+    private int tickCount = 0;
 
     private int tickPause = 100;
 
@@ -38,11 +42,21 @@ public class Simulator {
     }
     public void init(){
     	updateViews();
+    	isRunning = true;
     }
 
-    public void run() {
-        for (int i = 0; i < 10000; i++) {
-            tick();
+    public void run() 
+    {
+    	System.out.println(isRunning);
+        while (isRunning)
+        {
+        	System.out.println(tickCount);
+        	tick();
+        	tickCount++;
+        	if (tickCount >= 10000)
+        	{
+        		tickCount = 0;
+        	}
         }
     }
     
@@ -73,6 +87,13 @@ public class Simulator {
             e.printStackTrace();
         }
     	handleEntrance();
+    }
+    
+    public void toggleRunning()
+    {
+    	isRunning = !isRunning;
+    	System.out.println(isRunning);
+    	run();
     }
 
     private void advanceTime(){
@@ -124,11 +145,13 @@ public class Simulator {
     			simulatorView.getNumberOfOpenSpots()>0 && 
     			i<enterSpeed) {
             Car car = queue.removeCar();
-            if(queue == entrancePassQueue){
-            Location freeLocation = simulatorView.getFirstFreeLocationPass();
-            simulatorView.setCarAt(freeLocation, car);
+            if(queue == entrancePassQueue)
+            {
+            	Location freeLocation = simulatorView.getFirstFreeLocationPass();
+            	simulatorView.setCarAt(freeLocation, car);
             }
-            else{
+            else
+            {
                 Location freeLocation = simulatorView.getFirstFreeLocation();
                 simulatorView.setCarAt(freeLocation, car);
             }
