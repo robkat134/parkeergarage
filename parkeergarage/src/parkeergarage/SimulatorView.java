@@ -5,17 +5,18 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class SimulatorView extends JFrame implements ActionListener{
+	private Simulator owner;
     private CarParkView carParkView;
     private int numberOfFloors;
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
-    private JButton mineen =new JButton("-1");
-    private JButton pluseen =new JButton("+1");
-	//private JButton pluseen;
+    private JButton plus1 =new JButton("+1");
+    private JButton plus100 =new JButton("+100");
+    private JButton run =new JButton("run");
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
+    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
@@ -24,23 +25,22 @@ public class SimulatorView extends JFrame implements ActionListener{
         
         carParkView = new CarParkView();
         
-		//mineen.addActionListener(this);
-		//pluseen=new JButton("+1");
-		//pluseen.addActionListener(this);
+        plus1.addActionListener(this);
+		plus100.addActionListener(this);
+		run.addActionListener(this);
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new BorderLayout());
-		mineen.setBounds(0, 0, 50, 30);
-		pluseen.setBounds(0,0,50,30);
-		buttonPanel.add(mineen,BorderLayout.WEST);
-		buttonPanel.add(pluseen,BorderLayout.EAST);
+        JPanel buttonPanel = new JPanel();
+		plus1.setBounds(0, 0, 100, 30);
+		plus100.setBounds(0,0,100,30);
+		run.setBounds(0,0,100,30);
+		buttonPanel.add(plus1);
+		buttonPanel.add(plus100);
+		buttonPanel.add(run);
 		
-		contentPane.add(buttonPanel,BorderLayout.SOUTH);
         contentPane.add(carParkView,BorderLayout.NORTH);
-        //mineen.setLayout(null);
-		//add(pluseen);
-		//pluseen.setBounds(229, 10, 50, 30);
+		contentPane.add(buttonPanel,BorderLayout.SOUTH);
         pack();
         setVisible(true);
 
@@ -261,7 +261,22 @@ public class SimulatorView extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(e.getSource());
+		if(e.getSource() == plus100)
+		{
+			owner.tickFor(100);
+		}
+		if(e.getSource() == plus1)
+		{
+			owner.tickFor(1);
+		}
+		if(e.getSource() == run)
+		{
+			owner.toggleRunning();
+		}
+
+
+
 	}
 
 }
