@@ -15,6 +15,9 @@ public class SimulatorView extends JFrame implements ActionListener{
     private JButton plus1 =new JButton("+1");
     private JButton plus100 =new JButton("+100");
     private JButton run =new JButton("run");
+    
+    public JLabel parkedCars = new JLabel("Parked Cars: ");
+    public JLabel time = new JLabel("Time: ");
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) 
     {
@@ -33,20 +36,31 @@ public class SimulatorView extends JFrame implements ActionListener{
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
+        
+        JPanel textPanel = new JPanel();
+        textPanel.add(parkedCars);
+        textPanel.add(time);
         JPanel buttonPanel = new JPanel();
-		plus1.setBounds(0, 0, 100, 30);
-		plus100.setBounds(0,0,100,30);
-		run.setBounds(0,0,100,30);
-		buttonPanel.add(plus1);
+        buttonPanel.add(plus1);
 		buttonPanel.add(plus100);
 		buttonPanel.add(run);
 		
-        contentPane.add(carParkView,BorderLayout.NORTH);
+		
+//		plus1.setBounds(0, 0, 100, 30);
+//		plus100.setBounds(0,0,100,30);
+//		run.setBounds(0,0,100,30);	
+		
+		contentPane.add(textPanel,BorderLayout.NORTH);
+        contentPane.add(carParkView,BorderLayout.CENTER);
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
         pack();
         setVisible(true);
 
         updateView();
+    }
+    public void setCarsParked()
+    {
+    	parkedCars.setText("parked cars: "+owner.totaalGeparkeerd);
     }
 
     public void updateView() {

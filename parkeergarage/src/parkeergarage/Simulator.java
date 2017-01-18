@@ -1,6 +1,9 @@
 package parkeergarage;
 
+import java.security.acl.Owner;
 import java.util.Random;
+
+import javax.swing.JLabel;
 
 public class Simulator {
 
@@ -13,7 +16,7 @@ public class Simulator {
     private int abonnementhouders = 10;
     private int geparkeerdeAbonnementhouders = 0;
     private int geparkeerdeZonderAbonnement = 0;
-    private int totaalGeparkeerd = 0;
+    public int totaalGeparkeerd = 0;
     private int AantalVrijePlekken = 0;
     private int TotaalAantalPlekken = 540;
 	
@@ -34,7 +37,7 @@ public class Simulator {
     
     private int tickCount = 0;
 
-    private int tickPause = 10;
+    private int tickPause = 100;
 
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
@@ -55,7 +58,7 @@ public class Simulator {
     }
     public void init(){
     	updateViews();
-    	isRunning = false;
+    	isRunning = true;
     }
 
     public void run() 
@@ -85,6 +88,9 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	simulatorView.setCarsParked();
+    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
     	handleEntrance();
     }
     void tick() 
@@ -92,12 +98,14 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	simulatorView.setCarsParked();
     	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
     	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
-    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
- 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
- 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
- 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
+//    	simulatorView.parkedCars = new JLabel("Totaal geparkeerd: " + totaalGeparkeerd);
+//    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
+// 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
+// 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
+// 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
     	// Pause.
         try {
         	
@@ -129,10 +137,27 @@ public class Simulator {
         while (day > 6) {
             day -= 7;
         }
+        displayTime();
         System.out.println("Dag: "+ day);
         System.out.println("tijd " + hour + " : "+ minute );
 
     }
+	private void displayTime() {
+		if (hour < 10)
+        {
+        	if (minute < 10)
+        		simulatorView.time.setText("Time: 0"+ hour + ":0" + minute);
+        	else
+        		simulatorView.time.setText("Time: 0"+ hour + ":" + minute);
+        }
+        else
+        {
+        	if (minute < 10)
+        		simulatorView.time.setText("Time: "+ hour + ":0" + minute);
+        	else
+        		simulatorView.time.setText("Time: "+ hour + ":" + minute);
+        }
+	}
 
     private void handleEntrance(){
     	carsArriving();
@@ -198,7 +223,7 @@ public class Simulator {
             int allCarsToday = nonPassCarsToday + passCarsToday;
             int allCarsNow = nonPassCarsNow + passCarsNow;
             //test voor aantal auto's
-            System.out.println("Alle gepasseerde auto's "+allCarsToday);
+//            System.out.println("Alle gepasseerde auto's "+allCarsToday);
         }
     }
     
