@@ -101,13 +101,27 @@ public class SimulatorView extends JFrame implements ActionListener{
         numberOfOpenSpots++;
         return car;
     }
+
+    
 /**
  * Eerste locatie waar auto's zonder abonnement parkeren.
  */
-    public Location getFirstFreeLocation() {
+    public Location getFirstFreeLocation(int abonnementhouders) {
+    	int startAt = 0;
+      //}
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 1; row < getNumberOfRows(); row++) {
-                for (int place = 0; place < getNumberOfPlaces(); place++) {
+            for (int row = 0; row < getNumberOfRows(); row++) {
+            	if (floor == 0 && row == 0){
+            		startAt = abonnementhouders;
+            	} else if(floor == 1 && row == 0 && abonnementhouders > 30){
+            		startAt = abonnementhouders -30;
+	            } else if(floor == 2 && row == 0 && abonnementhouders > 60){
+	        		startAt = abonnementhouders -60;
+	        	}
+                else {
+            		startAt = 0;
+            	}
+                for (int place = startAt; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     if (getCarAt(location) == null) {
                         return location;
@@ -122,7 +136,7 @@ public class SimulatorView extends JFrame implements ActionListener{
      */
     public Location getFirstFreeLocationPass() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int row = 0; row < getNumberOfRows() -5; row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place);
                     if (getCarAt(location) == null) {

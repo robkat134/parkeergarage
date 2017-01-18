@@ -7,6 +7,13 @@ public class Simulator {
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
+    private int abonnementhouders = 10;
+    private int geparkeerdeAbonnementhouders = 0;
+    private int geparkeerdeZonderAbonnement = 0;
+    private int totaalGeparkeerd = 0;
+    private int AantalVrijePlekken = 0;
+    private int TotaalAantalPlekken = 540;
+    
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -39,7 +46,7 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(5, 6, 30);
+        simulatorView = new SimulatorView(3, 6, 30);
     }
 
     public void run() {
@@ -52,6 +59,12 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
+//    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
+// 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
+// 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
+// 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
     	// Pause.
         try {
             Thread.sleep(tickPause);
@@ -75,7 +88,8 @@ public class Simulator {
         while (day > 6) {
             day -= 7;
         }
-
+        System.out.println("Dag: "+ day);
+        System.out.println("tijd " + hour + " : "+ minute );
     }
 
     private void handleEntrance(){
@@ -111,21 +125,22 @@ public class Simulator {
     			i<enterSpeed) {
             Car car = queue.removeCar();
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
-            if(queue == entrancePassQueue){
-	            Location freeLocation = simulatorView.getFirstFreeLocationPass();
-	            simulatorView.setCarAt(freeLocation, car);
-	            passCarsNow++;
+            if(queue == entrancePassQueue && geparkeerdeAbonnementhouders < abonnementhouders && abonnementhouders != 0){
+            Location freeLocation = simulatorView.getFirstFreeLocationPass();
+            simulatorView.setCarAt(freeLocation, car);
+            ++geparkeerdeAbonnementhouders;
+            passCarsNow++;
 	            if(hour == 0 && minute == 0 && keepLoop == 0){
 	            	passCarsToday = 0;
 	            	keepLoop = 1;
 	            }
 	            passCarsToday++;
-            
             }
             // De andere auto's kunnen op de eerst volgende plekken parkeren.
-            else{
-                Location freeLocation = simulatorView.getFirstFreeLocation();
+           else if (queue == entranceCarQueue){
+                Location freeLocation = simulatorView.getFirstFreeLocation(abonnementhouders);
                 simulatorView.setCarAt(freeLocation, car);
+                ++geparkeerdeZonderAbonnement;
                 nonPassCarsNow++;
 	            if(hour == 0 && minute == 0 && keepLoop == 0){
 	            	nonPassCarsToday = 0;
@@ -148,9 +163,11 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
+	            --geparkeerdeZonderAbonnement;
         	}
         	else {
         		carLeavesSpot(car);
+        		geparkeerdeAbonnementhouders--;
         	}
             car = simulatorView.getFirstLeavingCar();
         }
