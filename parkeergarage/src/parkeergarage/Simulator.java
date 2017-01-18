@@ -195,7 +195,7 @@ public class Simulator {
             }
             i++;
             int allPassCarsToday = nonPassCarsToday + passCarsToday;
-            int allPassCarsNow = nonPassCarsNow + passCarsNow;
+            int allCarsNow = nonPassCarsNow + passCarsNow;
             //test voor aantal auto's
             System.out.println("Alle gepasseerde auto's "+allPassCarsToday);
         }
