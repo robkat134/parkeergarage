@@ -192,7 +192,6 @@ public class Simulator {
 	            	keepLoop = 1;
 	            }
 	            nonPassCarsToday++;
-	            
             }
             i++;
             int allPassCarsToday = nonPassCarsToday + passCarsToday;
