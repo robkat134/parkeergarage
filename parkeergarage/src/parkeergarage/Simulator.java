@@ -183,6 +183,7 @@ public class Simulator {
             //De andere auto's kunnen op de eerst volgende plekken parkeren.
             else if (queue == entranceCarQueue)
             {
+            	
                 Location freeLocation = simulatorView.getFirstFreeLocation(abonnementhouders);
                 simulatorView.setCarAt(freeLocation, car);
                 ++geparkeerdeZonderAbonnement;
