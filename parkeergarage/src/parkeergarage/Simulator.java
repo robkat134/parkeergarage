@@ -23,7 +23,7 @@ public class Simulator {
     private int hour = 0;
     private int minute = 0;
 
-    private int tickPause = 1;
+    private int tickPause = 10;
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -112,9 +112,9 @@ public class Simulator {
             Car car = queue.removeCar();
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
             if(queue == entrancePassQueue){
-            Location freeLocation = simulatorView.getFirstFreeLocationPass();
-            simulatorView.setCarAt(freeLocation, car);
-            passCarsNow++;
+	            Location freeLocation = simulatorView.getFirstFreeLocationPass();
+	            simulatorView.setCarAt(freeLocation, car);
+	            passCarsNow++;
 	            if(hour == 0 && minute == 0 && keepLoop == 0){
 	            	passCarsToday = 0;
 	            	keepLoop = 1;
@@ -134,10 +134,10 @@ public class Simulator {
 	            nonPassCarsToday++;
             }
             i++;
-            int allPassCarsToday = nonPassCarsToday + passCarsToday;
-            int allPassCarsNow = nonPassCarsNow + passCarsNow;
+            int allCarsToday = nonPassCarsToday + passCarsToday;
+            int allCarsNow = nonPassCarsNow + passCarsNow;
             //test voor aantal auto's
-            System.out.println(allPassCarsToday);
+            System.out.println("Auto's: nonPass: " + nonPassCarsToday + " + passCars: " + passCarsToday + " = allCars: " + allCarsToday);
         }
     }
     
