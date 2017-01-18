@@ -16,7 +16,9 @@ public class SimulatorView extends JFrame implements ActionListener{
     private JButton plus100 =new JButton("+100");
     private JButton run =new JButton("run");
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) {
+    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) 
+    {
+    	this.owner = owner;
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
         this.numberOfPlaces = numberOfPlaces;
@@ -262,6 +264,7 @@ public class SimulatorView extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println(e.getSource());
+		System.out.println(owner);
 		if(e.getSource() == plus100)
 		{
 			owner.tickFor(100);
