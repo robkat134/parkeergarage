@@ -10,6 +10,10 @@ public class Simulator {
     private int abonnementhouders = 10;
     private int geparkeerdeAbonnementhouders = 0;
     private int geparkeerdeZonderAbonnement = 0;
+    private int totaalGeparkeerd = 0;
+    private int AantalVrijePlekken = 0;
+    private int TotaalAantalPlekken = 540;
+    
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
@@ -42,7 +46,7 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(5, 6, 30);
+        simulatorView = new SimulatorView(3, 6, 30);
     }
 
     public void run() {
@@ -55,8 +59,12 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
-    	System.out.println("Zonder abo " + geparkeerdeZonderAbonnement);
- 		System.out.println("Met abo " + geparkeerdeAbonnementhouders);
+    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
+    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
+ 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
+ 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
+ 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
     	// Pause.
         try {
             Thread.sleep(tickPause);
