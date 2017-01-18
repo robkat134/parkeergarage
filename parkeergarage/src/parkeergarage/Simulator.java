@@ -7,14 +7,26 @@ public class Simulator {
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
+
 	private boolean isRunning = false;
-	
+
+    private int abonnementhouders = 10;
+    private int geparkeerdeAbonnementhouders = 0;
+    private int geparkeerdeZonderAbonnement = 0;
+    private int totaalGeparkeerd = 0;
+    private int AantalVrijePlekken = 0;
+    private int TotaalAantalPlekken = 540;
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+    
+    private int passCarsNow = 0; // auto's met abonnement die er geweest zijn vanaf starten programma.
+    private int passCarsToday = 0; // auto's met abonnement die geteld worden tot het einde van de dag (1440 minuten).
+    private int nonPassCarsNow = 0; // auto's zonder abonnement die er geweest zijn vanaf starten programma.
+    private int nonPassCarsToday = 0; // auto's zonder abonnement die geteld worden tot het einde van de dag (1440 minuten).
 
     private int day = 0;
     private int hour = 0;
@@ -22,7 +34,7 @@ public class Simulator {
     
     private int tickCount = 0;
 
-    private int tickPause = 100;
+    private int tickPause = 1;
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -48,14 +60,14 @@ public class Simulator {
     public void run() 
     {
     	System.out.println(isRunning);
-        while (isRunning)
+        while (isRunning && tickCount < 1440)
         {
         	System.out.println(tickCount);
         	tick();
         	tickCount++;
         	if (tickCount >= 10000)
         	{
-        		tickCount = 0;
+        		
         	}
         }
     }
@@ -79,6 +91,12 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
+    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
+ 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
+ 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
+ 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
     	// Pause.
         try {
         	
@@ -110,6 +128,8 @@ public class Simulator {
         while (day > 6) {
             day -= 7;
         }
+        System.out.println("Dag: "+ day);
+        System.out.println("tijd " + hour + " : "+ minute );
 
     }
 
@@ -139,23 +159,45 @@ public class Simulator {
     }
 
     private void carsEntering(CarQueue queue){
-        int i=0;
+        int i=0, keepLoop = 0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 && 
-    			simulatorView.getNumberOfOpenSpots()>0 && 
-    			i<enterSpeed) {
+    		   simulatorView.getNumberOfOpenSpots()>0 && 
+    	       i<enterSpeed) 
+    	{
             Car car = queue.removeCar();
-            if(queue == entrancePassQueue)
+            // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
+            if(queue == entrancePassQueue && geparkeerdeAbonnementhouders < abonnementhouders && abonnementhouders != 0)
             {
             	Location freeLocation = simulatorView.getFirstFreeLocationPass();
             	simulatorView.setCarAt(freeLocation, car);
+            	++geparkeerdeAbonnementhouders;
+            	passCarsNow++;
+	            if(hour == 0 && minute == 0 && keepLoop == 0)
+	            {
+	            	passCarsToday = 0;
+	            	keepLoop = 1;
+	            }
+	            passCarsToday++;
             }
-            else
+            //De andere auto's kunnen op de eerst volgende plekken parkeren.
+            else if (queue == entranceCarQueue)
             {
-                Location freeLocation = simulatorView.getFirstFreeLocation();
+                Location freeLocation = simulatorView.getFirstFreeLocation(abonnementhouders);
                 simulatorView.setCarAt(freeLocation, car);
+                ++geparkeerdeZonderAbonnement;
+                nonPassCarsNow++;
+	            if(hour == 0 && minute == 0 && keepLoop == 0){
+	            	nonPassCarsToday = 0;
+	            	keepLoop = 1;
+	            }
+	            nonPassCarsToday++;
             }
             i++;
+            int allPassCarsToday = nonPassCarsToday + passCarsToday;
+            int allPassCarsNow = nonPassCarsNow + passCarsNow;
+            //test voor aantal auto's
+            System.out.println("Alle gepasseerde auto's "+allPassCarsToday);
         }
     }
     
@@ -166,9 +208,11 @@ public class Simulator {
         	if (car.getHasToPay()){
 	            car.setIsPaying(true);
 	            paymentCarQueue.addCar(car);
+	            --geparkeerdeZonderAbonnement;
         	}
         	else {
         		carLeavesSpot(car);
+        		geparkeerdeAbonnementhouders--;
         	}
             car = simulatorView.getFirstLeavingCar();
         }
