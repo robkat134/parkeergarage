@@ -34,7 +34,7 @@ public class Simulator {
     
     private int tickCount = 0;
 
-    private int tickPause = 1;
+    private int tickPause = 10;
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
@@ -194,10 +194,10 @@ public class Simulator {
 	            nonPassCarsToday++;
             }
             i++;
-            int allPassCarsToday = nonPassCarsToday + passCarsToday;
+            int allCarsToday = nonPassCarsToday + passCarsToday;
             int allCarsNow = nonPassCarsNow + passCarsNow;
             //test voor aantal auto's
-            System.out.println("Alle gepasseerde auto's "+allPassCarsToday);
+            System.out.println("Alle gepasseerde auto's "+allCarsToday);
         }
     }
     
