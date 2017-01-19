@@ -38,7 +38,7 @@ public class Simulator {
     
     private int tickCount = 0;
 
-    private int tickPause = 10000;
+    private int tickPause = 1000;
 
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
