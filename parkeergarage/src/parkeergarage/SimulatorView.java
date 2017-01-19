@@ -122,26 +122,20 @@ public class SimulatorView extends JFrame implements ActionListener{
 /**
  * Eerste locatie waar auto's zonder abonnement parkeren.
  */
-    public Location getFirstFreeLocation(int abonnementhouders) {
-    	int startAt = 0;
-      //}
+    public Location getFirstFreeLocation(int[][] abonnementhoudersPlekken, int abonnementhouders) {
+
+    	// Loop door alle verdiepingen
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+        	// Loop door alle rijen
             for (int row = 0; row < getNumberOfRows(); row++) {
-            	if (floor == 0 && row == 0){
-            		startAt = abonnementhouders;
-            	} else if(floor == 1 && row == 0 && abonnementhouders > 30){
-            		startAt = abonnementhouders -30;
-	            } else if(floor == 2 && row == 0 && abonnementhouders > 60){
-	        		startAt = abonnementhouders -60;
-	        	}
-                else {
-            		startAt = 0;
-            	}
-                for (int place = startAt; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
-                        return location;
-                    }
+            	// Loop door alle plaatsen
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                	 Location location = new Location(floor, row, place);
+                	if(abonnementhoudersPlekken[floor][row] == 0 && getCarAt(location) == null){
+                		return location;
+                	} else if(abonnementhoudersPlekken[floor][row] == 1 && place > abonnementhouders && getCarAt(location) == null) {
+	                    return location;	        
+                	}
                 }
             }
         }
@@ -150,21 +144,30 @@ public class SimulatorView extends JFrame implements ActionListener{
     /**
      * Locatie waar auto's met abonnement kunnen staan.
      */
-    public Location getFirstFreeLocationPass() {
+    public Location getFirstFreeLocationPass(int[][] abonnementhoudersPlekken, int abonnementhouders) {
+    	
+    	// Loop door alle verdiepingen
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for (int row = 0; row < getNumberOfRows() -5; row++) {
+        	// Loop door alle rijen
+            for (int row = 0; row < getNumberOfRows(); row++) {
+            	// Loop door alle plaatsen 
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    if (getCarAt(location) == null) {
-                        return location;
-                    }
+                	
+                	// Als alle abonnementplaatsen bezet zijn(abo > 0) moet hij gewoon NULL returnen. Ook als de rij niet gereserveerd is voor abohouders moet hij NULL returnen. Anders gewoon een locatie
+                	if(abonnementhouders > 0 && abonnementhoudersPlekken[floor][row] == 1){
+                        Location location = new Location(floor, row, place);
+                        if (getCarAt(location) == null) {
+                            return location;
+                        }
+                	}
+
                 }
             }
         }
         return null;
     }
 
-    public Car getFirstLeavingCar() {
+    public Car getFirstLeavingCar() {//3
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
