@@ -25,6 +25,7 @@ public class Simulator {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+    private GraphView graphView;
     private int carsInQueueAd_hoc = 0;
     
     private int passCarsNow = 0; // auto's met abonnement die er geweest zijn vanaf starten programma.
@@ -56,6 +57,8 @@ public class Simulator {
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
+        graphView = new GraphView();
+        
     }
     public void init(){
     	updateViews();
