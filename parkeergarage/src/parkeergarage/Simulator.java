@@ -3,6 +3,10 @@ package parkeergarage;
 import java.security.acl.Owner;
 import java.util.Random;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+
 import javax.swing.JLabel;
 
 public class Simulator {
@@ -13,11 +17,11 @@ public class Simulator {
 
 	private boolean isRunning = false;
 
-    private int abonnementhouders = 10;
+    private int abonnementhouders = 90;
     private int geparkeerdeAbonnementhouders = 0;
     private int geparkeerdeZonderAbonnement = 0;
     public int totaalGeparkeerd = 0;
-    private int AantalVrijePlekken = 0;
+    private int AantalVrijePlekken = 540;
     private int TotaalAantalPlekken = 540;
 	
 	private CarQueue entranceCarQueue;
@@ -25,7 +29,10 @@ public class Simulator {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
-    private int carsInQueueAd_hoc = 0;
+    
+    //private int carsInQueueAd_hoc = 0;
+    //private int carsInQueuePass = 0;
+    
     
     private int passCarsNow = 0; // auto's met abonnement die er geweest zijn vanaf starten programma.
     private int passCarsToday = 0; // auto's met abonnement die geteld worden tot het einde van de dag (1440 minuten).
@@ -46,9 +53,12 @@ public class Simulator {
     int weekDayPassArrivals= 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed = 3; // number of cars that can enter per minute
-    int paymentSpeed = 7; // number of cars that can pay per minute
-    int exitSpeed = 5; // number of cars that can leave per minute
+    int enterSpeedCar = 1; //max number of free cars that can enter 
+    int enterSpeedPass = 1; //max number of pass cars that can enter 
+    int enterSpeedCarCount = 0; 
+    int enterSpeedPassCount = 0;
+    int paymentSpeed = 2; // number of cars that can pay per minute
+    int exitSpeed = 4; // number of cars that can leave per minute
 
     public Simulator() {
         entranceCarQueue = new CarQueue();
@@ -56,6 +66,7 @@ public class Simulator {
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
+        
     }
     public void init(){
     	updateViews();
@@ -124,9 +135,16 @@ public class Simulator {
     	run();
     }
 
+    private void setEnterSpeed(){
+    enterSpeedCarCount = 0;
+	enterSpeedPassCount = 0;
+    }
+    
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
+        setEnterSpeed();
+        
         while (minute > 59) {
             minute -= 60;
             hour++;
@@ -162,14 +180,19 @@ public class Simulator {
 
     private void handleEntrance(){
     	carsArriving();
-    	carsEntering(entrancePassQueue);
-    	carsEntering(entranceCarQueue);  	
-        
+    	if(entrancePassQueue.carsInQueue() > 0 && enterSpeedPassCount < enterSpeedPass){
+    		carsEntering(entrancePassQueue);
+    		enterSpeedPassCount++;
+    		System.out.println("Count: "+enterSpeedPassCount);
+    	}if (entranceCarQueue.carsInQueue() > 0 && enterSpeedCarCount < enterSpeedCar) {
+    		carsEntering(entranceCarQueue);  	
+    	    enterSpeedCarCount++;
+    	}
     	int allCarsToday = nonPassCarsToday + passCarsToday;
         int allCarsNow = nonPassCarsNow + passCarsNow;
     	
-        System.out.println("Alle gepasseerde auto's vandaag: "+allCarsToday);
-        System.out.println("Alle gepasseerde auto's van start: "+allCarsNow);
+        //System.out.println("Alle gepasseerde auto's vandaag: "+allCarsToday);
+       // System.out.println("Alle gepasseerde auto's van start: "+allCarsNow);
     }
     
     private void handleExit(){
@@ -188,24 +211,13 @@ public class Simulator {
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);    	
     	numberOfCars=getNumberOfCars(weekDayPassArrivals, weekendPassArrivals);
-        addArrivingCars(numberOfCars, PASS);    	
-        if(AD_HOC == "1"){
-        	setCarsInQueueAd_hoc(1);
-        	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
-
-        }
+        addArrivingCars(numberOfCars, PASS);   
     }
 
     private void carsEntering(CarQueue queue){
-        int i=0, keepLoop = 0;
-        if (queue == entranceCarQueue){
-        setCarsInQueueAd_hoc(-1);
-    	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
-        }
+        int keepLoop = 0;
         // Remove car from the front of the queue and assign to a parking space.
-    	while (queue.carsInQueue()>0 && 
-    		   simulatorView.getNumberOfOpenSpots()>0 && 
-    	       i<enterSpeed) 
+    	if(simulatorView.getNumberOfOpenSpots()>0)
     	{
             Car car = queue.removeCar();
             
@@ -215,10 +227,11 @@ public class Simulator {
             	nonPassCarsToday = 0;
             	keepLoop = 1;
             }
-            
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
             if(queue == entrancePassQueue && geparkeerdeAbonnementhouders < abonnementhouders) // && abonnementhouders != 0
             {
+            	//setCarsInQueue("Pass", false);
+            	getCarsInQueue();
             	Location freeLocation = simulatorView.getFirstFreeLocationPass();
             	simulatorView.setCarAt(freeLocation, car);
             	++geparkeerdeAbonnementhouders;
@@ -228,17 +241,16 @@ public class Simulator {
             //De andere auto's kunnen op de eerst volgende plekken parkeren.
             else if (queue == entranceCarQueue)
             {
+            	//setCarsInQueue("Car", false);
+            	getCarsInQueue();
                 Location freeLocation = simulatorView.getFirstFreeLocation(abonnementhouders);
                 simulatorView.setCarAt(freeLocation, car);
                 ++geparkeerdeZonderAbonnement;
                 nonPassCarsNow++;
 	            nonPassCarsToday++;
             }
-            i++;
-
+    	}
             //test voor aantal auto's
-           
-        }
     }
     
     private void carsReadyToLeave(){
@@ -298,13 +310,19 @@ public class Simulator {
     	case AD_HOC: 
             for (int i = 0; i < numberOfCars; i++) {
             	entranceCarQueue.addCar(new AdHocCar());
+            	//setCarsInQueue("Car", true);
+            	getCarsInQueue();
             }
             break;
     	case PASS:
             for (int i = 0; i < numberOfCars; i++) {
             	entrancePassQueue.addCar(new ParkingPassCar());
+            	//setCarsInQueue("Pass", true);
+            	getCarsInQueue();
             }
-            break;	            
+            break;	    
+            
+      
     	}
     }
     
@@ -312,18 +330,29 @@ public class Simulator {
     	simulatorView.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
-    private void setCarsInQueueAd_hoc(int number){
-    	if(number > 0){
+    /*private void setCarsInQueue(String soort, Boolean type){
+    	if(soort == "Pass" && type == true){
+    		carsInQueuePass += 1;
+    	} else if(soort == "Pass" && type == false){
+        	carsInQueuePass -= 1;
+    	} else if(soort == "Car" && type == true){
     		carsInQueueAd_hoc += 1;
-    	} else {
+    	} else if(soort == "Car" && type == false){
     		carsInQueueAd_hoc -= 1;
     	}
-    }
+    }*/
     
-    private int getCarsInQueueAd_hoc(){
-    	return carsInQueueAd_hoc;
+    private void getCarsInQueue(){
+    	System.out.println("Free auto's in de wachtrij : " +entranceCarQueue.carsInQueue());
+    	System.out.println("Pass auto's in de wachtrij : " +entrancePassQueue.carsInQueue());
+    	
     }
 
+   /* private void drukkeDagen(){
+    	for(Entry<Integer, String> m:freeInQueue.entrySet()){  
+    		   System.out.println(m.getKey()+" "+m.getValue());  
+    		  }  
+    }*/
 }
 
 
