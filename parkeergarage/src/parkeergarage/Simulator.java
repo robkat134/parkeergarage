@@ -328,29 +328,12 @@ public class Simulator {
     	simulatorView.removeCarAt(car.getLocation());
         exitCarQueue.addCar(car);
     }
-    /*private void setCarsInQueue(String soort, Boolean type){
-    	if(soort == "Pass" && type == true){
-    		carsInQueuePass += 1;
-    	} else if(soort == "Pass" && type == false){
-        	carsInQueuePass -= 1;
-    	} else if(soort == "Car" && type == true){
-    		carsInQueueAd_hoc += 1;
-    	} else if(soort == "Car" && type == false){
-    		carsInQueueAd_hoc -= 1;
-    	}
-    }*/
     
     private void getCarsInQueue(){
     	System.out.println("Free auto's in de wachtrij : " +entranceCarQueue.carsInQueue());
     	System.out.println("Pass auto's in de wachtrij : " +entrancePassQueue.carsInQueue());
     	
     }
-
-   /* private void drukkeDagen(){
-    	for(Entry<Integer, String> m:freeInQueue.entrySet()){  
-    		   System.out.println(m.getKey()+" "+m.getValue());  
-    		  }  
-    }*/
 }
 
 
