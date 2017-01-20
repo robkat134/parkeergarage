@@ -310,14 +310,12 @@ public class Simulator {
     	case AD_HOC: 
             for (int i = 0; i < numberOfCars; i++) {
             	entranceCarQueue.addCar(new AdHocCar());
-            	//setCarsInQueue("Car", true);
             	getCarsInQueue();
             }
             break;
     	case PASS:
             for (int i = 0; i < numberOfCars; i++) {
             	entrancePassQueue.addCar(new ParkingPassCar());
-            	//setCarsInQueue("Pass", true);
             	getCarsInQueue();
             }
             break;	    
