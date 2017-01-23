@@ -1,6 +1,7 @@
 package parkeergarage;
 
 import java.security.acl.Owner;
+import javax.swing.*;
 import java.util.Random;
 
 import javax.swing.JLabel;
@@ -25,7 +26,10 @@ public class Simulator {
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
-    private GraphView graphView;
+    private Model model;
+    private JFrame screen;
+    private View lineView;
+    
     private int carsInQueueAd_hoc = 0;
     
     private int passCarsNow = 0; // auto's met abonnement die er geweest zijn vanaf starten programma.
@@ -57,9 +61,15 @@ public class Simulator {
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
-        graphView = new GraphView();
-        
+        model = new Model();
+        lineView = new LineView  (model);
+        screen = new JFrame("Line View");
+        screen.setSize(200, 200);
+        screen.setResizable(false);
+        screen.getContentPane().add(lineView);
+        screen.setVisible(true);    
     }
+    
     public void init(){
     	updateViews();
     	isRunning = true;
