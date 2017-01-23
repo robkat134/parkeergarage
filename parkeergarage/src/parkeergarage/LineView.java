@@ -4,7 +4,10 @@ import java.awt.*;
 
 public class LineView extends View {
 	
-	public LineView(Model model) {
+	int max;
+	int min = 0;
+	
+	public LineView(Model model, Simulator simulator) {
 		super(model);
 	}
 	
@@ -13,4 +16,6 @@ public class LineView extends View {
 		g.fillRect(0, 0, 200, 200);
 		g.setColor(Color.GRAY);
 	}
+	
+	
 }

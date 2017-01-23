@@ -62,7 +62,7 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
         model = new Model();
-        lineView = new LineView  (model);
+        lineView = new LineView(model, this);
         screen = new JFrame("Line View");
         screen.setSize(200, 200);
         screen.setResizable(false);
