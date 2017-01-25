@@ -18,6 +18,8 @@ public class SimulatorView extends JFrame implements ActionListener{
     
     public JLabel parkedCars = new JLabel("Parked Cars: ");
     public JLabel time = new JLabel("Time: ");
+    
+    public JLabel inkomsten = new JLabel("Huidige inkomsten: €");
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) 
     {
@@ -36,6 +38,8 @@ public class SimulatorView extends JFrame implements ActionListener{
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
+        Container contentPane2 = getContentPane();
+        contentPane2.setLayout(new BorderLayout());
         
         JPanel textPanel = new JPanel();
         textPanel.add(parkedCars);
@@ -44,6 +48,8 @@ public class SimulatorView extends JFrame implements ActionListener{
         buttonPanel.add(plus1);
 		buttonPanel.add(plus100);
 		buttonPanel.add(run);
+		JPanel textPanel2 = new JPanel();
+		textPanel2.add(inkomsten);
 		
 		
 //		plus1.setBounds(0, 0, 100, 30);
@@ -51,8 +57,10 @@ public class SimulatorView extends JFrame implements ActionListener{
 //		run.setBounds(0,0,100,30);	
 		
 		contentPane.add(textPanel,BorderLayout.NORTH);
-        contentPane.add(carParkView,BorderLayout.CENTER);
+        contentPane.add(carParkView,BorderLayout.CENTER);		
+		//contentPane.add(contentPane2, BorderLayout.SOUTH);
 		contentPane.add(buttonPanel,BorderLayout.SOUTH);
+		contentPane.add(textPanel2, BorderLayout.EAST);
         pack();
         setVisible(true);
 
@@ -61,6 +69,11 @@ public class SimulatorView extends JFrame implements ActionListener{
     public void setCarsParked()
     {
     	parkedCars.setText("parked cars: "+owner.totaalGeparkeerd);
+    }
+    
+    public void setInkomsten()
+    {
+    	inkomsten.setText("inkomsten enzo: €"+owner.totaalOntvangen);
     }
 
     public void updateView() {
