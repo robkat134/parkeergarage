@@ -1,4 +1,4 @@
-package parkeergarage;
+/*package parkeergarage;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,4 +25,4 @@ public class GraphView extends JFrame{
             }
         }
 	}
-}
+}*/

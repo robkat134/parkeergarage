@@ -6,11 +6,19 @@ import java.awt.*;
 public class AdHocCar extends Car {
 	private static final Color COLOR=Color.red;
 	
-    public AdHocCar() {
+    public AdHocCar(Boolean busy, int stayTime) {
+    	int stayMinutes = 0;
     	Random random = new Random();
-    	int stayMinutes = (int) (360 + random.nextFloat() * 3 * 60);
+    	if(busy){
+    	   stayMinutes = stayTime;
+    	   this.setMinutesLeft(stayMinutes);
+           this.setHasToPay(true);
+    	} else {
+    	stayMinutes = (int) (stayTime + random.nextFloat() * 3 * 60); 
+    	System.out.println(stayMinutes);
         this.setMinutesLeft(stayMinutes);
         this.setHasToPay(true);
+     }
     }
     
     public Color getColor(){
