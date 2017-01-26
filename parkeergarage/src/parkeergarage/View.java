@@ -8,6 +8,7 @@ public class View extends JPanel
  private Model model;
  protected int max;
  protected int min = 0;
+ protected int startX;
   
  	public View(Model model)
  	{

@@ -117,6 +117,8 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	((LineView) lineView).addRectangle();
+    	lineView.startX++;
     	model.notifyViews();
     	simulatorView.setCarsParked();
     	simulatorView.setInkomsten();
@@ -129,6 +131,7 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	lineView.startX++;
     	model.notifyViews();
     	simulatorView.setCarsParked();
     	simulatorView.setInkomsten();
