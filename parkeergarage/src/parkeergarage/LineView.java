@@ -17,12 +17,13 @@ public class LineView extends View {
 	public void paintComponent(Graphics g) {
 		System.out.println("painting");
 		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, 100, 100);
+		g.fillRect(0, 0, 1000, 100);
 		g.setColor(Color.BLUE);
 		System.out.println("paint component word aangeroepen");
-		g.fillRect(startX,(int)(simulator.AantalVrijePlekken), 1, simulator.TotaalAantalPlekken-simulator.AantalVrijePlekken);
+		g.fillRect(startX,(int)(simulator.AantalVrijePlekken/5.4), 
+				   1, (int)((simulator.TotaalAantalPlekken-simulator.AantalVrijePlekken)/5.4));
 		//System.out.println("lijn: "+line[0]);
 		startX++;
 		//line[line.length] = new Rectangle(startX + line.length,(int)(simulator.AantalVrijePlekken), 1, 1);
-	}	
+	}
 }
