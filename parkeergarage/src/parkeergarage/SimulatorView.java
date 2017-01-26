@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SimulatorView extends JFrame implements ActionListener{
+public class SimulatorView extends JFrame{
 	private Simulator owner;
     private CarParkView carParkView;
     private int numberOfFloors;
@@ -12,9 +12,6 @@ public class SimulatorView extends JFrame implements ActionListener{
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
-    private JButton plus1 =new JButton("+1");
-    private JButton plus100 =new JButton("+100");
-    private JButton run =new JButton("run");
     
     public JLabel parkedCars = new JLabel("Parked Cars: ");
     public JLabel time = new JLabel("Time: ");
@@ -31,25 +28,14 @@ public class SimulatorView extends JFrame implements ActionListener{
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
         
         carParkView = new CarParkView();
-        
-        plus1.addActionListener(this);
-		plus100.addActionListener(this);
-		run.addActionListener(this);
 
         Container contentPane = getContentPane();
         contentPane.setLayout(new BorderLayout());
-        Container contentPane2 = getContentPane();
-        contentPane2.setLayout(new BorderLayout());
         
         JPanel textPanel = new JPanel();
         textPanel.add(parkedCars);
         textPanel.add(time);
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(plus1);
-		buttonPanel.add(plus100);
-		buttonPanel.add(run);
-		JPanel textPanel2 = new JPanel();
-		textPanel2.add(inkomsten);
+        textPanel.add(inkomsten);
 		
 		
 //		plus1.setBounds(0, 0, 100, 30);
@@ -58,9 +44,6 @@ public class SimulatorView extends JFrame implements ActionListener{
 		
 		contentPane.add(textPanel,BorderLayout.NORTH);
         contentPane.add(carParkView,BorderLayout.CENTER);		
-		//contentPane.add(contentPane2, BorderLayout.SOUTH);
-		contentPane.add(buttonPanel,BorderLayout.SOUTH);
-		contentPane.add(textPanel2, BorderLayout.EAST);
         pack();
         setVisible(true);
 
@@ -73,7 +56,13 @@ public class SimulatorView extends JFrame implements ActionListener{
     
     public void setInkomsten()
     {
-    	inkomsten.setText("inkomsten enzo: €"+owner.totaalOntvangen);
+    	if(owner.totaalOntvangen%100 < 10 && owner.totaalOntvangen%100 != 0) {
+    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + ",0" + owner.totaalOntvangen%100);
+    	} else if (owner.totaalOntvangen%100 == 0) {
+    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + ",00");
+    	} else {
+    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + "," + owner.totaalOntvangen%100);
+    	}
     }
 
     public void updateView() {
@@ -286,27 +275,5 @@ public class SimulatorView extends JFrame implements ActionListener{
                     10 - 1); // TODO use dynamic size or constants
         }
     }
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println(e.getSource());
-		System.out.println(owner);
-		if(e.getSource() == plus100)
-		{
-			owner.tickFor(100);
-		}
-		if(e.getSource() == plus1)
-		{
-			owner.tickFor(1);
-		}
-		if(e.getSource() == run)
-		{
-			owner.toggleRunning();
-		}
-
-
-
-	}
 
 }

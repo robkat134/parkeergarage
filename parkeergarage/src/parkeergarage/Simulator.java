@@ -36,6 +36,8 @@ public class Simulator {
     private int passCarsToday = 0; // auto's met abonnement die geteld worden tot het einde van de dag (1440 minuten).
     private int nonPassCarsNow = 0; // auto's zonder abonnement die er geweest zijn vanaf starten programma.
     private int nonPassCarsToday = 0; // auto's zonder abonnement die geteld worden tot het einde van de dag (1440 minuten).
+    public int allCarsNow = 0;
+    public int allCarsToday = 0;
 
     private int day = 0;
     private int hour = 0;
@@ -56,6 +58,7 @@ public class Simulator {
     int exitSpeed = 5; // number of cars that can leave per minute
 
     public int totaalOntvangen = 0;
+    public float totaalOntvangenFloat = 0.00f;
 	//prijs per minuut in centen.
 	private int prijsPerMinuut = 2;
 	//aantal minuten dat een ad hoc auto binnen is geweest, wordt gebruikt om de prijs te berekenen.
@@ -68,7 +71,7 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
         model = new Model();
-        lineView = new LineView  (model);
+        lineView = new LineView(model);
         screen = new JFrame("Line View");
         screen.setSize(200, 200);
         screen.setResizable(false);
@@ -128,7 +131,7 @@ public class Simulator {
 // 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
 // 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
 // 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
-        System.out.println("Huidige inkomsten: €"+totaalOntvangen);
+//      System.out.println("Huidige inkomsten: €"+totaalOntvangen);
     	// Pause.
         try {
         	
@@ -187,8 +190,8 @@ public class Simulator {
     	carsEntering(entrancePassQueue);
     	carsEntering(entranceCarQueue);  	
         
-    	int allCarsToday = nonPassCarsToday + passCarsToday;
-        int allCarsNow = nonPassCarsNow + passCarsNow;
+    	allCarsToday = nonPassCarsToday + passCarsToday;
+        allCarsNow = nonPassCarsNow + passCarsNow;
     	
         System.out.println("Alle gepasseerde auto's vandaag: "+allCarsToday);
         System.out.println("Alle gepasseerde auto's van start: "+allCarsNow);
@@ -348,11 +351,12 @@ public class Simulator {
     }
     
 	
-	public int moneyReceived(){
+	public float moneyReceived(){
 		stayMinutes = AdHocCar.getStayMinutes();
     	int ontvangen = prijsPerMinuut * stayMinutes;
         totaalOntvangen = totaalOntvangen + ontvangen;
-        return totaalOntvangen;
+        // totaalOntvangenFloat = (float) totaalOntvangen/100;
+        return totaalOntvangen; //;Float;
     }
 
 }
