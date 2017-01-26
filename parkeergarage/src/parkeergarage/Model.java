@@ -13,7 +13,11 @@ public class Model {
 		views.add(view);
 	}
 	
-	private void notifyViews() {
-		for(View v: views) v.updateView();
+	protected void notifyViews() {
+		for(View v: views)
+		{
+			v.updateView();
+			System.out.println("name: "+v.getClass());
+		}
 	}
 }

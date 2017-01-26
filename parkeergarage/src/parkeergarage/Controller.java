@@ -1,5 +1,7 @@
 package parkeergarage;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -21,7 +23,7 @@ public class Controller extends JPanel implements ActionListener {
 		plus100.addActionListener(this);
 		run =new JButton("run");
 		run.addActionListener(this);
-		
+		setLayout(new FlowLayout());
 		add(plus1);
 		add(plus100);
 		add(run);

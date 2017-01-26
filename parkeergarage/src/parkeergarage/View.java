@@ -29,12 +29,6 @@ public class View extends JPanel
  	
  	public void updateView()
  	{
- 	repaint();
+ 		repaint();
  	}
- 	 
- 	public void initStats(int maximum)
- 	{
- 		max = maximum;
- 	}
- //
 }

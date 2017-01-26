@@ -1,10 +1,9 @@
 package parkeergarage;
 
+import java.awt.BorderLayout;
 import java.security.acl.Owner;
 import javax.swing.*;
 import java.util.Random;
-
-import javax.swing.JLabel;
 
 public class Simulator {
 
@@ -14,21 +13,22 @@ public class Simulator {
 
 	private boolean isRunning = false;
 
-    private int abonnementhouders = 10;
-    private int geparkeerdeAbonnementhouders = 0;
-    private int geparkeerdeZonderAbonnement = 0;
-    public int totaalGeparkeerd = 0;
-    private int AantalVrijePlekken = 0;
-    private int TotaalAantalPlekken = 540;
+	protected int abonnementhouders = 10;
+    protected int geparkeerdeAbonnementhouders = 0;
+    protected int geparkeerdeZonderAbonnement = 0;
+    protected int totaalGeparkeerd = 0;
+    protected int AantalVrijePlekken = 0;
+    protected int TotaalAantalPlekken = 540;
 	
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
+    private View lineView;
+    private Controller controller;
     private Model model;
     private JFrame screen;
-    private View lineView;
     
     private int carsInQueueAd_hoc = 0;
     
@@ -45,7 +45,7 @@ public class Simulator {
     
     private int tickCount = 0;
 
-    private int tickPause = 1000;
+    private int tickPause = 100;
 
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
@@ -69,25 +69,31 @@ public class Simulator {
         entrancePassQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30, this);
         model = new Model();
-        lineView = new LineView(model);
+        simulatorView = new SimulatorView(3, 6, 30, this, model);
+        lineView = new LineView(model, this);
+        controller = new Controller(this);
+        
         screen = new JFrame("Line View");
-        screen.setSize(200, 200);
-        screen.setResizable(false);
-        screen.getContentPane().add(lineView);
+        screen.setSize(1000, 700);
+        screen.setResizable(true);
+        screen.setLayout(new BorderLayout());
+        
+        screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
+        screen.getContentPane().add(controller,BorderLayout.SOUTH);
+        screen.getContentPane().add(lineView,BorderLayout.CENTER);
         screen.setVisible(true);    
     }
     
     public void init(){
-    	updateViews();
+    	//updateViews();
     	isRunning = true;
     }
 
     public void run() 
     {
     	//System.out.println(isRunning);
-        while (isRunning && tickCount < 1440)
+        while (tickCount < 1440)
         {
         	//System.out.println(tickCount);
         	tick();
@@ -111,6 +117,7 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	model.notifyViews();
     	simulatorView.setCarsParked();
     	simulatorView.setInkomsten();
     	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
@@ -122,6 +129,7 @@ public class Simulator {
     	advanceTime();
     	handleExit();
     	updateViews();
+    	model.notifyViews();
     	simulatorView.setCarsParked();
     	simulatorView.setInkomsten();
     	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
@@ -193,8 +201,8 @@ public class Simulator {
     	allCarsToday = nonPassCarsToday + passCarsToday;
         allCarsNow = nonPassCarsNow + passCarsNow;
     	
-        System.out.println("Alle gepasseerde auto's vandaag: "+allCarsToday);
-        System.out.println("Alle gepasseerde auto's van start: "+allCarsNow);
+//        System.out.println("Alle gepasseerde auto's vandaag: "+allCarsToday);
+//        System.out.println("Alle gepasseerde auto's van start: "+allCarsNow);
     }
     
     private void handleExit(){
@@ -216,7 +224,7 @@ public class Simulator {
         addArrivingCars(numberOfCars, PASS);    	
         if(AD_HOC == "1"){
         	setCarsInQueueAd_hoc(1);
-        	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
+//        	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
 
         }
     }
@@ -225,7 +233,7 @@ public class Simulator {
         int i=0, keepLoop = 0;
         if (queue == entranceCarQueue){
         setCarsInQueueAd_hoc(-1);
-    	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
+//    	System.out.println("Ad_hoc auto's in de wachtrij : " + getCarsInQueueAd_hoc());
         }
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 && 

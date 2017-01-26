@@ -2,9 +2,9 @@ package parkeergarage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.image.*;
 
-public class SimulatorView extends JFrame{
+public class SimulatorView extends View{
 	private Simulator owner;
     private CarParkView carParkView;
     private int numberOfFloors;
@@ -18,8 +18,9 @@ public class SimulatorView extends JFrame{
     
     public JLabel inkomsten = new JLabel("Huidige inkomsten: €");
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner) 
+    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
     {
+    	super(model);
     	this.owner = owner;
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
@@ -29,22 +30,15 @@ public class SimulatorView extends JFrame{
         
         carParkView = new CarParkView();
 
-        Container contentPane = getContentPane();
-        contentPane.setLayout(new BorderLayout());
+        setLayout(new BorderLayout());
         
         JPanel textPanel = new JPanel();
         textPanel.add(parkedCars);
         textPanel.add(time);
-        textPanel.add(inkomsten);
 		
-		
-//		plus1.setBounds(0, 0, 100, 30);
-//		plus100.setBounds(0,0,100,30);
-//		run.setBounds(0,0,100,30);	
-		
-		contentPane.add(textPanel,BorderLayout.NORTH);
-        contentPane.add(carParkView,BorderLayout.CENTER);		
-        pack();
+		add(textPanel,BorderLayout.NORTH);
+        add(carParkView,BorderLayout.CENTER);
+		//add(buttonPanel,BorderLayout.SOUTH);
         setVisible(true);
 
         updateView();
@@ -208,8 +202,8 @@ public class SimulatorView extends JFrame{
     private class CarParkView extends JPanel {
         
         private Dimension size;
-        private Image carParkImage;    
-    
+        private Image carParkImage;   
+        private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_RGB);;
         /**
          * Constructor for objects of class CarPark
          */
@@ -229,27 +223,40 @@ public class SimulatorView extends JFrame{
          * internal image to screen.
          */
         public void paintComponent(Graphics g) {
-            if (carParkImage == null) {
+            if (carParkBuffer == null) {
                 return;
             }
     
             Dimension currentSize = getSize();
             if (size.equals(currentSize)) {
-                g.drawImage(carParkImage, 0, 0, null);
+                g.drawImage(carParkBuffer, 0, 0, null);
             }
             else {
                 // Rescale the previous image.
-                g.drawImage(carParkImage, 0, 0, currentSize.width, currentSize.height, null);
+            	System.out.println(currentSize.getHeight());
+            	if (currentSize.height > 500)
+            	{
+            		g.drawImage(carParkBuffer, 0, 0, currentSize.width, 500, null);
+            		
+            	}
+            	else
+            	{
+            		g.drawImage(carParkBuffer, 0, 0, currentSize.width, currentSize.height, null);
+            	}
             }
         }
     
         public void updateView() {
             // Create a new car park image if the size has changed.
-            if (!size.equals(getSize())) {
+            if (!size.equals(getSize())) 
+            {
                 size = getSize();
+                carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
                 carParkImage = createImage(size.width, size.height);
+                System.out.println("redrawing image");
             }
-            Graphics graphics = carParkImage.getGraphics();
+            //System.out.println(carParkBuffer);
+            Graphics graphics = carParkBuffer.getGraphics();
             for(int floor = 0; floor < getNumberOfFloors(); floor++) {
                 for(int row = 0; row < getNumberOfRows(); row++) {
                     for(int place = 0; place < getNumberOfPlaces(); place++) {
