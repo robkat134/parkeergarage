@@ -139,7 +139,7 @@ public class Simulator {
 // 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
 // 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
 // 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
-//      System.out.println("Huidige inkomsten: €"+totaalOntvangen);
+//      System.out.println("Huidige inkomsten: ï¿½"+totaalOntvangen);
     	// Pause.
         try {
         	
