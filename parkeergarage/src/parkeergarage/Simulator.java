@@ -13,7 +13,7 @@ public class Simulator {
 
 	private boolean isRunning = false;
 
-	protected int abonnementhouders = 10;
+	protected int abonnementhouders = 80;
     protected int geparkeerdeAbonnementhouders = 0;
     protected int geparkeerdeZonderAbonnement = 0;
     protected int totaalGeparkeerd = 0;
@@ -26,6 +26,7 @@ public class Simulator {
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
     private View lineView;
+    private View PieView;
     private Controller controller;
     private Model model;
     private JFrame screen;
@@ -72,6 +73,7 @@ public class Simulator {
         model = new Model();
         simulatorView = new SimulatorView(3, 6, 30, this, model);
         lineView = new LineView(model, this);
+        PieView = new PieView(model, this);
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
@@ -82,6 +84,7 @@ public class Simulator {
         screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
         screen.getContentPane().add(controller,BorderLayout.SOUTH);
         screen.getContentPane().add(lineView,BorderLayout.CENTER);
+        screen.getContentPane().add(PieView, BorderLayout.CENTER);
         screen.setVisible(true);    
     }
     

@@ -17,7 +17,7 @@ public class LineView extends View {
 	public void paintComponent(Graphics g) 
 	{
 		System.out.println("painting");
-		g.setColor(Color.WHITE);
+		g.setColor(Color.GRAY);
 		g.fillRect(0, 0, 1000, 100);
 		
 		g.setColor(Color.RED);
@@ -37,26 +37,28 @@ public class LineView extends View {
 	}
 	public void addRectangle() 
 	{
-		line.add(0,new Rect(startX,(int)(simulator.geparkeerdeZonderAbonnement/5.4), 2, (int)((simulator.TotaalAantalPlekken-simulator.geparkeerdeZonderAbonnement)/5.4)));
+		line.add(0,new Rect(startX,95 -(int)(simulator.geparkeerdeZonderAbonnement/5.4), 2, 2));
 		System.out.println(line.size());
 		if (line.size()>200)
 		{
 			for(int i=0;i<line.size();i++)
 			{
 				line.get(i).x1--;
-				startX--;
 			}
 			line.remove(line.size()-1);
+			startX = 200;
+			//startX--;
 		}
-		line2.add(0,new Rect(startX,(int)(simulator.geparkeerdeAbonnementhouders/5.4), 2, (int)((simulator.TotaalAantalPlekken-simulator.geparkeerdeAbonnementhouders)/5.4)));
+		line2.add(0,new Rect(startX,95 -(int)(simulator.geparkeerdeAbonnementhouders/5.4), 2,2));
 		if (line2.size()>200)
 		{
 			for(int i=0;i<line2.size();i++)
 			{
 				line2.get(i).x1--;
-				startX--;
 			}
 			line2.remove(line2.size()-1);
+			startX = 200;
+			//startX--;
 		}
 	}	
 }
