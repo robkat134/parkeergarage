@@ -17,7 +17,13 @@ public class Model {
 		for(View v: views)
 		{
 			v.updateView();
-			System.out.println("name: "+v.getClass());
+		}
+	}
+	
+	protected void pauseViews() {
+		for(View v: views)
+		{
+			v.sleepThread();
 		}
 	}
 }

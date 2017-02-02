@@ -1,11 +1,10 @@
 package parkeergarage;
 
 import java.awt.BorderLayout;
-import java.security.acl.Owner;
 import javax.swing.*;
 import java.util.Random;
 
-public class Simulator {
+public class Simulator{
 
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
@@ -72,8 +71,11 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         model = new Model();
         simulatorView = new SimulatorView(3, 6, 30, this, model);
+        simulatorView.start();
         lineView = new LineView(model, this);
+        lineView.start();
         PieView = new PieView(model, this);
+        PieView.start();
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
@@ -84,9 +86,10 @@ public class Simulator {
         screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
         screen.getContentPane().add(controller,BorderLayout.SOUTH);
         screen.getContentPane().add(lineView,BorderLayout.CENTER);
-        screen.getContentPane().add(PieView, BorderLayout.CENTER);
+        //screen.getContentPane().add(PieView, BorderLayout.CENTER);
         screen.setVisible(true);    
     }
+    
     
     public void init(){
     	//updateViews();
@@ -100,11 +103,9 @@ public class Simulator {
         {
         	//System.out.println(tickCount);
         	tick();
+        	if (isRunning)
         	tickCount++;
-        	if (tickCount >= 1000)
-        	{
-        		
-        	}
+        	
         }
     }
     
@@ -131,36 +132,38 @@ public class Simulator {
     }
     void tick() 
     {
-    	advanceTime();
-    	handleExit();
-    	updateViews();
-    	lineView.startX++;
-    	model.notifyViews();
-    	simulatorView.setCarsParked();
-    	simulatorView.setInkomsten();
-    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
-    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
-//    	simulatorView.parkedCars = new JLabel("Totaal geparkeerd: " + totaalGeparkeerd);
-//    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
-// 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
-// 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
-// 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
-//      System.out.println("Huidige inkomsten: �"+totaalOntvangen);
-    	// Pause.
-        try {
-        	
-            Thread.sleep(tickPause);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    	System.out.println(isRunning);
+    	if (isRunning)
+    	{
+	    	advanceTime();
+	    	handleExit();
+	    	updateViews();
+	    	lineView.startX++;
+	    	model.notifyViews();
+	    	simulatorView.setCarsParked();
+	    	simulatorView.setInkomsten();
+	    	totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+	    	AantalVrijePlekken = TotaalAantalPlekken - totaalGeparkeerd;
+	//    	simulatorView.parkedCars = new JLabel("Totaal geparkeerd: " + totaalGeparkeerd);
+	//    	System.out.println("Zonder abo: " + geparkeerdeZonderAbonnement);
+	// 		System.out.println("Met abo: " + geparkeerdeAbonnementhouders);
+	// 		System.out.println("Totaal geparkeerd: " + totaalGeparkeerd);
+	// 		System.out.println("Totaal aantal vrije plekken:  " + AantalVrijePlekken);
+	//      System.out.println("Huidige inkomsten: �"+totaalOntvangen);
+	    	// Pause.
+	        try {
+	        	
+	            Thread.sleep(tickPause);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
     	handleEntrance();
+    	}
     }
     
     public void toggleRunning()
     {
     	isRunning = !isRunning;
-    	//System.out.println(isRunning);
-    	run();
     }
 
     private void advanceTime(){
