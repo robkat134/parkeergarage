@@ -15,26 +15,28 @@ public class PieView extends View {
 
 
 		g.setColor(Color.GRAY);
-		g.fillRect(890, 0, 100, 100);
+		g.fillRect(0, 0, 100, 100);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, 100, 1);
 		
 		
 		int startAngle = 0;
 		double aantal=(simulator.geparkeerdeAbonnementhouders)/1.5;
 		int intAantal = (int)aantal;
 		g.setColor(Color.BLUE);
-		g.fillArc(900, 10, 80, 80, startAngle, intAantal);
+		g.fillArc(10, 10, 80, 80, startAngle, intAantal);
 		
 		startAngle += intAantal;
 		double secondAantal = (simulator.geparkeerdeZonderAbonnement)/1.5;
 		int intSecondAantal = (int)secondAantal;
 		g.setColor(Color.RED);
-		g.fillArc(900, 10, 80, 80, startAngle, intSecondAantal);	
+		g.fillArc(10, 10, 80, 80, startAngle, intSecondAantal);	
 		
 		startAngle += intSecondAantal;
 		double thirdAantal = (simulator.AantalVrijePlekken)/1.5;
 		int intThirdAantal = (int)thirdAantal;
 		g.setColor(Color.WHITE);
-		g.fillArc(900, 10, 80, 80, startAngle, intThirdAantal);
+		g.fillArc(10, 10, 80, 80, startAngle, intThirdAantal);
 	}	
 }
 

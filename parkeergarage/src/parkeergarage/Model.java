@@ -5,6 +5,8 @@ import java.util.*;
 public class Model {
 	
 	private List<View> views;
+	private boolean run;
+	
 	public Model() {
 		views =  new ArrayList<View>();
 	}

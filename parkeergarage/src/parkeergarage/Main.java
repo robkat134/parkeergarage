@@ -7,6 +7,7 @@ public class Main {
 		Simulator test = new Simulator();
 		test.init();
 		test.run();
+		test.start();
 	}
 
 }
