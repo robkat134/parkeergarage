@@ -1,11 +1,15 @@
 package parkeergarage;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.security.acl.Owner;
 import javax.swing.*;
 import java.util.Random;
 
 public class Simulator{
 
+	private Thread thread;
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
@@ -26,6 +30,7 @@ public class Simulator{
     private SimulatorView simulatorView;
     private View lineView;
     private View PieView;
+    private View barView;
     private Controller controller;
     private Model model;
     private JFrame screen;
@@ -40,12 +45,12 @@ public class Simulator{
     public int allCarsToday = 0;
 
     private int day = 0;
-    private int hour = 0;
+    public int hour = 0;
     private int minute = 0;
     
     private int tickCount = 0;
 
-    private int tickPause = 100;
+    private int tickPause = 10;
 
 
     int weekDayArrivals= 100; // average number of arriving cars per hour
@@ -76,17 +81,31 @@ public class Simulator{
         lineView.start();
         PieView = new PieView(model, this);
         PieView.start();
+        barView = new BarView(model, this);
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
-        screen.setSize(1000, 700);
+        screen.setSize(838, 747);
         screen.setResizable(true);
-        screen.setLayout(new BorderLayout());
+        screen.setLayout(null);
+
+        screen.add(simulatorView);
+        screen.add(controller);
+        screen.add(lineView);
+        screen.add(PieView);
+        screen.add(barView);
         
-        screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
-        screen.getContentPane().add(controller,BorderLayout.SOUTH);
-        screen.getContentPane().add(lineView,BorderLayout.CENTER);
+        Insets insets = screen.getInsets();
+        simulatorView.setBounds(insets.left, insets.top, 820, 500);
+        controller.setBounds(insets.left, 500 + insets.top, 600, 100);
+        lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
+        PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
+        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
+        //screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
+        //screen.getContentPane().add(controller,BorderLayout.SOUTH);
+        //screen.getContentPane().add(lineView,BorderLayout.CENTER);
         //screen.getContentPane().add(PieView, BorderLayout.CENTER);
+        //screen.getContentPane().add(barView, BorderLayout.CENTER);
         screen.setVisible(true);    
     }
     
@@ -99,7 +118,7 @@ public class Simulator{
     public void run() 
     {
     	//System.out.println(isRunning);
-        while (tickCount < 1440)
+        while (tickCount < 14400)
         {
         	//System.out.println(tickCount);
         	tick();
@@ -374,8 +393,15 @@ public class Simulator{
         totaalOntvangen = totaalOntvangen + ontvangen;
         // totaalOntvangenFloat = (float) totaalOntvangen/100;
         return totaalOntvangen; //;Float;
+	}
+	
+    public void extraUitgang() {
+    	
     }
-
+    
+    public void extraIngang() {
+    	
+    }
 }
 
 
