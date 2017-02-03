@@ -39,7 +39,7 @@ public class PieView extends View {
 		g.fillArc(10, 10, 80, 80, startAngle, intThirdAantal);	
 		
 		startAngle += intThirdAantal;
-		double fourthAantal = ( simulator.getOpenSpots() )/1.5;
+		double fourthAantal = ( simulator.getNumberOfPlaces()-(simulator.nonPassCarsNow + simulator.passCarsNowWithoutReservedSpot + simulator.passCarsNowWithReservedSpot) )/1.5;
 		int intFourthAantal = (int)fourthAantal;
 		g.setColor(Color.WHITE);
 		g.fillArc(10, 10, 80, 80, startAngle, intFourthAantal);

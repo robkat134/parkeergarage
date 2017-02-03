@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.sound.sampled.Line;
+import javax.swing.JLabel;
 
 public class BarView extends View {
 	
@@ -14,10 +15,33 @@ public class BarView extends View {
 	private int[] week = new int[7];
 	private float[] perdayProcent = new float[7];
 	private float total;
+	private JLabel monday = new JLabel("mon");
+	private JLabel tuesday = new JLabel("tue");
+	private JLabel wednesday = new JLabel("wed");
+	private JLabel thursday = new JLabel("thu");
+	private JLabel friday = new JLabel("fri");
+	private JLabel saturday = new JLabel("sat");
+	private JLabel sunday = new JLabel("sun");
 	
 	public BarView(Model model, Simulator Tempsimulator) {
 		super(model);
 		simulator = Tempsimulator;
+		
+		setLayout(null);
+		add(monday);
+		add(tuesday);
+		add(wednesday);
+		add(thursday);
+		add(friday);
+		add(saturday);
+		add(sunday);
+		monday.setBounds(10, 85, 30, 10);
+		tuesday.setBounds(40, 85, 30, 10);
+		wednesday.setBounds(70, 85, 30, 10);
+		thursday.setBounds(100, 85, 30, 10);
+		friday.setBounds(130, 85, 30, 10);
+		saturday.setBounds(160, 85, 30, 10);
+		sunday.setBounds(190, 85, 30, 10);
 	}
 	public void paintComponent(Graphics g) 
 	{

@@ -191,7 +191,7 @@ public class Simulator {
      */
     public void run() 
     {
-        while (tickCount < 14400)
+        while (tickCount < 1440000)
         {
         	tick();
         	if (isRunning)
@@ -855,8 +855,8 @@ public class Simulator {
     	}
     }
     
-    public int getOpenSpots() {
-    	return simulatorView.getNumberOfOpenSpots();
+    public int getNumberOfPlaces() {
+    	return simulatorView.getNumberOfFloors()*simulatorView.getNumberOfRows()*simulatorView.getNumberOfPlaces();
     }
     
     public int getTotalEntranceQueue()
