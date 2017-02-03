@@ -34,6 +34,7 @@ public class Simulator{
     private View lineView;
     private View PieView;
     private View barView;
+    private View statView;
     private Controller controller;
     private Model model;
     private JFrame screen;
@@ -48,7 +49,7 @@ public class Simulator{
     public int allCarsToday = 0;
 
     private int day = 0;
-    public int hour = 0;
+    private int hour = 0;
     private int minute = 0;
     
     private int tickCount = 0;
@@ -61,9 +62,11 @@ public class Simulator{
     int weekDayPassArrivals= 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
 
-    int enterSpeed = 3; // number of cars that can enter per minute
+    int enterSpeed = 0; // number of cars that can enter per minute
+    final int speedPerEntrance = 3;
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
+    final int speedPerExit = 5;
 
     public int totaalOntvangen = 0;
     public float totaalOntvangenFloat = 0.00f;
@@ -85,6 +88,7 @@ public class Simulator{
         PieView = new PieView(model, this);
         PieView.start();
         barView = new BarView(model, this);
+        statView = new StatView(model, this);
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
@@ -97,18 +101,15 @@ public class Simulator{
         screen.add(lineView);
         screen.add(PieView);
         screen.add(barView);
+        screen.add(statView);
         
         Insets insets = screen.getInsets();
         simulatorView.setBounds(insets.left, insets.top, 820, 500);
-        controller.setBounds(insets.left, 500 + insets.top, 600, 100);
+        controller.setBounds(insets.left, 500 + insets.top, 600, 200);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
         barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
-        //screen.getContentPane().add(simulatorView,BorderLayout.NORTH);
-        //screen.getContentPane().add(controller,BorderLayout.SOUTH);
-        //screen.getContentPane().add(lineView,BorderLayout.CENTER);
-        //screen.getContentPane().add(PieView, BorderLayout.CENTER);
-        //screen.getContentPane().add(barView, BorderLayout.CENTER);
+        statView.setBounds(270 + insets.left, 505 + insets.top, 210, 300);
         screen.setVisible(true);    
     }
     
@@ -397,12 +398,33 @@ public class Simulator{
         return totaalOntvangen; //;Float;
 	}
 	
-    public void extraUitgang() {
-    	
+    public void extraIngang() {
+    	enterSpeed+=1;
     }
     
-    public void extraIngang() {
-    	
+    public void extraUitgang() {
+    	exitSpeed+=speedPerExit;
+    }
+    
+    public void extraIngangVerwijderen() {
+    	if(enterSpeed > 0) {
+    		enterSpeed-=speedPerEntrance;
+    	}
+    }
+    
+    public void extraUitgangVerwijderen() {
+    	if(exitSpeed > 0) {
+    		exitSpeed-=speedPerExit;
+    	}
+    }
+    
+    public int getTotalEntranceQueue()
+    {
+    	return entranceCarQueue.carsInQueue() + entrancePassQueue.carsInQueue();
+    }
+    
+    public int estimatedIncomeParkedCars() {
+    	return geparkeerdeZonderAbonnement * prijsPerMinuut * 15;
     }
 }
 

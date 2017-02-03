@@ -14,7 +14,7 @@ public class PieView extends View {
 	public void paintComponent(Graphics g) {
 
 
-		g.setColor(Color.GRAY);
+		g.setColor(Color.decode("#EEEEEE"));
 		g.fillRect(0, 0, 100, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 100, 1);
