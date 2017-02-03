@@ -98,7 +98,7 @@ public class Simulator {
     private int minute = 0;
     private int tickCount = 0;
 
-    private int tickPause = 10;
+    private int tickPause = 100;
 
 
 
@@ -334,7 +334,7 @@ public class Simulator {
      */
     void tick() 
     {
-    	System.out.println(passCarsNowWithoutReservedSpot);
+    	//System.out.println(passCarsNowWithoutReservedSpot);
     	if (isRunning)
     	{
 	    	// Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
@@ -869,5 +869,20 @@ public class Simulator {
     
     public int estimatedIncomeParkedCars() {
     	return nonPassCarsNow * nonPassHoldersCostPerMinute * 45;
+    }
+    
+    public void incrementTickPause() {
+    	if(tickPause > 1) {
+    		tickPause = tickPause/10;
+    	}
+    }
+    
+    public void decrementTickPause() {
+    	if(tickPause < 1000)
+    	tickPause = tickPause*10;
+    }
+    
+    public int returnTickPause() {
+    	return tickPause;
     }
 }
