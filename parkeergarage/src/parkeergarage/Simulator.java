@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+
 import javax.swing.JLabel;
 
 //import parkeergarage.Car;
 
 public class Simulator {
-
 
 	/**
 	 * In te vullen naar voorkeur
@@ -82,10 +82,9 @@ public class Simulator {
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
-    
     private int tickCount = 0;
-
     private int tickPause = 0;
+
 
     int timeToStayBusy = 120;
     
@@ -104,6 +103,7 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute    
     int maxLength = 5; // Zodra er meer dan 'x' aantal autos in de rij staan zullen ze doorrijden 
+
 
     
     /**
@@ -125,6 +125,7 @@ public class Simulator {
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30, this);
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  
+
     }
     
     
@@ -143,6 +144,7 @@ public class Simulator {
     public void run() 
     {
         while (isRunning && tickCount < 10000000)
+
         {
 
             tick();
@@ -165,6 +167,7 @@ public class Simulator {
         for (int i = 0; i < amount; i++) 
         {
             manualStep();
+
         }
     }
     
@@ -294,7 +297,7 @@ public class Simulator {
             handleEntrance();
         }
         else{
-            System.out.println("Garage is vol");
+            // Garage vol. Geluidje?
         }
         
     }
@@ -304,6 +307,7 @@ public class Simulator {
         isRunning = !isRunning;
         run();
     }
+
 
     
     /**
@@ -389,14 +393,9 @@ public class Simulator {
      * 
      */
     private void carsArriving(){
+
     	// In onderstaande variablele wordt de hoeveelheid auto's random berekend voor mensen zonder een abonnement. Programma kijkt zelf al naar of het weekend is of niet
         int numberOfCars = getNumberOfCars(weekDayResArrivals, weekendResArrivals);
-        int plaatsen = abonnementHouders;
-        
-        if( abonnementHouders > abonnementHoudersPlekken ) {
-        	plaatsen = abonnementHoudersPlekken;
-        }
-      
         
         // De nieuwe auto's die bij de ingang staan worden aan een queue toegevoegd met wachtende auto's om te parkeren.
         addArrivingCars(numberOfCars, RES);
@@ -414,6 +413,7 @@ public class Simulator {
         if( !(passCarsNowWithReservedSpot + passCarsNowWithoutReservedSpot + numberOfCars > abonnementHouders) ){
     		addArrivingCars(numberOfCars, PASS);    
 	    }
+
     }
  
     
@@ -426,11 +426,13 @@ public class Simulator {
     private void carsEntering(CarQueue queue) {
         int i = 0;
 
-        
+
         // Remove car from the front of the queue and assign to a parking space.
+
         while( queue.carsInQueue() > 0 && simulatorView.getNumberOfOpenSpots() > 0 && i < enterSpeed ) {
             
             // Haal een auto uit de queue en sla deze op in het type Car
+
             Car car = queue.removeCar();
             
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
@@ -449,8 +451,8 @@ public class Simulator {
                 reservedCarsToday++;
                 reservedCarsTotal++;
             }
-            
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
+
             else if( queue == entrancePassQueue && simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders) != null && toegestaanVoorAbonnementhouders[simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getFloor()][simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getRow()][simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getPlace()] == 1 ) {
                 Location freeLocation = simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders);
 
@@ -499,6 +501,7 @@ public class Simulator {
             }
             i++;           
         }
+
     }
     
     
@@ -549,6 +552,7 @@ public class Simulator {
             car = simulatorView.getFirstLeavingCar();
         }
     }
+        
 
     private void carsPaying(){
         // Let cars pay.
@@ -660,7 +664,7 @@ public class Simulator {
             	   System.out.println("ERROR_35");
             } 
         }
-    
+
     
     /**
      * 
