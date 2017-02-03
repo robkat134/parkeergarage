@@ -1,6 +1,7 @@
 package parkeergarage;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import javax.sound.sampled.Line;
@@ -9,6 +10,11 @@ public class BarView extends View {
 	
 	Simulator simulator;
 	ArrayList<Rect> line = new ArrayList<Rect>();
+	private int day;
+	private int[] week = new int[7];
+	private float[] perdayProcent = new float[7];
+	private float total;
+	
 	public BarView(Model model, Simulator Tempsimulator) {
 		super(model);
 		simulator = Tempsimulator;
@@ -30,14 +36,25 @@ public class BarView extends View {
 	}
 	public void initBars() 
 	{
-		//line.add(0,new Rect(5,(80-(simulator.moneyReceived()/10*8)), 20, (simulator.moneyReceived()/10*8)));
-		/* TODO variable aanpassen line.add(0,new Rect(5,80-((int)simulator.moneyReceived()/10*8), 20, ((int)simulator.moneyReceived()/10*8)));
-		line.add(1,new Rect(30,80-5, 20, 5));
-		line.add(2,new Rect(55,80-7, 20, 7));
-		line.add(3,new Rect(80,80-4, 20, 4));
-		line.add(4,new Rect(105,80-3, 20, 3));
-		line.add(5,new Rect(130,80-8, 20, 8));
-		line.add(6,new Rect(155,80-8, 20, 8));*/
+		total = 0;
+		day = simulator.getDay();
+		week[day]= simulator.incomeNonPassHoldersPerDay + simulator.incomePassHoldersPerDay + simulator.incomeReservationPerDay;
+		for (int i = 0; i < week.length; i++) 
+		{
+			total += week[i];
+		}
+		for (int i = 0; i < week.length; i++) 
+		{
+			perdayProcent[i] = (float)(week[i]/total);
+		}
+		line.clear();
+		line.add(0,new Rect(5,80, 20, (int)(-75 * perdayProcent[0])));
+		line.add(1,new Rect(30,80, 20, (int)(-75 * perdayProcent[1])));
+		line.add(2,new Rect(55,80, 20, (int)(-75 * perdayProcent[2])));
+		line.add(3,new Rect(80,80, 20, (int)(-75 * perdayProcent[3])));
+		line.add(4,new Rect(105,80, 20, (int)(-75 * perdayProcent[4])));
+		line.add(5,new Rect(130,80, 20, (int)(-75 * perdayProcent[5])));
+		line.add(6,new Rect(155,80, 20, (int)(-75 * perdayProcent[6])));
 	}	
 }
 
