@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.security.acl.Owner;
 import javax.swing.*;
+
+import com.sun.accessibility.internal.resources.accessibility_sv;
+
 import java.util.Random;
 
 public class Simulator{
@@ -151,7 +154,6 @@ public class Simulator{
     }
     void tick() 
     {
-    	System.out.println(isRunning);
     	if (isRunning)
     	{
 	    	advanceTime();

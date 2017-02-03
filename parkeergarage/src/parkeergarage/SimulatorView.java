@@ -16,7 +16,7 @@ public class SimulatorView extends View{
     public JLabel parkedCars = new JLabel("Parked Cars: ");
     public JLabel time = new JLabel("Time: ");
     
-    public JLabel inkomsten = new JLabel("Huidige inkomsten: €");
+    public JLabel inkomsten = new JLabel("Huidige inkomsten: ï¿½");
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
     {
@@ -51,11 +51,11 @@ public class SimulatorView extends View{
     public void setInkomsten()
     {
     	if(owner.totaalOntvangen%100 < 10 && owner.totaalOntvangen%100 != 0) {
-    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + ",0" + owner.totaalOntvangen%100);
+    		inkomsten.setText("huidige inkomsten: ï¿½"+ owner.totaalOntvangen/100 + ",0" + owner.totaalOntvangen%100);
     	} else if (owner.totaalOntvangen%100 == 0) {
-    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + ",00");
+    		inkomsten.setText("huidige inkomsten: ï¿½"+ owner.totaalOntvangen/100 + ",00");
     	} else {
-    		inkomsten.setText("huidige inkomsten: €"+ owner.totaalOntvangen/100 + "," + owner.totaalOntvangen%100);
+    		inkomsten.setText("huidige inkomsten: ï¿½"+ owner.totaalOntvangen/100 + "," + owner.totaalOntvangen%100);
     	}
     }
 
