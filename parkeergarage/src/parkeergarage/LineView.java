@@ -57,7 +57,7 @@ public class LineView extends View {
 	 * @param g
 	 */
 	private void initGraph(Graphics g) {
-		g.setColor(Color.GRAY);
+		g.setColor(Color.decode("#EEEEEE"));
 		g.fillRect(0, 0, 230, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(201, 0, 1, 100);
@@ -73,7 +73,6 @@ public class LineView extends View {
 	public void addRectangle() 
 	{
 		line.add(0,new Rect(startX,85 -(int)(simulator.geparkeerdeZonderAbonnement/7.2), 2, 2));
-		System.out.println(line.size());
 		if (line.size()>199)
 		{
 			for(int i=0;i<line.size();i++)

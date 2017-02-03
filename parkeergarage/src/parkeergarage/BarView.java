@@ -12,13 +12,16 @@ public class BarView extends View {
 	public BarView(Model model, Simulator Tempsimulator) {
 		super(model);
 		simulator = Tempsimulator;
-		initBars();
 	}
 	public void paintComponent(Graphics g) 
 	{
-		g.setColor(Color.decode("#627c58"));
+		initBars();
+		g.setColor(Color.decode("#EEEEEE"));
 		g.fillRect(0, 0, 330, 100);
-		
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 80, 330, 1);
+		g.fillRect(0, 0, 330, 1);
+		g.fillRect(0, 0, 1, 100);
 		g.setColor(Color.ORANGE);
 		for(int i=0;i<line.size();i++)
 		{
@@ -27,13 +30,14 @@ public class BarView extends View {
 	}
 	public void initBars() 
 	{
-		line.add(0,new Rect(0,100-30, 20, 30));
-		line.add(1,new Rect(25,100-100, 20, 100));
-		line.add(2,new Rect(50,100-50, 20, 50));
-		line.add(3,new Rect(75,100-70, 20, 70));
-		line.add(4,new Rect(100,100-40, 20, 40));
-		line.add(5,new Rect(125,100-35, 20, 35));
-		line.add(6,new Rect(150,100-89, 20, 89));
+		//line.add(0,new Rect(5,(80-(simulator.moneyReceived()/10*8)), 20, (simulator.moneyReceived()/10*8)));
+		line.add(0,new Rect(5,80-((int)simulator.moneyReceived()/10*8), 20, ((int)simulator.moneyReceived()/10*8)));
+		line.add(1,new Rect(30,80-5, 20, 5));
+		line.add(2,new Rect(55,80-7, 20, 7));
+		line.add(3,new Rect(80,80-4, 20, 4));
+		line.add(4,new Rect(105,80-3, 20, 3));
+		line.add(5,new Rect(130,80-8, 20, 8));
+		line.add(6,new Rect(155,80-8, 20, 8));
 	}	
 }
 
