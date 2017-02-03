@@ -56,8 +56,8 @@ public class Controller extends JPanel implements ActionListener {
 		plus1.setBounds(10, 10, 70, 30);
 		plus100.setBounds(85, 10, 70, 30);
 		run.setBounds(160, 10, 95, 30);
-		sneller.setBounds(10, 45, 90, 30);
-		trager.setBounds(105, 45, 90, 30);
+		sneller.setBounds(105, 45, 90, 30);
+		trager.setBounds(10, 45, 90, 30);
 		extraUitgang.setBounds(10, 120, 100, 30);
 		extraIngang.setBounds(115, 120, 100, 30);
 		extraUitgangVerwijderen.setBounds(10, 155, 100, 30);
