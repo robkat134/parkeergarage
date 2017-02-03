@@ -98,7 +98,7 @@ public class Simulator {
     private int minute = 0;
     private int tickCount = 0;
 
-    private int tickPause = 5;
+    private int tickPause = 100;
 
 
 
@@ -871,5 +871,19 @@ public class Simulator {
     public int getDay()
     {
     	return day;
+    }
+    public void incrementTickPause() {
+    	if(tickPause > 1) {
+    		tickPause = tickPause/10;
+    	}
+    }
+    
+    public void decrementTickPause() {
+    	if(tickPause < 1000)
+    	tickPause = tickPause*10;
+    }
+    
+    public int returnTickPause() {
+    	return tickPause;
     }
 }
