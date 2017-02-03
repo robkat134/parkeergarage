@@ -165,7 +165,7 @@ public class Simulator {
         screen.add(statView);
         
         Insets insets = screen.getInsets();
-        simulatorView.setBounds(insets.left, insets.top, 820, 500);
+        simulatorView.setBounds(0, 0, 800, 385);
         controller.setBounds(insets.left, 500 + insets.top, 600, 200);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
@@ -416,20 +416,20 @@ public class Simulator {
      * RUTGER
      * Deze functie zorgt ervoor dat er geen tijden zoals 12:0 wordt weergeven maar als 12:00
      */
-    private void displayTime() {
+    private String displayTime() {
         if (hour < 10)
         {
             if (minute < 10)
-                simulatorView.time.setText("Time: 0"+ hour + ":0" + minute);
+            	return ("Time: 0"+ hour + ":0" + minute);
             else
-                simulatorView.time.setText("Time: 0"+ hour + ":" + minute);
+            	return ("Time: 0"+ hour + ":0" + minute);
         }
         else
         {
             if (minute < 10)
-                simulatorView.time.setText("Time: "+ hour + ":0" + minute);
+            	return ("Time: 0"+ hour + ":0" + minute);
             else
-                simulatorView.time.setText("Time: "+ hour + ":" + minute);
+            	return ("Time: 0"+ hour + ":0" + minute);
         }
     }
 

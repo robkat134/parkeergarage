@@ -12,7 +12,7 @@ public class StatView extends View {
 	private JLabel incomePassTotal = new JLabel("income passholders: ");
 	private JLabel incomeNonPassTotal = new JLabel("income nonpassholders: ");
 	private JLabel incomeResTotal = new JLabel("income reservations: ");
-	private JLabel estimatedIncomePresentCars = new JLabel("estimated income: ");
+	private JLabel estimatedIncomePresentCars = new JLabel("estimated income: €");
 	
 	public StatView(Model model, Simulator Tempsimulator) 
 	{
@@ -49,11 +49,11 @@ public class StatView extends View {
 		//incomePassTotal.setText("income reservations: " + simulator.incomeReservationTotal);
 		if (simulator.estimatedIncomeParkedCars()%100 == 0)
 		{
-			estimatedIncomePresentCars.setText("estimated income: " + simulator.estimatedIncomeParkedCars()/100+",00");
+			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+",00");
 		}
 		else
 		{
-			estimatedIncomePresentCars.setText("estimated income: " + simulator.estimatedIncomeParkedCars()/100+"," + simulator.estimatedIncomeParkedCars()%100);
+			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+"," + simulator.estimatedIncomeParkedCars()%100);
 		}
 	}
 }

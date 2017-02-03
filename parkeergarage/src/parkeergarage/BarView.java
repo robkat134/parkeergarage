@@ -47,6 +47,7 @@ public class BarView extends View {
 		{
 			perdayProcent[i] = (float)(week[i]/total);
 		}
+		System.out.println(perdayProcent[0]);
 		line.clear();
 		line.add(0,new Rect(5,80, 20, (int)(-75 * perdayProcent[0])));
 		line.add(1,new Rect(30,80, 20, (int)(-75 * perdayProcent[1])));
@@ -55,6 +56,7 @@ public class BarView extends View {
 		line.add(4,new Rect(105,80, 20, (int)(-75 * perdayProcent[4])));
 		line.add(5,new Rect(130,80, 20, (int)(-75 * perdayProcent[5])));
 		line.add(6,new Rect(155,80, 20, (int)(-75 * perdayProcent[6])));
+		line.add(7,new Rect(0,50, 100, -20));
 	}	
 }
 
