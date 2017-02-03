@@ -5,14 +5,16 @@ public class Location {
     private int floor;
     private int row;
     private int place;
+    private Boolean reserved; 
 
     /**
      * Constructor for objects of class Location
      */
-    public Location(int floor, int row, int place) {
+    public Location(int floor, int row, int place, Boolean reserved) {
         this.floor = floor;
         this.row = row;
         this.place = place;
+        this.reserved = reserved;
     }
 
     /**
@@ -52,6 +54,10 @@ public class Location {
     public int getFloor() {
         return floor;
     }
+    
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
 
     /**
      * @return The row.
@@ -59,12 +65,24 @@ public class Location {
     public int getRow() {
         return row;
     }
+    
+    public void setRow(int row) {
+        this.row = row;
+    }
 
     /**
      * @return The place.
      */
     public int getPlace() {
         return place;
+    }
+    
+    public void setPlace(int place) {
+        this.place = place;
+    }
+    
+    public Boolean getReserved() {
+        return reserved;
     }
 
 }

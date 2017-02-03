@@ -3,6 +3,8 @@ package parkeergarage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SimulatorView extends JFrame implements ActionListener{
 	private Simulator owner;
@@ -11,6 +13,23 @@ public class SimulatorView extends JFrame implements ActionListener{
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
+    private int timeForReservation;
+    private boolean busyhour;
+    private int timeForBusyHourStaying;
+
+    
+    int nfloor;
+    int nrow;
+    int nplace;
+    private CarQueue entranceReservedQueue = new CarQueue();
+    
+    /*private int numberOfPassCarsOnReservedSpotNow;
+    private int numberOfPassCarsNotReservedSpotNow;
+    private int numberOfPassCarsOnReservedSpotToday;
+    private int numberOfPassCarsNotReservedSpotToday;
+    private int numberOfNonPassCarsNow;
+    private int numberOfNonPassCarsToday;*/
+    
     private Car[][][] cars;
     private JButton plus1 =new JButton("+1");
     private JButton plus100 =new JButton("+100");
@@ -27,6 +46,14 @@ public class SimulatorView extends JFrame implements ActionListener{
         this.numberOfPlaces = numberOfPlaces;
         this.numberOfOpenSpots =numberOfFloors*numberOfRows*numberOfPlaces;
         cars = new Car[numberOfFloors][numberOfRows][numberOfPlaces];
+        
+        /* Aantal geparkeerde auto's op nul zetten
+        numberOfPassCarsOnReservedSpotNow = 0;
+        numberOfPassCarsNotReservedSpotNow = 0;
+        numberOfPassCarsOnReservedSpotToday = 0;
+        numberOfPassCarsNotReservedSpotToday = 0;
+        numberOfNonPassCarsNow = 0;
+        numberOfNonPassCarsToday = 0;*/
         
         carParkView = new CarParkView();
         
@@ -46,9 +73,9 @@ public class SimulatorView extends JFrame implements ActionListener{
 		buttonPanel.add(run);
 		
 		
-//		plus1.setBounds(0, 0, 100, 30);
-//		plus100.setBounds(0,0,100,30);
-//		run.setBounds(0,0,100,30);	
+        //		plus1.setBounds(0, 0, 100, 30);
+        //		plus100.setBounds(0,0,100,30);
+        //		run.setBounds(0,0,100,30);	
 		
 		contentPane.add(textPanel,BorderLayout.NORTH);
         contentPane.add(carParkView,BorderLayout.CENTER);
@@ -60,7 +87,7 @@ public class SimulatorView extends JFrame implements ActionListener{
     }
     public void setCarsParked()
     {
-    	parkedCars.setText("parked cars: "+owner.totaalGeparkeerd);
+    	parkedCars.setText("parked cars: " + owner.totalCarsToday);
     }
 
     public void updateView() {
@@ -90,6 +117,7 @@ public class SimulatorView extends JFrame implements ActionListener{
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
+
     public boolean setCarAt(Location location, Car car) {
         if (!locationIsValid(location)) {
             return false;
@@ -103,7 +131,12 @@ public class SimulatorView extends JFrame implements ActionListener{
         }
         return false;
     }
-
+    
+    
+    public void changeColor(Car car) {
+    	
+    }
+    
     public Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -112,6 +145,12 @@ public class SimulatorView extends JFrame implements ActionListener{
         if (car == null) {
             return null;
         }
+        // Plaats de auto op de gevonde vrije locatie
+        if(car.getReservationCar()){
+        	 System.out.println("they");
+        entranceReservedQueue.addCar(new ReservationPlace());
+        setCarAt(location, car);
+        }
         cars[location.getFloor()][location.getRow()][location.getPlace()] = null;
         car.setLocation(null);
         numberOfOpenSpots++;
@@ -119,10 +158,10 @@ public class SimulatorView extends JFrame implements ActionListener{
     }
 
     
-/**
- * Eerste locatie waar auto's zonder abonnement parkeren.
- */
-    public Location getFirstFreeLocation(int[][] abonnementhoudersPlekken, int abonnementhouders) {
+    /**
+     * Eerste locatie waar auto's zonder abonnement parkeren.
+     */
+    public Location getFirstFreeLocation(int[][][] aboPlekken) {
 
     	// Loop door alle verdiepingen
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -130,21 +169,24 @@ public class SimulatorView extends JFrame implements ActionListener{
             for (int row = 0; row < getNumberOfRows(); row++) {
             	// Loop door alle plaatsen
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                	 Location location = new Location(floor, row, place);
-                	if(abonnementhoudersPlekken[floor][row] == 0 && getCarAt(location) == null){
-                		return location;
-                	} else if(abonnementhoudersPlekken[floor][row] == 1 && place > abonnementhouders && getCarAt(location) == null) {
-	                    return location;	        
+                	// Check of de geselecteerde plaats beschikbaar is voor niet pashouders
+                	if(aboPlekken[floor][row][place] == 0) {
+                		// Maak een nieuwe locatie aan met de gevonde vrije plek
+                		Location location = new Location(floor, row, place, false);
+                		if( getCarAt(location) == null ) {
+                			return location;
+                		}
                 	}
                 }
             }
         }
         return null;
     }
+
     /**
      * Locatie waar auto's met abonnement kunnen staan.
      */
-    public Location getFirstFreeLocationPass(int[][] abonnementhoudersPlekken, int abonnementhouders) {
+    public Location getFirstFreeLocationPass(int[][][] aboPlekken) {
     	
     	// Loop door alle verdiepingen
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
@@ -154,8 +196,30 @@ public class SimulatorView extends JFrame implements ActionListener{
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                 	
                 	// Als alle abonnementplaatsen bezet zijn(abo > 0) moet hij gewoon NULL returnen. Ook als de rij niet gereserveerd is voor abohouders moet hij NULL returnen. Anders gewoon een locatie
-                	if(abonnementhouders > 0 && abonnementhoudersPlekken[floor][row] == 1){
-                        Location location = new Location(floor, row, place);
+                	if(aboPlekken[floor][row][place] == 1){
+                        Location location = new Location(floor, row, place, false);
+                        if (getCarAt(location) == null) {
+                            return location;
+                        }
+                	}
+
+                }
+            }
+        }
+        return null;
+    }
+    
+    public Location getFirstFreeLocationRes(int[][][] aboPlekken) {
+    	// Loop door alle verdiepingen
+        for (int floor = 0; floor < getNumberOfFloors(); floor++) {
+        	// Loop door alle rijen
+            for (int row = 0; row < getNumberOfRows(); row++) {
+            	// Loop door alle plaatsen 
+                for (int place = 0; place < getNumberOfPlaces(); place++) {
+                	
+                	// Als alle abonnementplaatsen bezet zijn(abo > 0) moet hij gewoon NULL returnen. Ook als de rij niet gereserveerd is voor abohouders moet hij NULL returnen. Anders gewoon een locatie
+                	if(aboPlekken[floor][row][place] == 1){
+                        Location location = new Location(floor, row, place, true);
                         if (getCarAt(location) == null) {
                             return location;
                         }
@@ -171,22 +235,57 @@ public class SimulatorView extends JFrame implements ActionListener{
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    Location location = new Location(floor, row, place, false);
                     Car car = getCarAt(location);
-                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying()) {
+                    if (car !=null && car.getReservatedSpot() == true && car.getMinutesLeft() == 0 && car.getEarlyLeaving() == false){
+                    	makeNewCar(location);
+                    } else if (car !=null && car.getReservationCar() == true && car.getMinutesLeft() == 0){
+                    	makeNewCar1(location);
+                    } else if (car !=null && car.getReservatedSpot() == true && car.getEarlyLeaving() == true && car.getMinutesLeavingEarly() == 0){
+                    	return car;}
+                    if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying() && car.getReservationCar() !=true && car.getReservatedSpot() !=true) {
                         return car;
                     }
-                }
+               }
             }
         }
         return null;
+    }
+    
+    public void setTimeForReservation(int time){
+    	timeForBusyHourStaying = time;
+    }
+    
+    public int getTimeForReservation(){
+    	return timeForBusyHourStaying;
+    }
+    
+    private void makeNewCar(Location location){
+    		if(getTimeForReservation() > 0){
+    		Car car = new ReservationCar(getTimeForReservation());
+    		setCarAt1(location, car);}
+    		else{
+    		Car car = new ReservationCar();
+    		setCarAt1(location, car);}
+	}
+    
+    private void makeNewCar1(Location location){
+    	Car car = new ReservationPlace(true);
+    	setCarAt1(location, car);
+	}
+    
+    
+    public boolean setCarAt1(Location location, Car car) {
+            cars[location.getFloor()][location.getRow()][location.getPlace()] = car;
+            car.setLocation(location);
+            return true;
     }
 
     public void tick() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
+                    Location location = new Location(floor, row, place, false);
                     Car car = getCarAt(location);
                     if (car != null) {
                         car.tick();
@@ -244,6 +343,8 @@ public class SimulatorView extends JFrame implements ActionListener{
             }
         }
     
+
+        
         public void updateView() {
             // Create a new car park image if the size has changed.
             if (!size.equals(getSize())) {
@@ -254,7 +355,7 @@ public class SimulatorView extends JFrame implements ActionListener{
             for(int floor = 0; floor < getNumberOfFloors(); floor++) {
                 for(int row = 0; row < getNumberOfRows(); row++) {
                     for(int place = 0; place < getNumberOfPlaces(); place++) {
-                        Location location = new Location(floor, row, place);
+                        Location location = new Location(floor, row, place, false);
                         Car car = getCarAt(location);
                         Color color = car == null ? Color.white : car.getColor();
                         drawPlace(graphics, location, color);
