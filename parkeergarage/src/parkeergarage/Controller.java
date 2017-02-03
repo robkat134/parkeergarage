@@ -18,6 +18,8 @@ public class Controller extends JPanel implements ActionListener {
     private JButton extraIngang;
     private JButton extraUitgangVerwijderen;
     private JButton extraIngangVerwijderen;
+    private JButton sneller;
+    private JButton trager;
     
 	public Controller(Simulator simulator) {
 		this.simulator=simulator;
@@ -37,6 +39,10 @@ public class Controller extends JPanel implements ActionListener {
 		extraUitgangVerwijderen.addActionListener(this);
 		extraIngangVerwijderen = new JButton("-ingang");
 		extraIngangVerwijderen.addActionListener(this);
+		sneller = new JButton("sneller");
+		sneller.addActionListener(this);
+		trager = new JButton("trager");
+		trager.addActionListener(this);
 		setLayout(null);
 		add(plus1);
 		add(plus100);
@@ -45,13 +51,17 @@ public class Controller extends JPanel implements ActionListener {
 		add(extraIngang);
 		add(extraUitgangVerwijderen);
 		add(extraIngangVerwijderen);
+		add(sneller);
+		add(trager);
 		plus1.setBounds(10, 10, 70, 30);
 		plus100.setBounds(85, 10, 70, 30);
 		run.setBounds(160, 10, 95, 30);
-		extraUitgang.setBounds(10, 70, 120, 30);
-		extraIngang.setBounds(135, 70, 120, 30);
-		extraUitgangVerwijderen.setBounds(10, 105, 120, 30);
-		extraIngangVerwijderen.setBounds(135, 105, 120, 30);
+		sneller.setBounds(10, 45, 90, 30);
+		trager.setBounds(105, 45, 90, 30);
+		extraUitgang.setBounds(10, 120, 100, 30);
+		extraIngang.setBounds(115, 120, 100, 30);
+		extraUitgangVerwijderen.setBounds(10, 155, 100, 30);
+		extraIngangVerwijderen.setBounds(115, 155, 100, 30);
 		setVisible(true);
 	}
 	
@@ -71,6 +81,16 @@ public class Controller extends JPanel implements ActionListener {
 		if(e.getSource() == run)
 		{
 			simulator.toggleRunning();
+		}
+		if(e.getSource() == sneller)
+		{
+			simulator.incrementTickPause();
+			System.out.println("tickpause: " + simulator.returnTickPause());
+		}
+		if(e.getSource() == trager)
+		{
+			simulator.decrementTickPause();
+			System.out.println("tickpause: " + simulator.returnTickPause());
 		}
 		if(e.getSource() == extraUitgang)
 		{
