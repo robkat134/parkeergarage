@@ -83,6 +83,8 @@ public class Simulator {
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
     private CarQueue paymentReservationQueue;
+    
+    private SoundPlayer soundPlayer;
 
     private View lineView;
     private View PieView;
@@ -100,7 +102,7 @@ public class Simulator {
 
     private int tickPause = 10;
 
-
+    private boolean playingSound; //Geeft aan of er een notificatie wordt afgespeeld.
 
     int timeToStayBusy = 120;
     
@@ -140,6 +142,8 @@ public class Simulator {
         entranceResQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
+        
+        soundPlayer = new SoundPlayer();
 
         model = new Model();
         simulatorView = new SimulatorView(3, 6, 30, this, model);
@@ -174,7 +178,7 @@ public class Simulator {
         screen.setVisible(true);   
         
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  
-
+           
     }
     
     
@@ -251,7 +255,11 @@ public class Simulator {
 		    handleEntrance();
 		}
 		else{
-		    // Garage vol. Geluidje?
+        	//Speel een geluidsbestand wanneer de garage vol is.
+        	if(playingSound == false){
+        		soundPlayer.startPlaying("src/parkeergarage/sounds/alarm.mp3");
+        	}
+			
 		}
     }
 
@@ -377,11 +385,16 @@ public class Simulator {
 	            e.printStackTrace();
 	        }
 	        
+	        setPlayingSound();
+	        
 	       if(simulatorView.getNumberOfOpenSpots() > 70){
 	            handleEntrance();
 	        }
 	        else{
-	            // Garage vol. Geluidje?
+	        	//Speel een geluidsbestand wanneer de garage vol is.
+	        	if(playingSound == false){
+	        		soundPlayer.startPlaying("src/parkeergarage/sounds/alarm.mp3");
+	        	}
 	        }
     	}
     }
@@ -829,9 +842,9 @@ public class Simulator {
             weekendResArrivals = 0;
         }
         else{//drukte in de normale situatie.
-            weekDayArrivals = 90;
+            weekDayArrivals = 900;
             weekendArrivals = 190;
-            weekDayPassArrivals = 90;
+            weekDayPassArrivals = 900;
             weekendPassArrivals = 25;
             weekDayResArrivals = 0;
             weekendResArrivals = 0;
@@ -869,5 +882,12 @@ public class Simulator {
     
     public int estimatedIncomeParkedCars() {
     	return nonPassCarsNow * nonPassHoldersCostPerMinute * 45;
+    }
+    
+    /**
+     * Set method welke doorgeeft of er een notificatie wordt afgespeeld.
+     */
+    private void setPlayingSound(){
+    	playingSound = soundPlayer.getIsPlaying();
     }
 }
