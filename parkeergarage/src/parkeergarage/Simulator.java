@@ -1,12 +1,14 @@
 package parkeergarage;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.*;
 import java.util.Random;
-
-
 import javax.swing.JLabel;
 
 //import parkeergarage.Car;
@@ -25,6 +27,7 @@ public class Simulator {
     private int passHoldersCostPerMinute = 1; // Kosten per minute voor abonnementhouders
     private int reservationCostPerMinute = 2; // Kosten per minute voor reserveringen
     private int startTarief = 500; // Kosten om een reservering te plaatsen
+    public int totaalGeparkeerd = 0;
     
     private int incomePassHoldersPerDay = 0; // Inkomsten van abonnementhouders van die dag
     private int incomePassHoldersTotal = 0; // Inkomsten van abonnementhouders intotaal
@@ -37,6 +40,7 @@ public class Simulator {
     private int nightHourStart = 21; //Begin van de rustige nachtelijke uren.
     private int nightHourEnd = 5; //Einde van de rustige nachtelijke uren.
 
+	private Thread thread;
     private String event;
     
     
@@ -53,16 +57,17 @@ public class Simulator {
     /**
      * Onderstaande is allemaal voor de stats. Gemaakt door Rob dus voor vragen bij hem zijn
      */
-    private int passCarsNowWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek op dit moment
+    protected int passCarsNowWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek op dit moment
     private int passCarsTodayWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die vandaag hun auto hebben gepakeerd
     private int passCarsTotalWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die er vanaf het begin geparkeerd hebben
-    private int passCarsNowWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek op dit moment
+    protected int passCarsNowWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek op dit moment
     private int passCarsTodayWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek die vandaag hun auto hebben geparkeerd
     private int passCarsTotalWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders pelk die er vanaf het begin geparkeerd hebben.
+    
     private int reservedCarsNow = 0; // Aantal reserveringen op dit moment
     private int reservedCarsToday = 0; // Aantal reserveringen vandaag
     private int reservedCarsTotal = 0; //Aantal reserveringen totaal gemaakt
-    private int nonPassCarsNow = 0; // Aantal niet abonnementhouders die hun auto geparkeerd hebben op dit moment
+    protected int nonPassCarsNow = 0; // Aantal niet abonnementhouders die hun auto geparkeerd hebben op dit moment
     private int nonPassCarsToday = 0; // Aantal niet abonnementhouders die hun auto vnadaag geparkeerd hebben
     private int nonPassCarsTotal = 0; // Aantal niet abonnementhouders die hun auto geparkeerd ehbben vanaf het begin
     private int carsPassedToday = 0; // Aantal auto's die zijn doorgereden omdat de rij telang was 
@@ -79,11 +84,22 @@ public class Simulator {
     private SimulatorView simulatorView;
     private CarQueue paymentReservationQueue;
 
+    private View lineView;
+    private View PieView;
+    private View barView;
+    private View statView;
+    private Controller controller;
+    private Model model;
+    private JFrame screen;
+
+
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
     private int tickCount = 0;
-    private int tickPause = 0;
+
+    private int tickPause = 10;
+
 
 
     int timeToStayBusy = 120;
@@ -103,7 +119,8 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute    
     int maxLength = 5; // Zodra er meer dan 'x' aantal autos in de rij staan zullen ze doorrijden 
-
+    final int speedPerExit = 5;
+    final int speedPerEntrance = 3;
 
     
     /**
@@ -123,7 +140,39 @@ public class Simulator {
         entranceResQueue = new CarQueue();
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
-        simulatorView = new SimulatorView(3, 6, 30, this);
+
+        model = new Model();
+        simulatorView = new SimulatorView(3, 6, 30, this, model);
+        simulatorView.start();
+        lineView = new LineView(model, this);
+        lineView.start();
+        PieView = new PieView(model, this);
+        PieView.start();
+        barView = new BarView(model, this);
+        statView = new StatView(model, this);
+        controller = new Controller(this);
+        
+        screen = new JFrame("Line View");
+        screen.setSize(838, 747);
+        screen.setResizable(true);
+        screen.setLayout(null);
+
+        screen.add(simulatorView);
+        screen.add(controller);
+        screen.add(lineView);
+        screen.add(PieView);
+        screen.add(barView);
+        screen.add(statView);
+        
+        Insets insets = screen.getInsets();
+        simulatorView.setBounds(insets.left, insets.top, 820, 500);
+        controller.setBounds(insets.left, 500 + insets.top, 600, 200);
+        lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
+        PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
+        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
+        statView.setBounds(270 + insets.left, 505 + insets.top, 210, 300);
+        screen.setVisible(true);   
+        
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  
 
     }
@@ -133,8 +182,7 @@ public class Simulator {
      * TODO HIER JUISTE COMMENT NEERZETTEN
      */
     public void init(){
-        updateViews();
-        isRunning = true;
+    	isRunning = true;
     }
 
     
@@ -143,40 +191,68 @@ public class Simulator {
      */
     public void run() 
     {
-        while (isRunning && tickCount < 10000000)
-
+        while (tickCount < 14400)
         {
 
-            tick();
-            tickCount++;
-            if (tickCount >= 10000)
-            {
-                
-            }
-        }
-
-    }
-    
-    
-    /**
-     * 
-     * @param amount
-     */
-    public void tickFor(int amount)
-    {
-        for (int i = 0; i < amount; i++) 
-        {
-            manualStep();
-
+        	//System.out.println(tickCount);
+        	tick();
+        	if (isRunning)
+        	tickCount++;
         }
     }
+    
+    public void tickFor(int amount){
+    	for( int i = 0; i < amount; i++ ) {
+    		manualStep();
+    	}
+    }
+    
     
     /**
      * 
      */
     void manualStep() 
     {
-        tick();
+
+		//Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
+		if( hour == 0 && minute == 0 ) {
+			if(day % 7 == 0 && day > 0) {
+				resetStats("week");
+			}
+			resetStats("dag");	
+		}
+		
+		// Maak een 3D-array aan waarin alle beschikbare locaties voor abonnementhouders worden geselecteerd
+		makeParkingMap();
+		
+		// Regel de drukte aan de hand van evenementen, nachtelijke uren of uren overdag.
+		setCarArrivals();
+		
+		// Tel 1 minuut bij de tijd op en verdeel alles in minuten, uren en dagen
+		advanceTime();
+		
+		// Check welke auto's weg mogen en fix deze shit
+		handleExit();
+		
+		// Bereken aantal plekken enzo (moet hier gebeuren want na updateViews() is het telaat en loopt hij een minuut achter elke keer.
+        totalCarsToday = nonPassCarsNow + passCarsNowWithoutReservedSpot + passCarsNowWithReservedSpot + reservedCarsNow;
+		
+		// Vernieuw 
+		updateViews();
+		
+    	((LineView) lineView).addRectangle();
+		lineView.startX++;
+		model.notifyViews();
+		//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+		
+		simulatorView.setCarsParked();
+		
+		if(simulatorView.getNumberOfOpenSpots() > 70){
+		    handleEntrance();
+		}
+		else{
+		    // Garage vol. Geluidje?
+		}
     }
 
     
@@ -258,56 +334,62 @@ public class Simulator {
      */
     void tick() 
     {
-    	// Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
-    	if( hour == 0 && minute == 0 ) {
-    		if(day % 7 == 0 && day > 0) {
-    			resetStats("week");
-    		}
-    		resetStats("dag");	
+    	System.out.println(passCarsNowWithoutReservedSpot);
+    	if (isRunning)
+    	{
+	    	// Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
+	    	if( hour == 0 && minute == 0 ) {
+	    		if(day % 7 == 0 && day > 0) {
+	    			resetStats("week");
+	    		}
+	    		resetStats("dag");	
+	    	}
+	    	
+	        // Maak een 3D-array aan waarin alle beschikbare locaties voor abonnementhouders worden geselecteerd
+	        makeParkingMap();
+	
+	        // Regel de drukte aan de hand van evenementen, nachtelijke uren of uren overdag.
+	        setCarArrivals();
+	    
+	        // Tel 1 minuut bij de tijd op en verdeel alles in minuten, uren en dagen
+	        advanceTime();
+	        
+	        // Check welke auto's weg mogen en fix deze shit
+	        handleExit();
+	        
+	        // Bereken aantal plekken enzo (moet hier gebeuren want na updateViews() is het telaat en loopt hij een minuut achter elke keer.
+	        totalCarsToday = nonPassCarsNow + passCarsNowWithoutReservedSpot + passCarsNowWithReservedSpot + reservedCarsNow;
+	        
+	        // Vernieuw 
+	        updateViews();
+	        
+	    	lineView.startX++;
+	    	model.notifyViews();
+	    	//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
+	    	
+	        simulatorView.setCarsParked();
+	
+	        // Pause.
+	        try {
+	            
+	            Thread.sleep(tickPause);
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
+	        
+	       if(simulatorView.getNumberOfOpenSpots() > 70){
+	            handleEntrance();
+	        }
+	        else{
+	            // Garage vol. Geluidje?
+	        }
     	}
-    	
-        // Maak een 3D-array aan waarin alle beschikbare locaties voor abonnementhouders worden geselecteerd
-        makeParkingMap();
-
-        // Regel de drukte aan de hand van evenementen, nachtelijke uren of uren overdag.
-        setCarArrivals();
-    
-        // Tel 1 minuut bij de tijd op en verdeel alles in minuten, uren en dagen
-        advanceTime();
-        
-        // Check welke auto's weg mogen en fix deze shit
-        handleExit();
-        
-        // Bereken aantal plekken enzo (moet hier gebeuren want na updateViews() is het telaat en loopt hij een minuut achter elke keer.
-        totalCarsToday = nonPassCarsTotal;//incomeNonPassHoldersPerDay;//passCarsNowWithReservedSpot + passCarsNowWithoutReservedSpot + nonPassCarsNow + simulatorView.getNumberOfOpenSpots()- simulatorView.getNumberOfFloors()*simulatorView.getNumberOfRows()*simulatorView.getNumberOfPlaces();//passCarsTodayWithReservedSpot;//simulatorView.getNumberOfOpenSpots(); // - passCarsTodayWithReservedSpot + passCarsTodayWithoutReservedSpot + nonPassCarsToday;
-        
-        // Vernieuw 
-        updateViews();
-        simulatorView.setCarsParked();
-
-        // Pause.
-        try {
-            
-            Thread.sleep(tickPause);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-       if(simulatorView.getNumberOfOpenSpots() > 70){
-            handleEntrance();
-        }
-        else{
-            // Garage vol. Geluidje?
-        }
-        
     }
     
     public void toggleRunning()
     {
-        isRunning = !isRunning;
-        run();
+    	isRunning = !isRunning;
     }
-
 
     
     /**
@@ -334,7 +416,7 @@ public class Simulator {
     
     
     /**
-     * RUTHER
+     * RUTGER
      * Deze functie zorgt ervoor dat er geen tijden zoals 12:0 wordt weergeven maar als 12:00
      */
     private void displayTime() {
@@ -426,9 +508,7 @@ public class Simulator {
     private void carsEntering(CarQueue queue) {
         int i = 0;
 
-
         // Remove car from the front of the queue and assign to a parking space.
-
         while( queue.carsInQueue() > 0 && simulatorView.getNumberOfOpenSpots() > 0 && i < enterSpeed ) {
             
             // Haal een auto uit de queue en sla deze op in het type Car
@@ -451,8 +531,8 @@ public class Simulator {
                 reservedCarsToday++;
                 reservedCarsTotal++;
             }
+            
             // De rij met abonnementhouders kunnen parkeren op de gereserveerde plekken.
-
             else if( queue == entrancePassQueue && simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders) != null && toegestaanVoorAbonnementhouders[simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getFloor()][simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getRow()][simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders).getPlace()] == 1 ) {
                 Location freeLocation = simulatorView.getFirstFreeLocationPass(toegestaanVoorAbonnementhouders);
 
@@ -501,7 +581,6 @@ public class Simulator {
             }
             i++;           
         }
-
     }
     
     
@@ -757,5 +836,38 @@ public class Simulator {
             weekDayResArrivals = 0;
             weekendResArrivals = 0;
         }
+    }
+	
+    public void extraIngang() {
+    	enterSpeed+=1;
+    }
+    
+    public void extraUitgang() {
+    	exitSpeed+=speedPerExit;
+    }
+    
+    public void extraIngangVerwijderen() {
+    	if(enterSpeed > 0) {
+    		enterSpeed-=speedPerEntrance;
+    	}
+    }
+    
+    public void extraUitgangVerwijderen() {
+    	if(exitSpeed > 0) {
+    		exitSpeed-=speedPerExit;
+    	}
+    }
+    
+    public int getOpenSpots() {
+    	return simulatorView.getNumberOfOpenSpots();
+    }
+    
+    public int getTotalEntranceQueue()
+    {
+    	return entranceCarQueue.carsInQueue() + entrancePassQueue.carsInQueue();
+    }
+    
+    public int estimatedIncomeParkedCars() {
+    	return nonPassCarsNow * nonPassHoldersCostPerMinute * 45;
     }
 }
