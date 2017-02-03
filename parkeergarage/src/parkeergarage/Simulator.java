@@ -29,13 +29,13 @@ public class Simulator {
     private int startTarief = 500; // Kosten om een reservering te plaatsen
     public int totaalGeparkeerd = 0;
     
-    private int incomePassHoldersPerDay = 0; // Inkomsten van abonnementhouders van die dag
-    private int incomePassHoldersTotal = 0; // Inkomsten van abonnementhouders intotaal
-    private int incomeNonPassHoldersPerDay = 0; // Inkomsten van niet abonnementhouders van die dag
-    private int incomeNonPassHoldersTotal = 0; // Inkomsten van niet abonnementhouders intotaal
-    private int incomePassHoldersPerWeek = 0; // Inkomsten van abonnementhouders per week(abo kosten zonder per minuut te hebben betaald)
-	private int incomeReservationPerDay = 0; // Inkomsten van reserveringen per dag
-	private int incomeReservationTotal = 0; // Inkomsten van reserveringen totaal
+    protected int incomePassHoldersPerDay = 0; // Inkomsten van abonnementhouders van die dag
+    protected int incomePassHoldersTotal = 0; // Inkomsten van abonnementhouders intotaal
+    protected int incomeNonPassHoldersPerDay = 0; // Inkomsten van niet abonnementhouders van die dag
+    protected int incomeNonPassHoldersTotal = 0; // Inkomsten van niet abonnementhouders intotaal
+    protected int incomePassHoldersPerWeek = 0; // Inkomsten van abonnementhouders per week(abo kosten zonder per minuut te hebben betaald)
+    protected int incomeReservationPerDay = 0; // Inkomsten van reserveringen per dag
+    protected int incomeReservationTotal = 0; // Inkomsten van reserveringen totaal
     
     private int nightHourStart = 21; //Begin van de rustige nachtelijke uren.
     private int nightHourEnd = 5; //Einde van de rustige nachtelijke uren.
@@ -98,7 +98,7 @@ public class Simulator {
     private int minute = 0;
     private int tickCount = 0;
 
-    private int tickPause = 10;
+    private int tickPause = 5;
 
 
 
@@ -193,8 +193,6 @@ public class Simulator {
     {
         while (tickCount < 14400)
         {
-
-        	//System.out.println(tickCount);
         	tick();
         	if (isRunning)
         	tickCount++;
@@ -334,7 +332,6 @@ public class Simulator {
      */
     void tick() 
     {
-    	System.out.println(passCarsNowWithoutReservedSpot);
     	if (isRunning)
     	{
 	    	// Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
@@ -869,5 +866,10 @@ public class Simulator {
     
     public int estimatedIncomeParkedCars() {
     	return nonPassCarsNow * nonPassHoldersCostPerMinute * 45;
+    }
+    
+    public int getDay()
+    {
+    	return day;
     }
 }
