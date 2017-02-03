@@ -324,7 +324,7 @@ public class Simulator {
     	
     		// Geef foutcode. Hij mag eigenlijk nooit in onderstaande else-statement komen.
     	} else {
-    		System.out.println("ERROR: resetStats. Verkeerde string!!");
+    		//System.out.println("ERROR: resetStats. Verkeerde string!!");
     	}
     }
     
@@ -334,7 +334,7 @@ public class Simulator {
      */
     void tick() 
     {
-    	System.out.println(passCarsNowWithoutReservedSpot);
+    	//System.out.println(passCarsNowWithoutReservedSpot);
     	if (isRunning)
     	{
 	    	// Als er een dag voorbij is reset alle stats die per dag bijgehouden wordt. 
