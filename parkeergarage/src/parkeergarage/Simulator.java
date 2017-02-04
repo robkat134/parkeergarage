@@ -123,6 +123,8 @@ public class Simulator {
     int maxLength = 5; // Zodra er meer dan 'x' aantal autos in de rij staan zullen ze doorrijden 
     final int speedPerExit = 5;
     final int speedPerEntrance = 2;
+    
+    private String[] dayArray = new String[7];
 
     
     /**
@@ -421,6 +423,7 @@ public class Simulator {
             day -= 7;
         }
         displayTime();
+        displayDay();
 
     }
     
@@ -444,6 +447,17 @@ public class Simulator {
             else
             	simulatorView.time.setText("Time: "+ hour + ":" + minute);
         }
+    }
+    
+    private void displayDay() {
+    	dayArray[0]= "Monday";
+    	dayArray[1]= "Tuesday";
+    	dayArray[2]= "Wednesday";
+    	dayArray[3]= "Thursday";
+    	dayArray[4]= "Friday";
+    	dayArray[5]= "Saturday";
+    	dayArray[6]= "Sunday";
+    	simulatorView.day.setText("Day: " + dayArray[getDay()]);
     }
 
     

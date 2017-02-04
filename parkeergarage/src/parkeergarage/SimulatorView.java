@@ -35,6 +35,7 @@ public class SimulatorView extends View{
     
     public JLabel parkedCars = new JLabel("Parked Cars: ");
     public JLabel time = new JLabel("Time: ");
+    public JLabel day = new JLabel ("Day: ");
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
     {
@@ -61,6 +62,7 @@ public class SimulatorView extends View{
         JPanel textPanel = new JPanel();
         textPanel.add(parkedCars,BorderLayout.CENTER);
         textPanel.add(time,BorderLayout.CENTER);
+        textPanel.add(day,BorderLayout.CENTER);
 		
 
 		add(textPanel,BorderLayout.NORTH);
