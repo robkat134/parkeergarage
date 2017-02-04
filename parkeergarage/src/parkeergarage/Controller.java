@@ -25,6 +25,8 @@ public class Controller extends JPanel implements ActionListener {
     private JButton faster;
     private JButton slower;
     private JButton toggleParkOnNotReservedSpot;
+    private JButton addPassHolder;
+    private JButton removePassHolder;
     
 	public Controller(Simulator simulator) {
 		this.simulator=simulator;
@@ -54,6 +56,10 @@ public class Controller extends JPanel implements ActionListener {
 		slower.addActionListener(this);
 		toggleParkOnNotReservedSpot = new JButton("free parking");
 		toggleParkOnNotReservedSpot.addActionListener(this);
+		addPassHolder = new JButton("+pass");
+		addPassHolder.addActionListener(this);
+		removePassHolder = new JButton("-pass");
+		removePassHolder.addActionListener(this);
 		setLayout(null);
 		add(plus1);
 		add(plus100);
@@ -67,18 +73,22 @@ public class Controller extends JPanel implements ActionListener {
 		add(faster);
 		add(slower);
 		add(toggleParkOnNotReservedSpot);
-		plus1.setBounds(10, 10, 70, 20);
-		plus100.setBounds(85, 10, 70, 20);
-		run.setBounds(160, 10, 95, 20);
-		week.setBounds(85, 35, 80, 20);
-		day.setBounds(10, 35, 70, 20);
-		faster.setBounds(105, 60, 90, 20);
-		slower.setBounds(10, 60, 90, 20);
-		addExit.setBounds(10, 130, 100, 30);
-		addEntrance.setBounds(115, 130, 100, 30);
-		removeExit.setBounds(10, 165, 100, 30);
-		removeEntrance.setBounds(115, 165, 100, 30);
-		toggleParkOnNotReservedSpot.setBounds(10, 80, 80, 30);
+		add(addPassHolder);
+		add(removePassHolder);
+		plus1.setBounds(10, 5, 70, 20);
+		plus100.setBounds(85, 5, 70, 20);
+		run.setBounds(160, 5, 95, 20);
+		week.setBounds(85, 30, 80, 20);
+		day.setBounds(10, 30, 70, 20);
+		faster.setBounds(105, 55, 90, 20);
+		slower.setBounds(10, 55, 90, 20);
+		removeEntrance.setBounds(10, 145, 100, 20);
+		addEntrance.setBounds(115, 145, 100, 20);
+		removeExit.setBounds(10, 170, 100, 20);
+		addExit.setBounds(115, 170, 100, 20);
+		toggleParkOnNotReservedSpot.setBounds(10, 85, 110, 20);
+		removePassHolder.setBounds(10, 115, 100, 20);
+		addPassHolder.setBounds(115, 115, 100, 20);
 		setVisible(true);
 	}
 	
@@ -142,6 +152,14 @@ public class Controller extends JPanel implements ActionListener {
 		{
 			simulator.toggleParkOnNotReservedSpot();
 		}
+		if(e.getSource() == addPassHolder)
+		{
+			simulator.incrementPassHolders();
+		}
+		if(e.getSource() == removePassHolder)
+		{
+			simulator.decrementPassHolders();
+		}
 	}
 	
 	private void graphGrid(Graphics g) {
@@ -149,8 +167,9 @@ public class Controller extends JPanel implements ActionListener {
 		g.fillRect(0, 0, 260, 400);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 260, 1);
-		g.fillRect(0, 85, 260, 1);
-		g.fillRect(0, 125, 260, 1);
+		g.fillRect(0, 80, 260, 1);
+		g.fillRect(0, 110, 260, 1);
+		g.fillRect(0, 140, 260, 1);
 		g.fillRect(260, 0, 1, 400);
 	}
 	

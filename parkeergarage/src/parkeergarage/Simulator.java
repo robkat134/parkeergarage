@@ -942,4 +942,12 @@ public class Simulator {
     public int returnTickPause() {
     	return tickPause;
     }
+    
+    public void incrementPassHolders() {
+    	abonnementHouders += 5;
+    }
+    
+    public void decrementPassHolders() {
+    	abonnementHouders -= 5;
+    }
 }
