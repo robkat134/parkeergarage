@@ -9,6 +9,7 @@ public class StatView extends View {
 		
 	Simulator simulator;
 	private JLabel entranceQueue = new JLabel("entrance queue: ");
+	private JLabel exitQueue = new JLabel("exit queue: ");
 	private JLabel incomePassTotal = new JLabel("income passholders: €");
 	private JLabel incomeNonPassTotal = new JLabel("income nonpassholders: €");
 	private JLabel incomeResTotal = new JLabel("income reservations: €");
@@ -21,15 +22,17 @@ public class StatView extends View {
 
 		setLayout(null);
 		add(entranceQueue);
+		add(exitQueue);
 		add(incomePassTotal);
 		add(incomeNonPassTotal);
 		add(incomeResTotal);
 		add(estimatedIncomePresentCars);
 		entranceQueue.setBounds(5, 0, 300, 20);
-		incomePassTotal.setBounds(5, 20, 300, 20);
-		incomeNonPassTotal.setBounds(5, 40, 300, 20);
-		incomeResTotal.setBounds(5, 60, 300, 20);
-		estimatedIncomePresentCars.setBounds(5, 80, 300, 20);
+		exitQueue.setBounds(5, 20, 300, 20);
+		incomePassTotal.setBounds(5, 40, 300, 20);
+		incomeNonPassTotal.setBounds(5, 60, 300, 20);
+		incomeResTotal.setBounds(5, 80, 300, 20);
+		estimatedIncomePresentCars.setBounds(5, 100, 300, 20);
 	}
 	
 	public void paintComponent(Graphics g) 
@@ -46,6 +49,7 @@ public class StatView extends View {
 	public void setStats()
 	{
 		entranceQueue.setText("entrance queue: " + simulator.getTotalEntranceQueue());
+		exitQueue.setText("exit queue: " + simulator.getTotalExitQueue());
 		if (simulator.incomePassHoldersTotal%100 == 0)
 		{
 			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+",00");

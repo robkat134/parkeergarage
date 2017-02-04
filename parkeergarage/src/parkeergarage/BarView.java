@@ -23,6 +23,11 @@ public class BarView extends View {
 	private JLabel saturday = new JLabel("sat");
 	private JLabel sunday = new JLabel("sun");
 	
+	private JLabel highestLabel = new JLabel("");
+	private JLabel highestLabel2 = new JLabel("");
+	private JLabel highestLabel3 = new JLabel("");
+
+	
 	public BarView(Model model, Simulator Tempsimulator) {
 		super(model);
 		simulator = Tempsimulator;
@@ -35,13 +40,19 @@ public class BarView extends View {
 		add(friday);
 		add(saturday);
 		add(sunday);
+		add(highestLabel);
+		add(highestLabel2);
+		add(highestLabel3);
 		monday.setBounds(10, 85, 30, 10);
-		tuesday.setBounds(40, 85, 30, 10);
-		wednesday.setBounds(70, 85, 30, 10);
-		thursday.setBounds(100, 85, 30, 10);
-		friday.setBounds(130, 85, 30, 10);
+		tuesday.setBounds(42, 85, 30, 10);
+		wednesday.setBounds(68, 85, 30, 10);
+		thursday.setBounds(102, 85, 30, 10);
+		friday.setBounds(133, 85, 30, 10);
 		saturday.setBounds(160, 85, 30, 10);
 		sunday.setBounds(190, 85, 30, 10);
+		highestLabel.setBounds(225, 5, 100, 10);
+		highestLabel2.setBounds(225, 42, 100, 10);
+		highestLabel3.setBounds(225, 75, 100, 10);
 	}
 	public void paintComponent(Graphics g) 
 	{
@@ -49,8 +60,9 @@ public class BarView extends View {
 		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 330, 100);
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 80, 330, 1);
+		g.fillRect(0, 80, 220, 1);
 		g.fillRect(0, 0, 330, 1);
+		g.fillRect(220, 0, 1, 100);
 		g.setColor(Color.ORANGE);
 		for(int i=0;i<line.size();i++)
 		{
@@ -59,6 +71,7 @@ public class BarView extends View {
 	}
 	public void initBars() 
 	{
+		float highest = 0;
 		total = 0;
 		day = simulator.getDay();
 		week[day]= simulator.incomeNonPassHoldersPerDay + simulator.incomePassHoldersPerDay + simulator.incomeReservationPerDay;
@@ -69,17 +82,26 @@ public class BarView extends View {
 		for (int i = 0; i < week.length; i++) 
 		{
 			perdayProcent[i] = (float)(week[i]/total);
+			if( highest < perdayProcent[i] ){
+				highest = perdayProcent[i];
+			}
 		}
-//		System.out.println(perdayProcent[0]);
+		
+		highestLabel.setText(""+(int)(highest*100)+"%");
+		highestLabel2.setText(""+(int)(highest*100/2)+"%");
+		highestLabel3.setText("0%");
+		System.out.println(perdayProcent[0]);
+
+
 		line.clear();
-		line.add(0,new Rect(5,80, 20, (int)(-75 * perdayProcent[0])));
-		line.add(1,new Rect(30,80, 20, (int)(-75 * perdayProcent[1])));
-		line.add(2,new Rect(55,80, 20, (int)(-75 * perdayProcent[2])));
-		line.add(3,new Rect(80,80, 20, (int)(-75 * perdayProcent[3])));
-		line.add(4,new Rect(105,80, 20, (int)(-75 * perdayProcent[4])));
-		line.add(5,new Rect(130,80, 20, (int)(-75 * perdayProcent[5])));
-		line.add(6,new Rect(155,80, 20, (int)(-75 * perdayProcent[6])));
-		line.add(7,new Rect(0,50, 100, -20));
+		line.add(0,new Rect( 10, 80 - (int)(75 * perdayProcent[0]/highest), 20, (int)(perdayProcent[0]*75/highest) ));
+		line.add(1,new Rect( 40, 80 - (int)(75 * perdayProcent[1]/highest), 20, (int)(perdayProcent[1]*75/highest) ));
+		line.add(2,new Rect( 70, 80 - (int)(75 * perdayProcent[2]/highest), 20, (int)(perdayProcent[2]*75/highest) ));
+		line.add(3,new Rect( 100, 80 - (int)(75 * perdayProcent[3]/highest), 20, (int)(perdayProcent[3]*75/highest) ));
+		line.add(4,new Rect( 130, 80 - (int)(75 * perdayProcent[4]/highest), 20, (int)(perdayProcent[4]*75/highest) ));
+		line.add(5,new Rect( 160, 80 - (int)(75 * perdayProcent[5]/highest), 20, (int)(perdayProcent[5]*75/highest) ));
+		line.add(6,new Rect( 190, 80 - (int)(75 * perdayProcent[6]/highest), 20, (int)(perdayProcent[6]*75/highest) ));
 	}	
 }
+
 

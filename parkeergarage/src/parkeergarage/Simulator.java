@@ -877,6 +877,11 @@ public class Simulator {
     	return entranceCarQueue.carsInQueue() + entrancePassQueue.carsInQueue();
     }
     
+    public int getTotalExitQueue()
+    {
+    	return exitCarQueue.carsInQueue();
+    }
+    
     public int estimatedIncomeParkedCars() {
     	return nonPassCarsNow * nonPassHoldersCostPerMinute * 45;
     }
