@@ -24,6 +24,7 @@ public class Controller extends JPanel implements ActionListener {
     private JButton removeEntrance;
     private JButton faster;
     private JButton slower;
+    private JButton toggleParkOnNotReservedSpot;
     
 	public Controller(Simulator simulator) {
 		this.simulator=simulator;
@@ -51,6 +52,8 @@ public class Controller extends JPanel implements ActionListener {
 		faster.addActionListener(this);
 		slower = new JButton("slower");
 		slower.addActionListener(this);
+		toggleParkOnNotReservedSpot = new JButton("free parking");
+		toggleParkOnNotReservedSpot.addActionListener(this);
 		setLayout(null);
 		add(plus1);
 		add(plus100);
@@ -63,17 +66,19 @@ public class Controller extends JPanel implements ActionListener {
 		add(removeEntrance);
 		add(faster);
 		add(slower);
-		plus1.setBounds(10, 10, 70, 30);
-		plus100.setBounds(85, 10, 70, 30);
-		run.setBounds(160, 10, 95, 30);
-		week.setBounds(85, 45, 80, 30);
-		day.setBounds(10, 45, 70, 30);
-		faster.setBounds(105, 87, 90, 30);
-		slower.setBounds(10, 87, 90, 30);
+		add(toggleParkOnNotReservedSpot);
+		plus1.setBounds(10, 10, 70, 20);
+		plus100.setBounds(85, 10, 70, 20);
+		run.setBounds(160, 10, 95, 20);
+		week.setBounds(85, 35, 80, 20);
+		day.setBounds(10, 35, 70, 20);
+		faster.setBounds(105, 60, 90, 20);
+		slower.setBounds(10, 60, 90, 20);
 		addExit.setBounds(10, 130, 100, 30);
 		addEntrance.setBounds(115, 130, 100, 30);
 		removeExit.setBounds(10, 165, 100, 30);
 		removeEntrance.setBounds(115, 165, 100, 30);
+		toggleParkOnNotReservedSpot.setBounds(10, 80, 80, 30);
 		setVisible(true);
 	}
 	
@@ -133,6 +138,10 @@ public class Controller extends JPanel implements ActionListener {
 			simulator.extraIngangVerwijderen();
 			System.out.println("ingangsnelheid: "+simulator.enterSpeed);
 		}
+		if(e.getSource() == toggleParkOnNotReservedSpot)
+		{
+			simulator.toggleParkOnNotReservedSpot();
+		}
 	}
 	
 	private void graphGrid(Graphics g) {
@@ -140,7 +149,7 @@ public class Controller extends JPanel implements ActionListener {
 		g.fillRect(0, 0, 260, 400);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 260, 1);
-		g.fillRect(0, 80, 260, 1);
+		g.fillRect(0, 85, 260, 1);
 		g.fillRect(0, 125, 260, 1);
 		g.fillRect(260, 0, 1, 400);
 	}
