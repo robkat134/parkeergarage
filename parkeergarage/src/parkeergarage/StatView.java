@@ -14,7 +14,9 @@ public class StatView extends View {
 	private JLabel incomeNonPassTotal = new JLabel("income nonpassholders: €");
 	private JLabel incomeResTotal = new JLabel("income reservations: €");
 	private JLabel estimatedIncomePresentCars = new JLabel("estimated income: €");
-    private JLabel evenementen = new JLabel("evenement: ");
+    private JLabel event = new JLabel("event: ");
+    private JLabel enterSpeed = new JLabel("enterspeed: ");
+    private JLabel exitSpeed = new JLabel("exitspeed: ");
 	
 	public StatView(Model model, Simulator Tempsimulator) 
 	{
@@ -24,18 +26,22 @@ public class StatView extends View {
 		setLayout(null);
 		add(entranceQueue);
 		add(exitQueue);
+		add(enterSpeed);
+		add(exitSpeed);
 		add(incomePassTotal);
 		add(incomeNonPassTotal);
 		add(incomeResTotal);
 		add(estimatedIncomePresentCars);
-		add(evenementen);
+		add(event);
 		entranceQueue.setBounds(5, 0, 300, 20);
 		exitQueue.setBounds(5, 20, 300, 20);
-		incomePassTotal.setBounds(5, 40, 300, 20);
-		incomeNonPassTotal.setBounds(5, 60, 300, 20);
-		incomeResTotal.setBounds(5, 80, 300, 20);
-		estimatedIncomePresentCars.setBounds(5, 100, 300, 20);
-		evenementen.setBounds(5, 120, 300, 20);
+		enterSpeed.setBounds(5, 40, 300, 20);
+		exitSpeed.setBounds(5, 60, 300, 20);
+		incomePassTotal.setBounds(5, 80, 300, 20);
+		incomeNonPassTotal.setBounds(5, 100, 300, 20);
+		incomeResTotal.setBounds(5, 120, 300, 20);
+		estimatedIncomePresentCars.setBounds(5, 140, 300, 20);
+		event.setBounds(5, 160, 300, 20);
 	}
 	
 	public void paintComponent(Graphics g) 
@@ -53,7 +59,9 @@ public class StatView extends View {
 	{
 		entranceQueue.setText("entrance queue: " + simulator.getTotalEntranceQueue());
 		exitQueue.setText("exit queue: " + simulator.getTotalExitQueue());
-		evenementen.setText("evenement: "+simulator.event);
+		event.setText("event: "+simulator.event);
+		enterSpeed.setText("enterspeed: " + simulator.enterSpeed);
+		exitSpeed.setText("exitspeed: " + simulator.exitSpeed);
 		if (simulator.incomePassHoldersTotal%100 == 0)
 		{
 			incomePassTotal.setText("income passholders: â‚¬" + simulator.incomePassHoldersTotal/100+",00");

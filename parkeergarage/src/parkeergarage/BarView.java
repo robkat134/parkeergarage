@@ -77,7 +77,6 @@ public class BarView extends View {
 		day = simulator.getDay();
 		if (previousDay == 6 && day == 0)
 		{
-			System.out.println("resetting");
 			for (int i = 0; i < week.length; i++) 
 			{
 				perdayProcent[i] = 0;
