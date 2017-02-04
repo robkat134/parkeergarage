@@ -1,3 +1,7 @@
+/**
+ * Deze klasse wordt gebruikt om geluidseffecten af te handelen, wanneer de garage bijvoorbeeld vol is.
+ */
+
 package parkeergarage;
 
 import java.io.BufferedInputStream;
@@ -15,30 +19,9 @@ public class SoundPlayer {
 	
 	public SoundPlayer(){
 		player = null;
-		isPlaying = false; //geeft aan of er nog een file speelt, of niet.
+		isPlaying = false; //geeft aan of er nog een file speelt.
 	}
-	
-    /**
-     * Play a part of the given file.
-     * The method returns once it has finished playing.
-     * @param filename The file to be played.
-     */
-    public void playSample(String filename)
-    {
-        try {
-            setupPlayer(filename);
-            player.play(500);
-            
-        }
-        catch(JavaLayerException e) {
-            reportProblem(filename);
-        }
-        finally {
-            killPlayer();
-            isPlaying = false;
-        }
-    }
-    
+
     /**
      * Start playing the given audio file.
      * The method returns once the playing has been started.
@@ -69,11 +52,7 @@ public class SoundPlayer {
             reportProblem(filename);
         }
     }
-    
-    public void stop()
-    {
-        killPlayer();
-    }
+
     
     /**
      * Set up the player ready to play the given file.
@@ -143,8 +122,9 @@ public class SoundPlayer {
     }
     
     /**
-     * Get method voor isPlaying
-     * @return een boolean. True als er een file speelt, false als deze niet speelt.
+     * Get method voor isPlaying. 
+     * Hierdoor kan er worden gezorgd dat er geen tweede instantie van de audiospeler start wanneer er nog een file speelt.
+     * @return een boolean. True als er een file speelt.
      */
     public boolean getIsPlaying(){
     	return isPlaying;

@@ -102,7 +102,7 @@ public class Simulator {
 
     private int tickPause = 100;
 
-    private boolean playingSound; //Geeft aan of er een notificatie wordt afgespeeld.
+    private boolean playingSound; //True als er nog geluid speelt. Zorgt ervoor dat er geen twee geluiden door elkaar kunnen spelen.
 
     int timeToStayBusy = 120;
     
@@ -839,9 +839,9 @@ public class Simulator {
             weekendResArrivals = 0;
         }
         else{//drukte in de normale situatie.
-            weekDayArrivals = 900;
+            weekDayArrivals = 90;
             weekendArrivals = 190;
-            weekDayPassArrivals = 900;
+            weekDayPassArrivals = 90;
             weekendPassArrivals = 25;
             weekDayResArrivals = 0;
             weekendResArrivals = 0;
