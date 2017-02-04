@@ -41,7 +41,7 @@ public class Simulator {
     private int nightHourEnd = 5; //Einde van de rustige nachtelijke uren.
 
 	private Thread thread;
-    private String event;
+    public String event;
     
     
     private static final String AD_HOC = "1";
@@ -785,23 +785,34 @@ public class Simulator {
          String[] events = new String[]{
         	 "Koopavond", "Theater", "Theater", "Theater"
          };
-            for(int i = 0; i<datas.length; i++){
+            for(int i = 0; i<datas.length; i++)
+            {
                 busyday = datas[i][0];
                 busyhour = datas[i][1];
                 tillbusyday = datas[i][2];
                 tillbusyhour = datas[i][3];
                 event = events[i];
-                    if(day > busyday && day < tillbusyday){
-                        return true;
-                    } else if (day == busyday && hour >= busyhour && day < tillbusyday){
-                        return true;
-                    } else if (day == busyday && hour >= busyhour && hour <= tillbusyhour){
-                        calculateTimeStaying(tillbusyhour);
-                        return true;
-                        } else {}       
-                }
+                if(day > busyday && day < tillbusyday)
+                {
+                	
+                    return true;
+                } 
+                else if (day == busyday && hour >= busyhour && day < tillbusyday)
+                {
+                    return true;
+                } 
+                else if (day == busyday && hour >= busyhour && hour <= tillbusyhour)
+                {
+                    calculateTimeStaying(tillbusyhour);
+                    return true;
+                } 
+                else 
+                {
+                	
+                }       
+            }
             calculateTimeStaying(0);
-            event = "Nothing special";
+            event = "Niks Bijzonder";
             return false;
         }
     
