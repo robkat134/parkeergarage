@@ -18,7 +18,7 @@ public class Simulator {
 	/**
 	 * In te vullen naar voorkeur
 	 */
-	private boolean parkingOnNotReservedSpot = true; 
+	protected boolean parkingOnNotReservedSpot = true; 
 	// TODO dit hieronder ff chekcen. Wat is Abonnementhouders en wat is abonnementHoudersPlekken?
 	private int abonnementHouders = 90; // Max aantal abonnenthouders
 	private int abonnementHoudersPlekken = 60; // Max aantal abonnenthouders plekken.

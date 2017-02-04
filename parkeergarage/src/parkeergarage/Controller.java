@@ -25,6 +25,7 @@ public class Controller extends JPanel implements ActionListener {
     private JButton faster;
     private JButton slower;
     private JButton toggleParkOnNotReservedSpot;
+    private JLabel displayFreeParking = new JLabel("On");
     private JButton addPassHolder;
     private JButton removePassHolder;
     
@@ -75,6 +76,7 @@ public class Controller extends JPanel implements ActionListener {
 		add(toggleParkOnNotReservedSpot);
 		add(addPassHolder);
 		add(removePassHolder);
+		add(displayFreeParking);
 		plus1.setBounds(10, 5, 70, 20);
 		plus100.setBounds(85, 5, 70, 20);
 		run.setBounds(160, 5, 95, 20);
@@ -87,6 +89,7 @@ public class Controller extends JPanel implements ActionListener {
 		removeExit.setBounds(10, 170, 100, 20);
 		addExit.setBounds(115, 170, 100, 20);
 		toggleParkOnNotReservedSpot.setBounds(10, 85, 110, 20);
+		displayFreeParking.setBounds(130, 85, 50, 20);
 		removePassHolder.setBounds(10, 115, 100, 20);
 		addPassHolder.setBounds(115, 115, 100, 20);
 		setVisible(true);
@@ -151,6 +154,8 @@ public class Controller extends JPanel implements ActionListener {
 		if(e.getSource() == toggleParkOnNotReservedSpot)
 		{
 			simulator.toggleParkOnNotReservedSpot();
+			setDisplayFreeParking();
+			
 		}
 		if(e.getSource() == addPassHolder)
 		{
@@ -176,4 +181,13 @@ public class Controller extends JPanel implements ActionListener {
 	public void paintComponent(Graphics g) {
 		graphGrid(g);
 	}
+	
+    public void setDisplayFreeParking() {
+    	if(simulator.parkingOnNotReservedSpot) {
+    		displayFreeParking.setText("On");
+    	}
+    	else {
+    		displayFreeParking.setText("Off");
+    	}
+    }
 }
