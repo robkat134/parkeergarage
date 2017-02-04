@@ -35,8 +35,7 @@ public class SimulatorView extends View{
     
     public JLabel parkedCars = new JLabel("Parked Cars: ");
     public JLabel time = new JLabel("Time: ");
-    
-    public JLabel inkomsten = new JLabel("Huidige inkomsten: �");
+    public JLabel day = new JLabel ("Day: ");
 
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
     {
@@ -61,8 +60,9 @@ public class SimulatorView extends View{
         setLayout(new BorderLayout());
         
         JPanel textPanel = new JPanel();
-        textPanel.add(parkedCars);
-        textPanel.add(time);
+        textPanel.add(parkedCars,BorderLayout.CENTER);
+        textPanel.add(time,BorderLayout.CENTER);
+        textPanel.add(day,BorderLayout.CENTER);
 		
 
 		add(textPanel,BorderLayout.NORTH);
@@ -307,12 +307,19 @@ public class SimulatorView extends View{
         
         private Dimension size;
         private Image carParkImage;   
-        private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_RGB);;
+        private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
+        private JLabel legenda = new JLabel
+        		("		           car without subscription"
+        		+ "  	            car with subscription"
+        		+ "  	            car with reservation"
+        		+ "		            reserved spot");
         /**
          * Constructor for objects of class CarPark
          */
         public CarParkView() {
             size = new Dimension(0, 0);
+            add(legenda);
+            legenda.setBounds(0, 300, 400, 200);
         }
     
         /**
@@ -327,6 +334,17 @@ public class SimulatorView extends View{
          * internal image to screen.
          */
         public void paintComponent(Graphics g) {
+        	
+        	g.setColor(Color.decode("#EEEEEE"));
+        	g.fillRect(0, 0, 838, 500);
+        	g.setColor(Color.RED);
+        	g.fillRect(135, 10, 8, 8);
+        	g.setColor(Color.BLUE);
+        	g.fillRect(315, 10, 8, 8);
+        	g.setColor(Color.decode("#4fb530"));
+        	g.fillRect(475, 10, 8, 8);
+        	g.setColor(Color.GRAY);
+        	g.fillRect(625, 10, 8, 8);
             if (carParkBuffer == null) {
                 return;
             }
@@ -357,7 +375,7 @@ public class SimulatorView extends View{
             if (!size.equals(getSize())) 
             {
                 size = getSize();
-                carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+                carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
                 carParkImage = createImage(size.width, size.height);
                 System.out.println("redrawing image");
             }

@@ -12,7 +12,6 @@ public class LineView extends View {
 	ArrayList<Rect> line = new ArrayList<Rect>();
 	ArrayList<Rect> line2 = new ArrayList<Rect>();
 	ArrayList<Rect> line3 = new ArrayList<Rect>();
-	ArrayList<Rect> line4 = new ArrayList<Rect>();
 	
 	private JLabel UpperLimit = new JLabel("540");
 	private JLabel MiddleLimit = new JLabel("270");
@@ -54,30 +53,25 @@ public class LineView extends View {
 		{
 			g.fillRect(line2.get(i).x1,line2.get(i).y1,line2.get(i).x2,line2.get(i).y2); 
 		}
-		g.setColor(Color.GREEN);
+		g.setColor(Color.BLACK);
 		for(int i=0;i<line3.size();i++)
 		{
 			g.fillRect(line3.get(i).x1,line3.get(i).y1,line3.get(i).x2,line3.get(i).y2); 
-		}
-		g.setColor(Color.BLACK);
-		for(int i=0;i<line4.size();i++)
-		{
-			g.fillRect(line4.get(i).x1,line4.get(i).y1,line4.get(i).x2,line4.get(i).y2); 
 		}
 	}
 	/**
 	 * @param g
 	 */
 	private void initGraph(Graphics g) {
-		g.setColor(Color.decode("#EEEEEE"));
+		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 230, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(201, 0, 1, 100);
-		g.fillRect(0, 0, 1, 100);
+//		g.fillRect(0, 0, 1, 100);
 		g.fillRect(0, 0, 230, 1);
 		g.fillRect(230, 0, 1, 100);
 		g.fillRect(0, 100, 230, 1);
-		g.setColor(Color.decode("#595a5b"));
+		g.setColor(Color.decode("#D6D6D6"));
 		g.fillRect(0, 15, 201, 1);
 		g.fillRect(0, 50, 201, 1);
 		g.fillRect(0, 85, 201, 1);
@@ -85,46 +79,35 @@ public class LineView extends View {
 	public void addRectangle() 
 	{
 		line.add(0,new Rect(startX,85 -(int)(simulator.nonPassCarsNow/7.2), 2, 2));
-		if (line.size()>199)
+		if (line.size()>200)
 		{
 			for(int i=0;i<line.size();i++)
 			{
 				line.get(i).x1--;
 			}
 			line.remove(line.size()-1);
-			startX = 199;
+			startX = 200;
 			//startX--;
 		}
-		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot)/7.2), 2,2));
-		if (line2.size()>199)
+		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot + simulator.passCarsNowWithReservedSpot)/7.2), 2,2));
+		if (line2.size()>200)
 		{
 			for(int i=0;i<line2.size();i++)
 			{
 				line2.get(i).x1--;
 			}
 			line2.remove(line2.size()-1);
-			startX = 199;
+			startX = 200;
 			//startX--;
 		}
-		line3.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot)/7.2), 2,2));
-		if (line3.size()>199)
+		line3.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot+simulator.passCarsNowWithReservedSpot + simulator.nonPassCarsNow)/7.2), 2,2));
+		if (line3.size()>200)
 		{
 			for(int i=0;i<line3.size();i++)
 			{
 				line3.get(i).x1--;
 			}
 			line3.remove(line3.size()-1);
-			startX = 199;
-			//startX--;
-		}
-		line4.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot+simulator.passCarsNowWithReservedSpot + simulator.nonPassCarsNow)/7.2), 2,2));
-		if (line4.size()>199)
-		{
-			for(int i=0;i<line4.size();i++)
-			{
-				line4.get(i).x1--;
-			}
-			line4.remove(line4.size()-1);
 			startX = 199;
 			//startX--;
 		}

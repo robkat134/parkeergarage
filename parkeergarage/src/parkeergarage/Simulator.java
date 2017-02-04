@@ -18,7 +18,7 @@ public class Simulator {
 	/**
 	 * In te vullen naar voorkeur
 	 */
-	private boolean parkingOnNotReservedSpot = true; 
+	protected boolean parkingOnNotReservedSpot = true; 
 	// TODO dit hieronder ff chekcen. Wat is Abonnementhouders en wat is abonnementHoudersPlekken?
 	private int abonnementHouders = 90; // Max aantal abonnenthouders
 	private int abonnementHoudersPlekken = 60; // Max aantal abonnenthouders plekken.
@@ -41,7 +41,7 @@ public class Simulator {
     private int nightHourEnd = 5; //Einde van de rustige nachtelijke uren.
 
 	private Thread thread;
-    private String event;
+    public String event;
     
     
     private static final String AD_HOC = "1";
@@ -58,20 +58,20 @@ public class Simulator {
      * Onderstaande is allemaal voor de stats. Gemaakt door Rob dus voor vragen bij hem zijn
      */
     protected int passCarsNowWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek op dit moment
-    private int passCarsTodayWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die vandaag hun auto hebben gepakeerd
-    private int passCarsTotalWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die er vanaf het begin geparkeerd hebben
+    protected int passCarsTodayWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die vandaag hun auto hebben gepakeerd
+    protected int passCarsTotalWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die er vanaf het begin geparkeerd hebben
     protected int passCarsNowWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek op dit moment
-    private int passCarsTodayWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek die vandaag hun auto hebben geparkeerd
-    private int passCarsTotalWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders pelk die er vanaf het begin geparkeerd hebben.
+    protected int passCarsTodayWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek die vandaag hun auto hebben geparkeerd
+    protected int passCarsTotalWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders pelk die er vanaf het begin geparkeerd hebben.
     
-    private int reservedCarsNow = 0; // Aantal reserveringen op dit moment
-    private int reservedCarsToday = 0; // Aantal reserveringen vandaag
-    private int reservedCarsTotal = 0; //Aantal reserveringen totaal gemaakt
+    protected int reservedCarsNow = 0; // Aantal reserveringen op dit moment
+    protected int reservedCarsToday = 0; // Aantal reserveringen vandaag
+    protected int reservedCarsTotal = 0; //Aantal reserveringen totaal gemaakt
     protected int nonPassCarsNow = 0; // Aantal niet abonnementhouders die hun auto geparkeerd hebben op dit moment
-    private int nonPassCarsToday = 0; // Aantal niet abonnementhouders die hun auto vnadaag geparkeerd hebben
-    private int nonPassCarsTotal = 0; // Aantal niet abonnementhouders die hun auto geparkeerd ehbben vanaf het begin
-    private int carsPassedToday = 0; // Aantal auto's die zijn doorgereden omdat de rij telang was 
-    private int carsPassedTotal = 0; // Aantal auto's die vanaf het starten zijn doorgereden omdat de rij telang was
+    protected int nonPassCarsToday = 0; // Aantal niet abonnementhouders die hun auto vnadaag geparkeerd hebben
+    protected int nonPassCarsTotal = 0; // Aantal niet abonnementhouders die hun auto geparkeerd ehbben vanaf het begin
+    protected int carsPassedToday = 0; // Aantal auto's die zijn doorgereden omdat de rij telang was 
+    protected int carsPassedTotal = 0; // Aantal auto's die vanaf het starten zijn doorgereden omdat de rij telang was
     
     public int totalCarsToday = 0;
     
@@ -117,12 +117,14 @@ public class Simulator {
     int weekDayPassArrivals = 90; // average number of arriving cars per hour
     int weekendPassArrivals = 25;// average number of arriving cars per hour
 
-    int enterSpeed = 5; // number of cars that can enter per minute
+    int enterSpeed = 2; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute    
     int maxLength = 5; // Zodra er meer dan 'x' aantal autos in de rij staan zullen ze doorrijden 
     final int speedPerExit = 5;
-    final int speedPerEntrance = 3;
+    final int speedPerEntrance = 2;
+    
+    private String[] dayArray = new String[7];
 
     
     /**
@@ -157,8 +159,8 @@ public class Simulator {
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
-        screen.setSize(838, 747);
-        screen.setResizable(true);
+        screen.setSize(825, 747);
+        screen.setResizable(false);
         screen.setLayout(null);
 
         screen.add(simulatorView);
@@ -169,12 +171,12 @@ public class Simulator {
         screen.add(statView);
         
         Insets insets = screen.getInsets();
-        simulatorView.setBounds(insets.left, insets.top, 820, 500);
-        controller.setBounds(insets.left, 500 + insets.top, 600, 200);
+        simulatorView.setBounds(insets.left, insets.top, 838, 500);
+        controller.setBounds(insets.left, 500 + insets.top, 261, 1000);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
-        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
-        statView.setBounds(270 + insets.left, 505 + insets.top, 210, 300);
+        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 1000);
+        statView.setBounds(261 + insets.left, 500 + insets.top, 230, 1000);
         screen.setVisible(true);   
         
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  
@@ -195,7 +197,7 @@ public class Simulator {
      */
     public void run() 
     {
-        while (tickCount < 1440000)
+        while (tickCount < 100000)
         {
         	tick();
         	if (isRunning)
@@ -400,6 +402,10 @@ public class Simulator {
     {
     	isRunning = !isRunning;
     }
+    public void toggleParkOnNotReservedSpot()
+    {
+    	parkingOnNotReservedSpot = !parkingOnNotReservedSpot;
+    }
 
     
     /**
@@ -421,6 +427,7 @@ public class Simulator {
             day -= 7;
         }
         displayTime();
+        displayDay();
 
     }
     
@@ -433,17 +440,28 @@ public class Simulator {
         if (hour < 10)
         {
             if (minute < 10)
-                simulatorView.time.setText("Time: 0"+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: 0"+ hour + ":0" + minute);
             else
-                simulatorView.time.setText("Time: 0"+ hour + ":" + minute);
+            	simulatorView.time.setText("Time: 0"+ hour + ":" + minute);
         }
         else
         {
             if (minute < 10)
-                simulatorView.time.setText("Time: "+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: "+ hour + ":0" + minute);
             else
-                simulatorView.time.setText("Time: "+ hour + ":" + minute);
+            	simulatorView.time.setText("Time: "+ hour + ":" + minute);
         }
+    }
+    
+    private void displayDay() {
+    	dayArray[0]= "Monday";
+    	dayArray[1]= "Tuesday";
+    	dayArray[2]= "Wednesday";
+    	dayArray[3]= "Thursday";
+    	dayArray[4]= "Friday";
+    	dayArray[5]= "Saturday";
+    	dayArray[6]= "Sunday";
+    	simulatorView.day.setText("Day: " + dayArray[getDay()]);
     }
 
     
@@ -769,41 +787,53 @@ public class Simulator {
     /**
      * @return busyHour (true or false)
      */
-    private Boolean busyHour(){
+    private Boolean busyHour()
+    {
         int busyday = 0;
         int busyhour = 0;
         int tillbusyday = 0;
         int tillbusyhour = 0;
-        int[][] datas = new int[][]{
+        int[][] datas = new int[][]
+        {
         	//De tijden wanneer het extra druk is
-              {3, 18, 3, 21}, //Donderdagavond van 18 tot 21 uur: Koopavond
-              {4, 18, 4, 24}, //vrijdagavond van 18 tot 24 uur
-              {5, 18, 5, 24}, //vrijdagavond van 18 tot 24 uur
-              {6, 12, 6, 18}, //zondagmiddag van 12 tot 18 uur  
-            };
+			{1, 7, 1, 17}, //Donderdagavond van 8 tot 17 uur: Market
+			{3, 18, 3, 21}, //Donderdagavond van 18 tot 21 uur: shopping night
+			{4, 18, 4, 24}, //vrijdagavond van 18 tot 24 uur
+			{5, 18, 5, 24}, //zaterdagavond van 18 tot 24 uur
+			{6, 7, 6, 17}, //zondagmiddag van 8 tot 17 uur  
+        };
           //Het event wat bij de bovenstaande uren hoort
-         String[] events = new String[]{
-        	 "Koopavond", "Theater", "Theater", "Theater"
-         };
-            for(int i = 0; i<datas.length; i++){
-                busyday = datas[i][0];
-                busyhour = datas[i][1];
-                tillbusyday = datas[i][2];
-                tillbusyhour = datas[i][3];
-                event = events[i];
-                    if(day > busyday && day < tillbusyday){
-                        return true;
-                    } else if (day == busyday && hour >= busyhour && day < tillbusyday){
-                        return true;
-                    } else if (day == busyday && hour >= busyhour && hour <= tillbusyhour){
-                        calculateTimeStaying(tillbusyhour);
-                        return true;
-                        } else {}       
-                }
-            calculateTimeStaying(0);
-            event = "Nothing special";
-            return false;
+        String[] events = new String[]
+        {"Market","shopping night", "Theatre", "Theatre", "Market"};
+        for(int i = 0; i<datas.length; i++)
+        {
+            busyday = datas[i][0];
+            busyhour = datas[i][1];
+            tillbusyday = datas[i][2];
+            tillbusyhour = datas[i][3];
+            event = events[i];
+            if(day > busyday && day < tillbusyday)
+            {
+                return true;
+            } 
+            else if (day == busyday && hour >= busyhour && day < tillbusyday)
+            {
+                return true;
+            } 
+            else if (day == busyday && hour >= busyhour && hour <= tillbusyhour)
+            {
+                calculateTimeStaying(tillbusyhour);
+                return true;
+            } 
+            else 
+            {
+            	
+            }       
         }
+        calculateTimeStaying(0);
+        event = "Nothing Special";
+        return false;
+    }
     
     
     /**
@@ -849,7 +879,7 @@ public class Simulator {
     }
 	
     public void extraIngang() {
-    	enterSpeed+=1;
+    	enterSpeed+=speedPerEntrance;
     }
     
     public void extraUitgang() {
@@ -875,6 +905,11 @@ public class Simulator {
     public int getTotalEntranceQueue()
     {
     	return entranceCarQueue.carsInQueue() + entrancePassQueue.carsInQueue();
+    }
+    
+    public int getTotalExitQueue()
+    {
+    	return exitCarQueue.carsInQueue();
     }
     
     public int estimatedIncomeParkedCars() {
@@ -906,5 +941,22 @@ public class Simulator {
     
     public int returnTickPause() {
     	return tickPause;
+    }
+    
+    public void incrementPassHolders() {
+    	if(abonnementHouders < 540) {
+        	abonnementHouders += 5;
+    	}
+    }
+    
+    public void decrementPassHolders() {
+    	if(abonnementHouders > 0) {
+    		abonnementHouders -= 5;
+    	}
+    }
+    
+    public int getAbonnementHouders()
+    {
+    	return abonnementHouders;
     }
 }

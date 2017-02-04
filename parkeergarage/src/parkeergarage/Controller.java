@@ -1,7 +1,9 @@
 package parkeergarage;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -14,54 +16,82 @@ public class Controller extends JPanel implements ActionListener {
     private JButton plus100;
     private JButton run;
     private JButton stop;
-    private JButton extraUitgang;
-    private JButton extraIngang;
-    private JButton extraUitgangVerwijderen;
-    private JButton extraIngangVerwijderen;
-    private JButton sneller;
-    private JButton trager;
+    private JButton day;
+    private JButton week;
+    private JButton addExit;
+    private JButton addEntrance;
+    private JButton removeExit;
+    private JButton removeEntrance;
+    private JButton faster;
+    private JButton slower;
+    private JButton toggleParkOnNotReservedSpot;
+    private JLabel displayFreeParking = new JLabel("On");
+    private JButton addPassHolder;
+    private JButton removePassHolder;
     
 	public Controller(Simulator simulator) {
 		this.simulator=simulator;
 		
-		setSize(200, 400);
+		setSize(260, 400);
 		plus1 =new JButton("+1");
 		plus1.addActionListener(this);
 		plus100 =new JButton("+100");
 		plus100.addActionListener(this);
 		run =new JButton("play/pause");
 		run.addActionListener(this);
-		extraUitgang = new JButton("+uitgang");
-		extraUitgang.addActionListener(this);
-		extraIngang = new JButton("+ingang");
-		extraIngang.addActionListener(this);
-		extraUitgangVerwijderen = new JButton("-uitgang");
-		extraUitgangVerwijderen.addActionListener(this);
-		extraIngangVerwijderen = new JButton("-ingang");
-		extraIngangVerwijderen.addActionListener(this);
-		sneller = new JButton("sneller");
-		sneller.addActionListener(this);
-		trager = new JButton("trager");
-		trager.addActionListener(this);
+		day = new JButton("1 day");
+		day.addActionListener(this);
+		week = new JButton("1 week");
+		week.addActionListener(this);
+		addExit = new JButton("+exit");
+		addExit.addActionListener(this);
+		addEntrance = new JButton("+entrance");
+		addEntrance.addActionListener(this);
+		removeExit = new JButton("-exit");
+		removeExit.addActionListener(this);
+		removeEntrance = new JButton("-entrance");
+		removeEntrance.addActionListener(this);
+		faster = new JButton("faster");
+		faster.addActionListener(this);
+		slower = new JButton("slower");
+		slower.addActionListener(this);
+		toggleParkOnNotReservedSpot = new JButton("free parking");
+		toggleParkOnNotReservedSpot.addActionListener(this);
+		addPassHolder = new JButton("+pass");
+		addPassHolder.addActionListener(this);
+		removePassHolder = new JButton("-pass");
+		removePassHolder.addActionListener(this);
 		setLayout(null);
 		add(plus1);
 		add(plus100);
 		add(run);
-		add(extraUitgang);
-		add(extraIngang);
-		add(extraUitgangVerwijderen);
-		add(extraIngangVerwijderen);
-		add(sneller);
-		add(trager);
-		plus1.setBounds(10, 10, 70, 30);
-		plus100.setBounds(85, 10, 70, 30);
-		run.setBounds(160, 10, 95, 30);
-		sneller.setBounds(105, 45, 90, 30);
-		trager.setBounds(10, 45, 90, 30);
-		extraUitgang.setBounds(10, 120, 100, 30);
-		extraIngang.setBounds(115, 120, 100, 30);
-		extraUitgangVerwijderen.setBounds(10, 155, 100, 30);
-		extraIngangVerwijderen.setBounds(115, 155, 100, 30);
+		add(day);
+		add(week);
+		add(addExit);
+		add(addEntrance);
+		add(removeExit);
+		add(removeEntrance);
+		add(faster);
+		add(slower);
+		add(toggleParkOnNotReservedSpot);
+		add(addPassHolder);
+		add(removePassHolder);
+		add(displayFreeParking);
+		plus1.setBounds(10, 5, 70, 20);
+		plus100.setBounds(85, 5, 70, 20);
+		run.setBounds(160, 5, 95, 20);
+		week.setBounds(85, 30, 80, 20);
+		day.setBounds(10, 30, 70, 20);
+		faster.setBounds(105, 55, 90, 20);
+		slower.setBounds(10, 55, 90, 20);
+		removeEntrance.setBounds(10, 145, 100, 20);
+		addEntrance.setBounds(115, 145, 100, 20);
+		removeExit.setBounds(10, 170, 100, 20);
+		addExit.setBounds(115, 170, 100, 20);
+		toggleParkOnNotReservedSpot.setBounds(10, 85, 110, 20);
+		displayFreeParking.setBounds(130, 85, 50, 20);
+		removePassHolder.setBounds(10, 115, 100, 20);
+		addPassHolder.setBounds(115, 115, 100, 20);
 		setVisible(true);
 	}
 	
@@ -78,40 +108,86 @@ public class Controller extends JPanel implements ActionListener {
 		{
 			simulator.tickFor(1);
 		}
+		if(e.getSource() == day)
+		{
+			simulator.tickFor(1440);
+		}
+		if(e.getSource() == week)
+		{
+			simulator.tickFor(10080);
+		}
 		if(e.getSource() == run)
 		{
 			simulator.toggleRunning();
 		}
-		if(e.getSource() == sneller)
+		if(e.getSource() == faster)
 		{
 			simulator.incrementTickPause();
 			System.out.println("tickpause: " + simulator.returnTickPause());
 		}
-		if(e.getSource() == trager)
+		if(e.getSource() == slower)
 		{
 			simulator.decrementTickPause();
 			System.out.println("tickpause: " + simulator.returnTickPause());
 		}
-		if(e.getSource() == extraUitgang)
+		if(e.getSource() == addExit)
 		{
 			simulator.extraUitgang();
-			System.out.println("uitgangen: "+simulator.exitSpeed);
+			System.out.println("uitgangsnelheid: "+simulator.exitSpeed);
 		}
-		if(e.getSource() == extraIngang)
+		if(e.getSource() == addEntrance)
 		{
 			simulator.extraIngang();
-			System.out.println("ingangen: "+simulator.enterSpeed);
+			System.out.println("ingangsnelheid: "+simulator.enterSpeed);
 		}
-		if(e.getSource() == extraUitgangVerwijderen)
+		if(e.getSource() == removeExit)
 		{
 			simulator.extraUitgangVerwijderen();
 
-			System.out.println("uitgangen: "+simulator.exitSpeed);
+			System.out.println("uitgangsnelheid: "+simulator.exitSpeed);
 		}
-		if(e.getSource() == extraIngangVerwijderen)
+		if(e.getSource() == removeEntrance)
 		{
 			simulator.extraIngangVerwijderen();
-			System.out.println("ingangen: "+simulator.enterSpeed);
+			System.out.println("ingangsnelheid: "+simulator.enterSpeed);
+		}
+		if(e.getSource() == toggleParkOnNotReservedSpot)
+		{
+			simulator.toggleParkOnNotReservedSpot();
+			setDisplayFreeParking();
+			
+		}
+		if(e.getSource() == addPassHolder)
+		{
+			simulator.incrementPassHolders();
+		}
+		if(e.getSource() == removePassHolder)
+		{
+			simulator.decrementPassHolders();
 		}
 	}
+	
+	private void graphGrid(Graphics g) {
+		g.setColor(Color.decode("#bfbfbf"));
+		g.fillRect(0, 0, 260, 1000);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, 260, 1);
+		g.fillRect(0, 80, 260, 1);
+		g.fillRect(0, 110, 260, 1);
+		g.fillRect(0, 140, 260, 1);
+		g.fillRect(260, 0, 1, 1000);
+	}
+	
+	public void paintComponent(Graphics g) {
+		graphGrid(g);
+	}
+	
+    public void setDisplayFreeParking() {
+    	if(simulator.parkingOnNotReservedSpot) {
+    		displayFreeParking.setText("On");
+    	}
+    	else {
+    		displayFreeParking.setText("Off");
+    	}
+    }
 }

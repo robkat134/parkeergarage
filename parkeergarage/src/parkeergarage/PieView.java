@@ -14,7 +14,7 @@ public class PieView extends View {
 	public void paintComponent(Graphics g) {
 
 
-		g.setColor(Color.decode("#EEEEEE"));
+		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 100, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 100, 1);
@@ -29,7 +29,7 @@ public class PieView extends View {
 		startAngle += intAantal;
 		double secondAantal = (simulator.passCarsNowWithoutReservedSpot)/1.5;
 		int intSecondAantal = (int)secondAantal;
-		g.setColor(Color.GREEN);
+		g.setColor(Color.decode("#56a2ff"));
 		g.fillArc(10, 10, 80, 80, startAngle, intSecondAantal);
 		
 		startAngle += intSecondAantal;
@@ -39,10 +39,16 @@ public class PieView extends View {
 		g.fillArc(10, 10, 80, 80, startAngle, intThirdAantal);	
 		
 		startAngle += intThirdAantal;
-		double fourthAantal = ( simulator.getNumberOfPlaces()-(simulator.nonPassCarsNow + simulator.passCarsNowWithoutReservedSpot + simulator.passCarsNowWithReservedSpot) )/1.5;
+		double fourthAantal = (simulator.reservedCarsNow)/1.5;
 		int intFourthAantal = (int)fourthAantal;
-		g.setColor(Color.WHITE);
+		g.setColor(Color.decode("#4fb530"));
 		g.fillArc(10, 10, 80, 80, startAngle, intFourthAantal);
+		
+		startAngle += intFourthAantal;
+		double fifthAantal = ( simulator.getNumberOfPlaces()-(simulator.nonPassCarsNow + simulator.passCarsNowWithoutReservedSpot + simulator.passCarsNowWithReservedSpot + simulator.reservedCarsNow) )/1.5;
+		int intFifthAantal = (int)fifthAantal;
+		g.setColor(Color.WHITE);
+		g.fillArc(10, 10, 80, 80, startAngle, intFifthAantal);
 	}	
 }
 
