@@ -117,12 +117,12 @@ public class Simulator {
     int weekDayPassArrivals = 90; // average number of arriving cars per hour
     int weekendPassArrivals = 25;// average number of arriving cars per hour
 
-    int enterSpeed = 5; // number of cars that can enter per minute
+    int enterSpeed = 2; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute    
     int maxLength = 5; // Zodra er meer dan 'x' aantal autos in de rij staan zullen ze doorrijden 
     final int speedPerExit = 5;
-    final int speedPerEntrance = 3;
+    final int speedPerEntrance = 2;
 
     
     /**
@@ -170,11 +170,11 @@ public class Simulator {
         
         Insets insets = screen.getInsets();
         simulatorView.setBounds(insets.left, insets.top, 838, 500);
-        controller.setBounds(insets.left, 500 + insets.top, 600, 200);
+        controller.setBounds(insets.left, 500 + insets.top, 261, 400);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
         barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
-        statView.setBounds(270 + insets.left, 505 + insets.top, 210, 300);
+        statView.setBounds(261 + insets.left, 500 + insets.top, 230, 400);
         screen.setVisible(true);   
         
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  
@@ -195,7 +195,7 @@ public class Simulator {
      */
     public void run() 
     {
-        while (tickCount < 1440000)
+        while (tickCount < 100000)
         {
         	tick();
         	if (isRunning)
@@ -429,20 +429,20 @@ public class Simulator {
      * RUTGER
      * Deze functie zorgt ervoor dat er geen tijden zoals 12:0 wordt weergeven maar als 12:00
      */
-    private String displayTime() {
+    private void displayTime() {
         if (hour < 10)
         {
             if (minute < 10)
-            	return ("Time: 0"+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: 0"+ hour + ":0" + minute);
             else
-            	return ("Time: 0"+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: 0"+ hour + ":" + minute);
         }
         else
         {
             if (minute < 10)
-            	return ("Time: 0"+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: "+ hour + ":0" + minute);
             else
-            	return ("Time: 0"+ hour + ":0" + minute);
+            	simulatorView.time.setText("Time: "+ hour + ":" + minute);
         }
     }
 
@@ -849,7 +849,7 @@ public class Simulator {
     }
 	
     public void extraIngang() {
-    	enterSpeed+=1;
+    	enterSpeed+=speedPerEntrance;
     }
     
     public void extraUitgang() {

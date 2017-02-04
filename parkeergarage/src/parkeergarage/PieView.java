@@ -14,7 +14,7 @@ public class PieView extends View {
 	public void paintComponent(Graphics g) {
 
 
-		g.setColor(Color.decode("#EEEEEE"));
+		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 100, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 100, 1);
@@ -29,7 +29,7 @@ public class PieView extends View {
 		startAngle += intAantal;
 		double secondAantal = (simulator.passCarsNowWithoutReservedSpot)/1.5;
 		int intSecondAantal = (int)secondAantal;
-		g.setColor(Color.GREEN);
+		g.setColor(Color.decode("#56a2ff"));
 		g.fillArc(10, 10, 80, 80, startAngle, intSecondAantal);
 		
 		startAngle += intSecondAantal;

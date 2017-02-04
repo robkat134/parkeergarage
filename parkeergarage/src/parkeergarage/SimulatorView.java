@@ -307,7 +307,7 @@ public class SimulatorView extends View{
         
         private Dimension size;
         private Image carParkImage;   
-        private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_RGB);
+        private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
         /**
          * Constructor for objects of class CarPark
          */
@@ -327,6 +327,9 @@ public class SimulatorView extends View{
          * internal image to screen.
          */
         public void paintComponent(Graphics g) {
+        	
+        	g.setColor(Color.decode("#EEEEEE"));
+        	g.fillRect(0, 0, 838, 500);
             if (carParkBuffer == null) {
                 return;
             }
@@ -357,7 +360,7 @@ public class SimulatorView extends View{
             if (!size.equals(getSize())) 
             {
                 size = getSize();
-                carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
+                carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
                 carParkImage = createImage(size.width, size.height);
                 System.out.println("redrawing image");
             }
