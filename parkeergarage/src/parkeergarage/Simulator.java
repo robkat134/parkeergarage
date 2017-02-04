@@ -402,6 +402,10 @@ public class Simulator {
     {
     	isRunning = !isRunning;
     }
+    public void toggleParkOnNotReservedSpot()
+    {
+    	parkingOnNotReservedSpot = !parkingOnNotReservedSpot;
+    }
 
     
     /**
