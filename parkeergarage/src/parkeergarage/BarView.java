@@ -12,6 +12,7 @@ public class BarView extends View {
 	Simulator simulator;
 	ArrayList<Rect> line = new ArrayList<Rect>();
 	private int day;
+	private int previousDay;
 	private int[] week = new int[7];
 	private float[] perdayProcent = new float[7];
 	private float total;
@@ -74,6 +75,16 @@ public class BarView extends View {
 		float highest = 0;
 		total = 0;
 		day = simulator.getDay();
+		if (previousDay == 6 && day == 0)
+		{
+			System.out.println("resetting");
+			for (int i = 0; i < week.length; i++) 
+			{
+				perdayProcent[i] = 0;
+				week[i]=0;
+			}
+			total = 0;
+		}
 		week[day]= simulator.incomeNonPassHoldersPerDay + simulator.incomePassHoldersPerDay + simulator.incomeReservationPerDay;
 		for (int i = 0; i < week.length; i++) 
 		{
@@ -101,6 +112,7 @@ public class BarView extends View {
 		line.add(4,new Rect( 130, 80 - (int)(75 * perdayProcent[4]/highest), 20, (int)(perdayProcent[4]*75/highest) ));
 		line.add(5,new Rect( 160, 80 - (int)(75 * perdayProcent[5]/highest), 20, (int)(perdayProcent[5]*75/highest) ));
 		line.add(6,new Rect( 190, 80 - (int)(75 * perdayProcent[6]/highest), 20, (int)(perdayProcent[6]*75/highest) ));
+		previousDay = day;
 	}	
 }
 
