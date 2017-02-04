@@ -169,7 +169,7 @@ public class Simulator {
         screen.add(statView);
         
         Insets insets = screen.getInsets();
-        simulatorView.setBounds(0, 0, 800, 385);
+        simulatorView.setBounds(insets.left, insets.top, 838, 500);
         controller.setBounds(insets.left, 500 + insets.top, 600, 200);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
