@@ -103,6 +103,7 @@ public class Simulator {
     private int tickPause = 100;
 
     private boolean playingSound; //True als er nog geluid speelt. Zorgt ervoor dat er geen twee geluiden door elkaar kunnen spelen.
+    private int soundLastPlayed; //Onthoudt het uur waarop een geluid voor het laatst is afgespeeld, zodat een geluid maar 1 keer speelt per uur.
 
     int timeToStayBusy = 120;
     
@@ -256,8 +257,9 @@ public class Simulator {
 		}
 		else{
         	//Speel een geluidsbestand wanneer de garage vol is.
-        	if(playingSound == false){
+        	if(playingSound == false && soundLastPlayed != hour){
         		soundPlayer.startPlaying("src/parkeergarage/sounds/alarm.mp3");
+        		soundLastPlayed = hour;
         	}
 			
 		}
@@ -386,13 +388,14 @@ public class Simulator {
 	        
 	        setPlayingSound();
 	        
-	       if(simulatorView.getNumberOfOpenSpots() > 70){
+	       if(simulatorView.getNumberOfOpenSpots() > 20){
 	            handleEntrance();
 	        }
 	        else{
 	        	//Speel een geluidsbestand wanneer de garage vol is.
-	        	if(playingSound == false){
+	        	if(playingSound == false && soundLastPlayed != hour){
 	        		soundPlayer.startPlaying("src/parkeergarage/sounds/alarm.mp3");
+	        		soundLastPlayed = hour;
 	        	}
 	        }
     	}
@@ -849,12 +852,12 @@ public class Simulator {
     
     
      /**
-     * Regel de drukte aan de hand van evenementen, nachtelijke uren of uren overdag.
+     * Regelt de drukte aan de hand van evenementen, nachtelijke uren of uren overdag.
      */
     private void setCarArrivals(){
         if(busyHour()){//drukte tijdens de drukke uren.
-            weekDayArrivals = 150;
-            weekendArrivals = 300;
+            weekDayArrivals = 175;
+            weekendArrivals = 350;
             weekDayPassArrivals = 50;
             weekendPassArrivals = 50;
             weekDayResArrivals = 25;
