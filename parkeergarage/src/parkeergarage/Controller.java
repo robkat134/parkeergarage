@@ -164,13 +164,13 @@ public class Controller extends JPanel implements ActionListener {
 	
 	private void graphGrid(Graphics g) {
 		g.setColor(Color.decode("#bfbfbf"));
-		g.fillRect(0, 0, 260, 400);
+		g.fillRect(0, 0, 260, 1000);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 260, 1);
 		g.fillRect(0, 80, 260, 1);
 		g.fillRect(0, 110, 260, 1);
 		g.fillRect(0, 140, 260, 1);
-		g.fillRect(260, 0, 1, 400);
+		g.fillRect(260, 0, 1, 1000);
 	}
 	
 	public void paintComponent(Graphics g) {

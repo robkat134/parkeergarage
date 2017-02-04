@@ -52,10 +52,10 @@ public class StatView extends View {
 		setStats();
 		
 		g.setColor(Color.decode("#bfbfbf"));
-		g.fillRect(0, 0, 229, 300);
+		g.fillRect(0, 0, 229, 1000);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, 229, 1);	
-		g.fillRect(228, 0, 1, 300);
+		g.fillRect(228, 0, 1, 1000);
 	}
 	
 	public void setStats()

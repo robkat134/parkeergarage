@@ -159,8 +159,8 @@ public class Simulator {
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
-        screen.setSize(838, 747);
-        screen.setResizable(true);
+        screen.setSize(825, 747);
+        screen.setResizable(false);
         screen.setLayout(null);
 
         screen.add(simulatorView);
@@ -172,11 +172,11 @@ public class Simulator {
         
         Insets insets = screen.getInsets();
         simulatorView.setBounds(insets.left, insets.top, 838, 500);
-        controller.setBounds(insets.left, 500 + insets.top, 261, 400);
+        controller.setBounds(insets.left, 500 + insets.top, 261, 1000);
         lineView.setBounds(490 + insets.left, 500 + insets.top, 230, 100);
         PieView.setBounds(720 + insets.left, 500 + insets.top, 100, 100);
-        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 100);
-        statView.setBounds(261 + insets.left, 500 + insets.top, 230, 400);
+        barView.setBounds(490 + insets.left, 600 + insets.top, 330, 1000);
+        statView.setBounds(261 + insets.left, 500 + insets.top, 230, 1000);
         screen.setVisible(true);   
         
         toegestaanVoorAbonnementhouders = new int[simulatorView.getNumberOfFloors()][simulatorView.getNumberOfRows()][simulatorView.getNumberOfPlaces()];  

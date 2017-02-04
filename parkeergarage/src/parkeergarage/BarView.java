@@ -59,7 +59,7 @@ public class BarView extends View {
 	{
 		initBars();
 		g.setColor(Color.decode("#bfbfbf"));
-		g.fillRect(0, 0, 330, 100);
+		g.fillRect(0, 0, 330, 1000);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 80, 220, 1);
 		g.fillRect(0, 0, 330, 1);

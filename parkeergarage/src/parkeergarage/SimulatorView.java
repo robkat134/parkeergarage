@@ -308,12 +308,18 @@ public class SimulatorView extends View{
         private Dimension size;
         private Image carParkImage;   
         private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
-        private JLabel legenda = new JLabel("");
+        private JLabel legenda = new JLabel
+        		("		           car without subscription"
+        		+ "  	            car with subscription"
+        		+ "  	            car with reservation"
+        		+ "		            reserved spot");
         /**
          * Constructor for objects of class CarPark
          */
         public CarParkView() {
             size = new Dimension(0, 0);
+            add(legenda);
+            legenda.setBounds(0, 300, 400, 200);
         }
     
         /**
@@ -331,6 +337,14 @@ public class SimulatorView extends View{
         	
         	g.setColor(Color.decode("#EEEEEE"));
         	g.fillRect(0, 0, 838, 500);
+        	g.setColor(Color.RED);
+        	g.fillRect(135, 10, 8, 8);
+        	g.setColor(Color.BLUE);
+        	g.fillRect(315, 10, 8, 8);
+        	g.setColor(Color.decode("#4fb530"));
+        	g.fillRect(475, 10, 8, 8);
+        	g.setColor(Color.GRAY);
+        	g.fillRect(625, 10, 8, 8);
             if (carParkBuffer == null) {
                 return;
             }
