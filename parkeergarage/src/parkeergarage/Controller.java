@@ -18,12 +18,12 @@ public class Controller extends JPanel implements ActionListener {
     private JButton stop;
     private JButton day;
     private JButton week;
-    private JButton extraUitgang;
-    private JButton extraIngang;
-    private JButton extraUitgangVerwijderen;
-    private JButton extraIngangVerwijderen;
-    private JButton sneller;
-    private JButton trager;
+    private JButton addExit;
+    private JButton addEntrance;
+    private JButton removeExit;
+    private JButton removeEntrance;
+    private JButton faster;
+    private JButton slower;
     
 	public Controller(Simulator simulator) {
 		this.simulator=simulator;
@@ -39,41 +39,41 @@ public class Controller extends JPanel implements ActionListener {
 		day.addActionListener(this);
 		week = new JButton("1 week");
 		week.addActionListener(this);
-		extraUitgang = new JButton("+uitgang");
-		extraUitgang.addActionListener(this);
-		extraIngang = new JButton("+ingang");
-		extraIngang.addActionListener(this);
-		extraUitgangVerwijderen = new JButton("-uitgang");
-		extraUitgangVerwijderen.addActionListener(this);
-		extraIngangVerwijderen = new JButton("-ingang");
-		extraIngangVerwijderen.addActionListener(this);
-		sneller = new JButton("sneller");
-		sneller.addActionListener(this);
-		trager = new JButton("trager");
-		trager.addActionListener(this);
+		addExit = new JButton("+exit");
+		addExit.addActionListener(this);
+		addEntrance = new JButton("+entrance");
+		addEntrance.addActionListener(this);
+		removeExit = new JButton("-exit");
+		removeExit.addActionListener(this);
+		removeEntrance = new JButton("-entrance");
+		removeEntrance.addActionListener(this);
+		faster = new JButton("faster");
+		faster.addActionListener(this);
+		slower = new JButton("slower");
+		slower.addActionListener(this);
 		setLayout(null);
 		add(plus1);
 		add(plus100);
 		add(run);
 		add(day);
 		add(week);
-		add(extraUitgang);
-		add(extraIngang);
-		add(extraUitgangVerwijderen);
-		add(extraIngangVerwijderen);
-		add(sneller);
-		add(trager);
+		add(addExit);
+		add(addEntrance);
+		add(removeExit);
+		add(removeEntrance);
+		add(faster);
+		add(slower);
 		plus1.setBounds(10, 10, 70, 30);
 		plus100.setBounds(85, 10, 70, 30);
 		run.setBounds(160, 10, 95, 30);
 		week.setBounds(85, 45, 80, 30);
 		day.setBounds(10, 45, 70, 30);
-		sneller.setBounds(105, 87, 90, 30);
-		trager.setBounds(10, 87, 90, 30);
-		extraUitgang.setBounds(10, 130, 100, 30);
-		extraIngang.setBounds(115, 130, 100, 30);
-		extraUitgangVerwijderen.setBounds(10, 165, 100, 30);
-		extraIngangVerwijderen.setBounds(115, 165, 100, 30);
+		faster.setBounds(105, 87, 90, 30);
+		slower.setBounds(10, 87, 90, 30);
+		addExit.setBounds(10, 130, 100, 30);
+		addEntrance.setBounds(115, 130, 100, 30);
+		removeExit.setBounds(10, 165, 100, 30);
+		removeEntrance.setBounds(115, 165, 100, 30);
 		setVisible(true);
 	}
 	
@@ -102,33 +102,33 @@ public class Controller extends JPanel implements ActionListener {
 		{
 			simulator.toggleRunning();
 		}
-		if(e.getSource() == sneller)
+		if(e.getSource() == faster)
 		{
 			simulator.incrementTickPause();
 			System.out.println("tickpause: " + simulator.returnTickPause());
 		}
-		if(e.getSource() == trager)
+		if(e.getSource() == slower)
 		{
 			simulator.decrementTickPause();
 			System.out.println("tickpause: " + simulator.returnTickPause());
 		}
-		if(e.getSource() == extraUitgang)
+		if(e.getSource() == addExit)
 		{
 			simulator.extraUitgang();
 			System.out.println("uitgangsnelheid: "+simulator.exitSpeed);
 		}
-		if(e.getSource() == extraIngang)
+		if(e.getSource() == addEntrance)
 		{
 			simulator.extraIngang();
 			System.out.println("ingangsnelheid: "+simulator.enterSpeed);
 		}
-		if(e.getSource() == extraUitgangVerwijderen)
+		if(e.getSource() == removeExit)
 		{
 			simulator.extraUitgangVerwijderen();
 
 			System.out.println("uitgangsnelheid: "+simulator.exitSpeed);
 		}
-		if(e.getSource() == extraIngangVerwijderen)
+		if(e.getSource() == removeEntrance)
 		{
 			simulator.extraIngangVerwijderen();
 			System.out.println("ingangsnelheid: "+simulator.enterSpeed);

@@ -783,52 +783,53 @@ public class Simulator {
     /**
      * @return busyHour (true or false)
      */
-    private Boolean busyHour(){
+    private Boolean busyHour()
+    {
         int busyday = 0;
         int busyhour = 0;
         int tillbusyday = 0;
         int tillbusyhour = 0;
-        int[][] datas = new int[][]{
+        int[][] datas = new int[][]
+        {
         	//De tijden wanneer het extra druk is
-              {3, 18, 3, 21}, //Donderdagavond van 18 tot 21 uur: Koopavond
-              {4, 18, 4, 24}, //vrijdagavond van 18 tot 24 uur
-              {5, 18, 5, 24}, //vrijdagavond van 18 tot 24 uur
-              {6, 12, 6, 18}, //zondagmiddag van 12 tot 18 uur  
-            };
+			{1, 7, 1, 17}, //Donderdagavond van 8 tot 17 uur: Market
+			{3, 18, 3, 21}, //Donderdagavond van 18 tot 21 uur: shopping night
+			{4, 18, 4, 24}, //vrijdagavond van 18 tot 24 uur
+			{5, 18, 5, 24}, //zaterdagavond van 18 tot 24 uur
+			{6, 7, 6, 17}, //zondagmiddag van 8 tot 17 uur  
+        };
           //Het event wat bij de bovenstaande uren hoort
-         String[] events = new String[]{
-        	 "Koopavond", "Theater", "Theater", "Theater"
-         };
-            for(int i = 0; i<datas.length; i++)
+        String[] events = new String[]
+        {"Market","shopping night", "Theatre", "Theatre", "Market"};
+        for(int i = 0; i<datas.length; i++)
+        {
+            busyday = datas[i][0];
+            busyhour = datas[i][1];
+            tillbusyday = datas[i][2];
+            tillbusyhour = datas[i][3];
+            event = events[i];
+            if(day > busyday && day < tillbusyday)
             {
-                busyday = datas[i][0];
-                busyhour = datas[i][1];
-                tillbusyday = datas[i][2];
-                tillbusyhour = datas[i][3];
-                event = events[i];
-                if(day > busyday && day < tillbusyday)
-                {
-                	
-                    return true;
-                } 
-                else if (day == busyday && hour >= busyhour && day < tillbusyday)
-                {
-                    return true;
-                } 
-                else if (day == busyday && hour >= busyhour && hour <= tillbusyhour)
-                {
-                    calculateTimeStaying(tillbusyhour);
-                    return true;
-                } 
-                else 
-                {
-                	
-                }       
-            }
-            calculateTimeStaying(0);
-            event = "Niks Bijzonder";
-            return false;
+                return true;
+            } 
+            else if (day == busyday && hour >= busyhour && day < tillbusyday)
+            {
+                return true;
+            } 
+            else if (day == busyday && hour >= busyhour && hour <= tillbusyhour)
+            {
+                calculateTimeStaying(tillbusyhour);
+                return true;
+            } 
+            else 
+            {
+            	
+            }       
         }
+        calculateTimeStaying(0);
+        event = "Niks Bijzonder";
+        return false;
+    }
     
     
     /**
