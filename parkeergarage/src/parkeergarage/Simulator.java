@@ -827,7 +827,7 @@ public class Simulator {
             }       
         }
         calculateTimeStaying(0);
-        event = "Niks Bijzonder";
+        event = "Nothing Special";
         return false;
     }
     
