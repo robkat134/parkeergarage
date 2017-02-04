@@ -58,20 +58,20 @@ public class Simulator {
      * Onderstaande is allemaal voor de stats. Gemaakt door Rob dus voor vragen bij hem zijn
      */
     protected int passCarsNowWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek op dit moment
-    private int passCarsTodayWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die vandaag hun auto hebben gepakeerd
-    private int passCarsTotalWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die er vanaf het begin geparkeerd hebben
+    protected int passCarsTodayWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die vandaag hun auto hebben gepakeerd
+    protected int passCarsTotalWithReservedSpot = 0; // Aantal abonnementhouders met een speciale abonnementhouders plek die er vanaf het begin geparkeerd hebben
     protected int passCarsNowWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek op dit moment
-    private int passCarsTodayWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek die vandaag hun auto hebben geparkeerd
-    private int passCarsTotalWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders pelk die er vanaf het begin geparkeerd hebben.
+    protected int passCarsTodayWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders plek die vandaag hun auto hebben geparkeerd
+    protected int passCarsTotalWithoutReservedSpot = 0; // Aantal abonnementhouders zonder een speciale abonnementhouders pelk die er vanaf het begin geparkeerd hebben.
     
-    private int reservedCarsNow = 0; // Aantal reserveringen op dit moment
-    private int reservedCarsToday = 0; // Aantal reserveringen vandaag
-    private int reservedCarsTotal = 0; //Aantal reserveringen totaal gemaakt
+    protected int reservedCarsNow = 0; // Aantal reserveringen op dit moment
+    protected int reservedCarsToday = 0; // Aantal reserveringen vandaag
+    protected int reservedCarsTotal = 0; //Aantal reserveringen totaal gemaakt
     protected int nonPassCarsNow = 0; // Aantal niet abonnementhouders die hun auto geparkeerd hebben op dit moment
-    private int nonPassCarsToday = 0; // Aantal niet abonnementhouders die hun auto vnadaag geparkeerd hebben
-    private int nonPassCarsTotal = 0; // Aantal niet abonnementhouders die hun auto geparkeerd ehbben vanaf het begin
-    private int carsPassedToday = 0; // Aantal auto's die zijn doorgereden omdat de rij telang was 
-    private int carsPassedTotal = 0; // Aantal auto's die vanaf het starten zijn doorgereden omdat de rij telang was
+    protected int nonPassCarsToday = 0; // Aantal niet abonnementhouders die hun auto vnadaag geparkeerd hebben
+    protected int nonPassCarsTotal = 0; // Aantal niet abonnementhouders die hun auto geparkeerd ehbben vanaf het begin
+    protected int carsPassedToday = 0; // Aantal auto's die zijn doorgereden omdat de rij telang was 
+    protected int carsPassedTotal = 0; // Aantal auto's die vanaf het starten zijn doorgereden omdat de rij telang was
     
     public int totalCarsToday = 0;
     
@@ -944,10 +944,19 @@ public class Simulator {
     }
     
     public void incrementPassHolders() {
-    	abonnementHouders += 5;
+    	if(abonnementHouders < 540) {
+        	abonnementHouders += 5;
+    	}
     }
     
     public void decrementPassHolders() {
-    	abonnementHouders -= 5;
+    	if(abonnementHouders > 0) {
+    		abonnementHouders -= 5;
+    	}
+    }
+    
+    public int getAbonnementHouders()
+    {
+    	return abonnementHouders;
     }
 }

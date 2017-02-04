@@ -12,7 +12,6 @@ public class LineView extends View {
 	ArrayList<Rect> line = new ArrayList<Rect>();
 	ArrayList<Rect> line2 = new ArrayList<Rect>();
 	ArrayList<Rect> line3 = new ArrayList<Rect>();
-	ArrayList<Rect> line4 = new ArrayList<Rect>();
 	
 	private JLabel UpperLimit = new JLabel("540");
 	private JLabel MiddleLimit = new JLabel("270");
@@ -54,15 +53,10 @@ public class LineView extends View {
 		{
 			g.fillRect(line2.get(i).x1,line2.get(i).y1,line2.get(i).x2,line2.get(i).y2); 
 		}
-		g.setColor(Color.decode("#56a2ff"));
+		g.setColor(Color.BLACK);
 		for(int i=0;i<line3.size();i++)
 		{
 			g.fillRect(line3.get(i).x1,line3.get(i).y1,line3.get(i).x2,line3.get(i).y2); 
-		}
-		g.setColor(Color.BLACK);
-		for(int i=0;i<line4.size();i++)
-		{
-			g.fillRect(line4.get(i).x1,line4.get(i).y1,line4.get(i).x2,line4.get(i).y2); 
 		}
 	}
 	/**
@@ -95,7 +89,7 @@ public class LineView extends View {
 			startX = 200;
 			//startX--;
 		}
-		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot)/7.2), 2,2));
+		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot + simulator.passCarsNowWithReservedSpot)/7.2), 2,2));
 		if (line2.size()>200)
 		{
 			for(int i=0;i<line2.size();i++)
@@ -106,7 +100,7 @@ public class LineView extends View {
 			startX = 200;
 			//startX--;
 		}
-		line3.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot)/7.2), 2,2));
+		line3.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot+simulator.passCarsNowWithReservedSpot + simulator.nonPassCarsNow)/7.2), 2,2));
 		if (line3.size()>200)
 		{
 			for(int i=0;i<line3.size();i++)
@@ -114,17 +108,6 @@ public class LineView extends View {
 				line3.get(i).x1--;
 			}
 			line3.remove(line3.size()-1);
-			startX = 200;
-			//startX--;
-		}
-		line4.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithoutReservedSpot+simulator.passCarsNowWithReservedSpot + simulator.nonPassCarsNow)/7.2), 2,2));
-		if (line4.size()>200)
-		{
-			for(int i=0;i<line4.size();i++)
-			{
-				line4.get(i).x1--;
-			}
-			line4.remove(line4.size()-1);
 			startX = 199;
 			//startX--;
 		}

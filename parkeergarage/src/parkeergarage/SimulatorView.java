@@ -308,6 +308,7 @@ public class SimulatorView extends View{
         private Dimension size;
         private Image carParkImage;   
         private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
+        private JLabel legenda = new JLabel("");
         /**
          * Constructor for objects of class CarPark
          */

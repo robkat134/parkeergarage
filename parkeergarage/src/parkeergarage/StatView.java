@@ -17,6 +17,7 @@ public class StatView extends View {
     private JLabel event = new JLabel("event: ");
     private JLabel enterSpeed = new JLabel("enterspeed: ");
     private JLabel exitSpeed = new JLabel("exitspeed: ");
+    private JLabel passHolders = new JLabel("passholders: ");
 	
 	public StatView(Model model, Simulator Tempsimulator) 
 	{
@@ -33,6 +34,7 @@ public class StatView extends View {
 		add(incomeResTotal);
 		add(estimatedIncomePresentCars);
 		add(event);
+		add(passHolders);
 		entranceQueue.setBounds(5, 0, 300, 20);
 		exitQueue.setBounds(5, 20, 300, 20);
 		enterSpeed.setBounds(5, 40, 300, 20);
@@ -42,6 +44,7 @@ public class StatView extends View {
 		incomeResTotal.setBounds(5, 120, 300, 20);
 		estimatedIncomePresentCars.setBounds(5, 140, 300, 20);
 		event.setBounds(5, 160, 300, 20);
+		passHolders.setBounds(5, 180, 300, 20);
 	}
 	
 	public void paintComponent(Graphics g) 
@@ -62,6 +65,7 @@ public class StatView extends View {
 		event.setText("event: "+simulator.event);
 		enterSpeed.setText("enterspeed: " + simulator.enterSpeed);
 		exitSpeed.setText("exitspeed: " + simulator.exitSpeed);
+		passHolders.setText("passholders: " + simulator.getAbonnementHouders());
 		if (simulator.incomePassHoldersTotal%100 == 0)
 		{
 			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+",00");
