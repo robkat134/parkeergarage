@@ -46,12 +46,11 @@ public class BarView extends View {
 	public void paintComponent(Graphics g) 
 	{
 		initBars();
-		g.setColor(Color.decode("#EEEEEE"));
+		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 330, 100);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 80, 330, 1);
 		g.fillRect(0, 0, 330, 1);
-		g.fillRect(0, 0, 1, 100);
 		g.setColor(Color.ORANGE);
 		for(int i=0;i<line.size();i++)
 		{
@@ -71,7 +70,7 @@ public class BarView extends View {
 		{
 			perdayProcent[i] = (float)(week[i]/total);
 		}
-		System.out.println(perdayProcent[0]);
+//		System.out.println(perdayProcent[0]);
 		line.clear();
 		line.add(0,new Rect(5,80, 20, (int)(-75 * perdayProcent[0])));
 		line.add(1,new Rect(30,80, 20, (int)(-75 * perdayProcent[1])));
