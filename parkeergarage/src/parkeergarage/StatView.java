@@ -68,35 +68,35 @@ public class StatView extends View {
 		passHolders.setText("passholders: " + simulator.getAbonnementHouders());
 		if (simulator.incomePassHoldersTotal%100 == 0)
 		{
-			incomePassTotal.setText("income passholders: â‚¬" + simulator.incomePassHoldersTotal/100+",00");
+			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+",00");
 		}
 		else
 		{
-			incomePassTotal.setText("income passholders: â‚¬" + simulator.incomePassHoldersTotal/100+"," + simulator.incomePassHoldersTotal%100);
+			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+"," + simulator.incomePassHoldersTotal%100);
 		}
 		if (simulator.incomeNonPassHoldersTotal%100 == 0)
 		{
-			incomeNonPassTotal.setText("income nonpassholders: â‚¬" + simulator.incomeNonPassHoldersTotal/100+",00");
+			incomeNonPassTotal.setText("income nonpassholders: €" + simulator.incomeNonPassHoldersTotal/100+",00");
 		}
 		else
 		{
-			incomeNonPassTotal.setText("income nonpassholders: â‚¬" + simulator.incomeNonPassHoldersTotal/100+"," + simulator.incomeNonPassHoldersTotal%100);
+			incomeNonPassTotal.setText("income nonpassholders: €" + simulator.incomeNonPassHoldersTotal/100+"," + simulator.incomeNonPassHoldersTotal%100);
 		}
 		if (simulator.incomeReservationTotal%100 == 0)
 		{
-			incomeResTotal.setText("income reservations: â‚¬" + simulator.incomeReservationTotal/100+",00");
+			incomeResTotal.setText("income reservations: €" + simulator.incomeReservationTotal/100+",00");
 		}
 		else
 		{
-			incomeResTotal.setText("income reservations: â‚¬" + simulator.incomeReservationTotal/100+"," + simulator.incomeReservationTotal%100);
+			incomeResTotal.setText("income reservations: €" + simulator.incomeReservationTotal/100+"," + simulator.incomeReservationTotal%100);
 		}
 		if (simulator.estimatedIncomeParkedCars()%100 == 0)
 		{
-			estimatedIncomePresentCars.setText("estimated income: â‚¬" + simulator.estimatedIncomeParkedCars()/100+",00");
+			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+",00");
 		}
 		else
 		{
-			estimatedIncomePresentCars.setText("estimated income: â‚¬" + simulator.estimatedIncomeParkedCars()/100+"," + simulator.estimatedIncomeParkedCars()%100);
+			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+"," + simulator.estimatedIncomeParkedCars()%100);
 		}
 	}
 }
