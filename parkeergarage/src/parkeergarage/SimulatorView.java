@@ -14,8 +14,6 @@ public class SimulatorView extends View{
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
-    private int timeForReservation;
-    private boolean busyhour;
     private int timeForBusyHourStaying;
 
     
@@ -302,8 +300,7 @@ public class SimulatorView extends View{
     
     private class CarParkView extends JPanel {
         
-        private Dimension size;
-        private Image carParkImage;   
+        private Dimension size; 
         private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
         private JLabel legenda = new JLabel
         		("		           car without subscription"
@@ -372,7 +369,6 @@ public class SimulatorView extends View{
             if (!size.equals(getSize())) {
                 size = getSize();
                 carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-                carParkImage = createImage(size.width, size.height);
                 System.out.println("redrawing image");
             }
             //System.out.println(carParkBuffer);

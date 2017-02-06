@@ -1,15 +1,8 @@
 package parkeergarage;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Insets;
-import java.security.acl.Owner;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
 import java.util.Random;
-import javax.swing.JLabel;
 
 //import parkeergarage.Car;
 
