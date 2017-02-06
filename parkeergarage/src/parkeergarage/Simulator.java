@@ -134,9 +134,9 @@ public class Simulator {
     public Simulator() { 
 
         abonnementhoudersPlekken = new int[][]{
-            {1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0}
+            {1, 1, 0, 0, 0, 0},
+            {1, 1, 0, 0, 0, 0},
+            {1, 1, 0, 0, 0, 0}
         };
         
         paymentReservationQueue = new CarQueue();
@@ -160,7 +160,7 @@ public class Simulator {
         controller = new Controller(this);
         
         screen = new JFrame("Line View");
-        screen.setSize(825, 747);
+        screen.setSize(825, 762);
         screen.setResizable(false);
         screen.setLayout(null);
 
@@ -961,5 +961,21 @@ public class Simulator {
     public int getAbonnementHouders()
     {
     	return abonnementHouders;
+    }
+    
+    public void incrementPlaces() {
+    	if(abonnementHoudersPlekken < 180) {
+    		abonnementHoudersPlekken = abonnementHoudersPlekken + 10;
+    	}
+    }
+    
+    public void decrementPlaces() {
+    	if(abonnementHoudersPlekken > 0) {
+    		abonnementHoudersPlekken = abonnementHoudersPlekken - 10;
+    	}
+    }
+    
+    public int getPassPlaces() {
+    	return abonnementHoudersPlekken;
     }
 }
