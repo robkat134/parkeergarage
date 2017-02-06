@@ -14,8 +14,6 @@ public class SimulatorView extends View{
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
-    private int timeForReservation;
-    private boolean busyhour;
     private int timeForBusyHourStaying;
 
     
@@ -37,8 +35,7 @@ public class SimulatorView extends View{
     public JLabel time = new JLabel("Time: ");
     public JLabel day = new JLabel ("Day: ");
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
-    {
+    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) {
     	super(model);
     	this.owner = owner;
         this.numberOfFloors = numberOfFloors;
@@ -71,8 +68,7 @@ public class SimulatorView extends View{
 
         updateView();
     }
-    public void setCarsParked()
-    {
+    public void setCarsParked(){
 
     	parkedCars.setText("parked cars: "+owner.totalCarsToday);
     }
@@ -222,7 +218,6 @@ public class SimulatorView extends View{
                             return location;
                         }
                 	}
-
                 }
             }
         }
@@ -305,8 +300,7 @@ public class SimulatorView extends View{
     
     private class CarParkView extends JPanel {
         
-        private Dimension size;
-        private Image carParkImage;   
+        private Dimension size; 
         private BufferedImage carParkBuffer = new BufferedImage(800, 500, BufferedImage.TYPE_INT_ARGB);
         private JLabel legenda = new JLabel
         		("		           car without subscription"
@@ -372,11 +366,9 @@ public class SimulatorView extends View{
         
         public void updateView() {
             // Create a new car park image if the size has changed.
-            if (!size.equals(getSize())) 
-            {
+            if (!size.equals(getSize())) {
                 size = getSize();
                 carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-                carParkImage = createImage(size.width, size.height);
                 System.out.println("redrawing image");
             }
             //System.out.println(carParkBuffer);

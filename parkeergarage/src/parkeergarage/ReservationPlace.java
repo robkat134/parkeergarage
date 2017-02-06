@@ -23,7 +23,7 @@ public class ReservationPlace extends Car {
         this.setMinutesParked(stayMinutes);
         this.setHasToPay(false);
         this.setReservatedSpot(true);
-        this.setMinutesLeavingEarly((int)(Math.random()*30));  // De tijd dat de reserveerde auto eerder weggaat 
+        this.setMinutesLeavingEarly(15);  // De tijd dat de reserveerde auto eerder weggaat 
         this.setEarlyLeaving(true);
         this.setTypeOfCar("reservation");
     }

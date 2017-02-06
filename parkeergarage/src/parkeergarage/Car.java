@@ -58,22 +58,6 @@ public abstract class Car {
     	minutesParked = minutes;
     }
     
-   /* public int getMinuteReservated() {
-    	return minuteReservated;
-    }
-    
-    public void setMinuteReservated(int minuteReservated) {
-    	this.minuteReservated = minuteReservated;
-    }
-    
-    public void setMinuteWaiter(int wait) {
-    	minuteWaiter = wait;
-    }
-    
-    public int getMinuteWaiter(){
-    	return minuteWaiter;
-    }*/
-    
     public int getMinutesParked(){
     	return minutesParked;
     }

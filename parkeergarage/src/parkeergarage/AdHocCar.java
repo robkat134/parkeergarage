@@ -8,6 +8,10 @@ public class AdHocCar extends Car {
 	private static int stayMinutes;
 
 	
+    /**
+     * de constructor functie van deze class.
+     * Bepaaly hoelang de auto blijft staan en of die moet betalen
+     */
     public AdHocCar() {
     	Random random = new Random();
     	stayMinutes = (int) (15 + random.nextFloat() * 3 * 60);
@@ -17,6 +21,10 @@ public class AdHocCar extends Car {
         this.setReservationCar(false);
     }
     
+    /**
+     * de overloaded constructor van deze class
+     * @param time bepaalt hoelang de auto blijft staan. 
+     */
     public AdHocCar(int time) {
     	int stayMinutes = (int) (time);
         this.setMinutesLeft(stayMinutes);

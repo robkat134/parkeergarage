@@ -1,15 +1,8 @@
 package parkeergarage;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Insets;
-import java.security.acl.Owner;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
 import java.util.Random;
-import javax.swing.JLabel;
 
 //import parkeergarage.Car;
 
@@ -134,9 +127,9 @@ public class Simulator {
     public Simulator() { 
 
         abonnementhoudersPlekken = new int[][]{
-            {1, 1, 1, 1, 0, 0},
-            {0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0}
+            {1, 1, 0, 0, 0, 0},
+            {1, 1, 0, 0, 0, 0},
+            {1, 1, 0, 0, 0, 0}
         };
         
         paymentReservationQueue = new CarQueue();
@@ -156,11 +149,12 @@ public class Simulator {
         PieView = new PieView(model, this);
         PieView.start();
         barView = new BarView(model, this);
+        barView.start();
         statView = new StatView(model, this);
         controller = new Controller(this);
         
-        screen = new JFrame("Line View");
-        screen.setSize(825, 747);
+        screen = new JFrame("Parking Garage");
+        screen.setSize(825, 762);
         screen.setResizable(false);
         screen.setLayout(null);
 
@@ -247,6 +241,7 @@ public class Simulator {
 		
     	((LineView) lineView).addRectangle();
 		lineView.startX++;
+		((BarView)barView).calculateMoney();
 		model.notifyViews();
 		//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
 		
@@ -373,6 +368,7 @@ public class Simulator {
 	        updateViews();
 	        
 	    	lineView.startX++;
+	    	((BarView)barView).calculateMoney();
 	    	model.notifyViews();
 	    	//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
 	    	
@@ -962,5 +958,21 @@ public class Simulator {
     public int getAbonnementHouders()
     {
     	return abonnementHouders;
+    }
+    
+    public void incrementPlaces() {
+    	if(abonnementHoudersPlekken < 180) {
+    		abonnementHoudersPlekken = abonnementHoudersPlekken + 10;
+    	}
+    }
+    
+    public void decrementPlaces() {
+    	if(abonnementHoudersPlekken > 0) {
+    		abonnementHoudersPlekken = abonnementHoudersPlekken - 10;
+    	}
+    }
+    
+    public int getPassPlaces() {
+    	return abonnementHoudersPlekken;
     }
 }

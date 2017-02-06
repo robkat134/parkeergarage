@@ -81,8 +81,7 @@ public class SoundPlayer {
      * @return An input stream for the file.
      */
     private InputStream getInputStream(String filename)
-        throws IOException
-    {
+        throws IOException{
         return new BufferedInputStream(
                     new FileInputStream(filename));
     }
@@ -93,16 +92,14 @@ public class SoundPlayer {
      * @return An audio device.
      */
     private AudioDevice createAudioDevice()
-        throws JavaLayerException
-    {
+        throws JavaLayerException{
         return FactoryRegistry.systemRegistry().createAudioDevice();
     }
 
     /**
      * Terminate the player, if there is one.
      */
-    private void killPlayer()
-    {
+    private void killPlayer(){
         synchronized(this) {
             if(player != null) {
                 player.stop();
@@ -116,8 +113,7 @@ public class SoundPlayer {
      * Report a problem playing the given file.
      * @param filename The file being played.
      */
-    private void reportProblem(String filename)
-    {
+    private void reportProblem(String filename){
         System.out.println("There was a problem playing: " + filename);
     }
     
