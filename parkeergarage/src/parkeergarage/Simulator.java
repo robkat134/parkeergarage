@@ -192,7 +192,7 @@ public class Simulator {
      */
     public void run() 
     {
-        while (tickCount < 100000)
+        while (tickCount < 1000000)
         {
         	tick();
         	if (isRunning)
