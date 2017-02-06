@@ -386,6 +386,7 @@ public class Simulator {
 	            e.printStackTrace();
 	        }
 	        
+	        //check of er al een geluidsbestand speelt.
 	        setPlayingSound();
 	        
 	       if(simulatorView.getNumberOfOpenSpots() > 20){
@@ -799,7 +800,7 @@ public class Simulator {
         int[][] datas = new int[][]
         {
         	//De tijden wanneer het extra druk is
-			{1, 7, 1, 17}, //Donderdagavond van 8 tot 17 uur: Market
+			{1, 7, 1, 17}, //Dinsdagmiddag van 8 tot 17 uur: Market
 			{3, 18, 3, 21}, //Donderdagavond van 18 tot 21 uur: shopping night
 			{4, 18, 4, 24}, //vrijdagavond van 18 tot 24 uur
 			{5, 18, 5, 24}, //zaterdagavond van 18 tot 24 uur
