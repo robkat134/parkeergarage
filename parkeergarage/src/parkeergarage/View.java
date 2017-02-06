@@ -11,51 +11,40 @@ public class View extends JPanel implements Runnable
  protected int startX;
  private Thread t;
  
- 	public void start () 
- 	{
- 		if (t == null)
- 		{
+ 	public void start () {
+ 		if (t == null){
  			t = new Thread (this);
  			t.start ();
      	}
  	}
- 	public void run() 
- 	{
+ 	public void run() {
  	}
  
- 	public View(Model model)
- 	{
+ 	public View(Model model){
 	 	this.model=model;
 	 	model.addView(this);
 	 	setSize(200,200);
 	 	setVisible(true);
  	}
   
- 	public void setModel(Model model)
- 	{
+ 	public void setModel(Model model){
  		this.model=model;
  	}
   
- 	public Model getModel()
- 	{
+ 	public Model getModel(){
  		return model;
  	}
  	
- 	public void updateView()
- 	{
+ 	public void updateView(){
  		repaint();
  	}
  	
- 	public void sleepThread()
- 	{
+ 	public void sleepThread(){
  		System.out.println(this.getClass());
- 		try
-    	{
+ 		try{
     		Thread.sleep(5000);
     	}
-    	catch (InterruptedException e)
-    	{
-    		
+    	catch (InterruptedException e){	
     	}
  	}
 }

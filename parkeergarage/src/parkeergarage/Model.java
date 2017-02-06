@@ -5,7 +5,6 @@ import java.util.*;
 public class Model {
 	
 	private List<View> views;
-	private boolean run;
 	
 	public Model() {
 		views =  new ArrayList<View>();
@@ -16,15 +15,13 @@ public class Model {
 	}
 	
 	protected void notifyViews() {
-		for(View v: views)
-		{
+		for(View v: views){
 			v.updateView();
 		}
 	}
 	
 	protected void pauseViews() {
-		for(View v: views)
-		{
+		for(View v: views){
 			v.sleepThread();
 		}
 	}
