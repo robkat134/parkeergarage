@@ -230,11 +230,11 @@ public class SimulatorView extends View{
                 for (int place = 0; place < getNumberOfPlaces(); place++) {
                     Location location = new Location(floor, row, place, false);
                     Car car = getCarAt(location);
-                    if (car !=null && car.getReservatedSpot() == true && car.getMinutesLeft() == 0 && car.getEarlyLeaving() == false){
+                    if (car !=null && car.getReservatedSpot() == true && car.getMinutesLeft() <= 0 && car.getEarlyLeaving() == false){
                     	makeNewCar(location);
-                    } else if (car !=null && car.getReservationCar() == true && car.getMinutesLeft() == 0){
+                    } else if (car !=null && car.getReservationCar() == true && car.getMinutesLeft() <= 0){
                     	makeNewCar1(location);
-                    } else if (car !=null && car.getReservatedSpot() == true && car.getEarlyLeaving() == true && car.getMinutesLeavingEarly() == 0){
+                    } else if (car !=null && car.getReservatedSpot() == true && car.getEarlyLeaving() == true && car.getMinutesLeavingEarly() <= 0){
                     	return car;}
                     if (car != null && car.getMinutesLeft() <= 0 && !car.getIsPaying() && car.getReservationCar() !=true && car.getReservatedSpot() !=true) {
                         return car;
