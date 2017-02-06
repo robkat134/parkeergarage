@@ -156,10 +156,11 @@ public class Simulator {
         PieView = new PieView(model, this);
         PieView.start();
         barView = new BarView(model, this);
+        barView.start();
         statView = new StatView(model, this);
         controller = new Controller(this);
         
-        screen = new JFrame("Line View");
+        screen = new JFrame("Parking Garage");
         screen.setSize(825, 747);
         screen.setResizable(false);
         screen.setLayout(null);
@@ -247,6 +248,7 @@ public class Simulator {
 		
     	((LineView) lineView).addRectangle();
 		lineView.startX++;
+		((BarView)barView).calculateMoney();
 		model.notifyViews();
 		//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
 		
@@ -373,6 +375,7 @@ public class Simulator {
 	        updateViews();
 	        
 	    	lineView.startX++;
+	    	((BarView)barView).calculateMoney();
 	    	model.notifyViews();
 	    	//totaalGeparkeerd = geparkeerdeZonderAbonnement + geparkeerdeAbonnementhouders;
 	    	

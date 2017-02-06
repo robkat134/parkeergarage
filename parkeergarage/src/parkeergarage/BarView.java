@@ -16,6 +16,7 @@ public class BarView extends View {
 	private int[] week = new int[7];
 	private float[] perdayProcent = new float[7];
 	private float total;
+	private float highest;
 	private JLabel monday = new JLabel("mon");
 	private JLabel tuesday = new JLabel("tue");
 	private JLabel wednesday = new JLabel("wed");
@@ -55,50 +56,21 @@ public class BarView extends View {
 		highestLabel2.setBounds(225, 42, 100, 10);
 		highestLabel3.setBounds(225, 75, 100, 10);
 	}
-	public void paintComponent(Graphics g) 
-	{
+	public void paintComponent(Graphics g) {
 		initBars();
 		g.setColor(Color.decode("#bfbfbf"));
 		g.fillRect(0, 0, 330, 1000);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 80, 220, 1);
 		g.fillRect(0, 0, 330, 1);
-		g.fillRect(220, 0, 1, 100);
+		g.fillRect(220, 0, 1, 1000);
 		g.setColor(Color.ORANGE);
 		for(int i=0;i<line.size();i++)
 		{
 			g.fillRect(line.get(i).x1,line.get(i).y1,line.get(i).x2,line.get(i).y2); 
 		}
 	}
-	public void initBars() 
-	{
-		float highest = 0;
-		total = 0;
-		day = simulator.getDay();
-		if (previousDay == 6 && day == 0)
-		{
-			for (int i = 0; i < week.length; i++) 
-			{
-				perdayProcent[i] = 0;
-				week[i]=0;
-			}
-			total = 0;
-		}
-		week[day]= simulator.incomeNonPassHoldersPerDay + simulator.incomePassHoldersPerDay + simulator.incomeReservationPerDay;
-		for (int i = 0; i < week.length; i++) 
-		{
-			total += week[i];
-		}
-		for (int i = 0; i < week.length; i++) 
-		{
-			perdayProcent[i] = (float)(week[i]/total);
-			if( highest < perdayProcent[i] ){
-				highest = perdayProcent[i];
-			}
-		}
-		
-		highestLabel.setText(""+(int)(highest*100)+"%");
-		highestLabel2.setText(""+(int)(highest*100/2)+"%");
+	public void initBars() {
 		highestLabel3.setText("0%");
 		System.out.println(perdayProcent[0]);
 
@@ -112,6 +84,32 @@ public class BarView extends View {
 		line.add(5,new Rect( 160, 80 - (int)(75 * perdayProcent[5]/highest), 20, (int)(perdayProcent[5]*75/highest) ));
 		line.add(6,new Rect( 190, 80 - (int)(75 * perdayProcent[6]/highest), 20, (int)(perdayProcent[6]*75/highest) ));
 		previousDay = day;
+	}
+	public float calculateMoney() {
+		highest = 0;
+		total = 0;
+		day = simulator.getDay();
+		if (previousDay == 6 && day == 0){
+			for (int i = 0; i < week.length; i++) {
+				perdayProcent[i] = 0;
+				week[i]=0;
+			}
+			total = 0;
+		}
+		week[day]= simulator.incomeNonPassHoldersPerDay + simulator.incomePassHoldersPerDay + simulator.incomeReservationPerDay;
+		for (int i = 0; i < week.length; i++) {
+			total += week[i];
+		}
+		for (int i = 0; i < week.length; i++) {
+			perdayProcent[i] = (float)(week[i]/total);
+			if( highest < perdayProcent[i] ){
+				highest = perdayProcent[i];
+			}
+		}
+		
+		highestLabel.setText(""+(int)(highest*100)+"%");
+		highestLabel2.setText(""+(int)(highest*100/2)+"%");
+		return highest;
 	}	
 }
 

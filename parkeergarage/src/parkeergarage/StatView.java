@@ -10,17 +10,16 @@ public class StatView extends View {
 	Simulator simulator;
 	private JLabel entranceQueue = new JLabel("entrance queue: ");
 	private JLabel exitQueue = new JLabel("exit queue: ");
-	private JLabel incomePassTotal = new JLabel("income passholders: �");
-	private JLabel incomeNonPassTotal = new JLabel("income nonpassholders: �");
-	private JLabel incomeResTotal = new JLabel("income reservations: �");
-	private JLabel estimatedIncomePresentCars = new JLabel("estimated income: �");
+	private JLabel incomePassTotal = new JLabel("income passholders: �");
+	private JLabel incomeNonPassTotal = new JLabel("income nonpassholders: �");
+	private JLabel incomeResTotal = new JLabel("income reservations: �");
+	private JLabel estimatedIncomePresentCars = new JLabel("estimated income: �");
     private JLabel event = new JLabel("event: ");
     private JLabel enterSpeed = new JLabel("enterspeed: ");
     private JLabel exitSpeed = new JLabel("exitspeed: ");
     private JLabel passHolders = new JLabel("passholders: ");
 	
-	public StatView(Model model, Simulator Tempsimulator) 
-	{
+	public StatView(Model model, Simulator Tempsimulator) {
 		super(model);
 		simulator = Tempsimulator;
 
@@ -47,8 +46,7 @@ public class StatView extends View {
 		passHolders.setBounds(5, 180, 300, 20);
 	}
 	
-	public void paintComponent(Graphics g) 
-	{
+	public void paintComponent(Graphics g) {
 		setStats();
 		
 		g.setColor(Color.decode("#bfbfbf"));
@@ -58,44 +56,35 @@ public class StatView extends View {
 		g.fillRect(228, 0, 1, 1000);
 	}
 	
-	public void setStats()
-	{
+	public void setStats(){
 		entranceQueue.setText("entrance queue: " + simulator.getTotalEntranceQueue());
 		exitQueue.setText("exit queue: " + simulator.getTotalExitQueue());
 		event.setText("event: "+simulator.event);
 		enterSpeed.setText("enterspeed: " + simulator.enterSpeed);
 		exitSpeed.setText("exitspeed: " + simulator.exitSpeed);
 		passHolders.setText("passholders: " + simulator.getAbonnementHouders());
-		if (simulator.incomePassHoldersTotal%100 == 0)
-		{
+		if (simulator.incomePassHoldersTotal%100 == 0){
 			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+",00");
 		}
-		else
-		{
+		else{
 			incomePassTotal.setText("income passholders: €" + simulator.incomePassHoldersTotal/100+"," + simulator.incomePassHoldersTotal%100);
 		}
-		if (simulator.incomeNonPassHoldersTotal%100 == 0)
-		{
+		if (simulator.incomeNonPassHoldersTotal%100 == 0){
 			incomeNonPassTotal.setText("income nonpassholders: €" + simulator.incomeNonPassHoldersTotal/100+",00");
 		}
-		else
-		{
+		else{
 			incomeNonPassTotal.setText("income nonpassholders: €" + simulator.incomeNonPassHoldersTotal/100+"," + simulator.incomeNonPassHoldersTotal%100);
 		}
-		if (simulator.incomeReservationTotal%100 == 0)
-		{
+		if (simulator.incomeReservationTotal%100 == 0){
 			incomeResTotal.setText("income reservations: €" + simulator.incomeReservationTotal/100+",00");
 		}
-		else
-		{
+		else{
 			incomeResTotal.setText("income reservations: €" + simulator.incomeReservationTotal/100+"," + simulator.incomeReservationTotal%100);
 		}
-		if (simulator.estimatedIncomeParkedCars()%100 == 0)
-		{
+		if (simulator.estimatedIncomeParkedCars()%100 == 0){
 			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+",00");
 		}
-		else
-		{
+		else{
 			estimatedIncomePresentCars.setText("estimated income: €" + simulator.estimatedIncomeParkedCars()/100+"," + simulator.estimatedIncomeParkedCars()%100);
 		}
 	}

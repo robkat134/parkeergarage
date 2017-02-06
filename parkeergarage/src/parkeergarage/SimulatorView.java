@@ -37,8 +37,7 @@ public class SimulatorView extends View{
     public JLabel time = new JLabel("Time: ");
     public JLabel day = new JLabel ("Day: ");
 
-    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) 
-    {
+    public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces, Simulator owner, Model model) {
     	super(model);
     	this.owner = owner;
         this.numberOfFloors = numberOfFloors;
@@ -71,8 +70,7 @@ public class SimulatorView extends View{
 
         updateView();
     }
-    public void setCarsParked()
-    {
+    public void setCarsParked(){
 
     	parkedCars.setText("parked cars: "+owner.totalCarsToday);
     }
@@ -222,7 +220,6 @@ public class SimulatorView extends View{
                             return location;
                         }
                 	}
-
                 }
             }
         }
@@ -372,8 +369,7 @@ public class SimulatorView extends View{
         
         public void updateView() {
             // Create a new car park image if the size has changed.
-            if (!size.equals(getSize())) 
-            {
+            if (!size.equals(getSize())) {
                 size = getSize();
                 carParkBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
                 carParkImage = createImage(size.width, size.height);
