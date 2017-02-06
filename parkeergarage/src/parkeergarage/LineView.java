@@ -74,7 +74,7 @@ public class LineView extends View {
 			line.remove(line.size()-1);
 			startX = 200;
 		}
-		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot + simulator.passCarsNowWithReservedSpot)/7.2), 2,2));
+		line2.add(0,new Rect(startX,85 -(int)((simulator.passCarsNowWithReservedSpot + simulator.passCarsNowWithoutReservedSpot)/7.2), 2,2));
 		if (line2.size()>200){
 			for(int i=0;i<line2.size();i++){
 				line2.get(i).x1--;

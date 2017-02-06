@@ -153,8 +153,7 @@ public class Simulator {
         statView = new StatView(model, this);
         controller = new Controller(this);
         
-        screen = new JFrame("Line View");
-        screen.setSize(825, 762);
+        screen = new JFrame("Parking Garage");
         screen.setSize(825, 762);
         screen.setResizable(false);
         screen.setLayout(null);
